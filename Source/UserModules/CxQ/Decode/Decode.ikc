@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<group name="Decode" description="Creates a unique output vector from a binary input vector.">
+	<description type="html">
+		<p>
+			Takes a binary input vector and creates an output vector with the size 2^n, where n is
+			the length of the input vector. This can be useful when generalization cause problems
+			or when the sum of the input vector to the next module must be constant.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "Decode" name = "DECODER" />
+	</example>
+	
+	<input name="INPUT" description="Input data." />
+	
+	<output name="OUTPUT" description="Output data." />
+	
+	<module class="Decode" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>Decode.h</file>
+   		<file>Decode.cc</file>
+   		<file>Decode.ikc</file>
+   </files>
+</group>

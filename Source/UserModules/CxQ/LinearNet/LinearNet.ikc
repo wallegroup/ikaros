@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<group name="LinearNet" description="Linear artificial neural network">
+	<description type="html">
+		<p>
+			A linear artificial neural network.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "LinearNet" name = "ANN" lr = "0.07" max_sum = "1.0" startweights = "0.1" />
+	</example>
+	
+	<parameter name="lr" type="float" default="-1.0" description="Learning rate parameter." />
+	<parameter name="min_weight" type="float" default="-1" description="Minimum weight value allowed." />
+	<parameter name="max_weight" type="float" default="1" description="Maximum weight value allowed." />" />
+	<parameter name="max_sum" type="float" default="0" description="If set to grater than zero the weight update rule nomalizes the training data vector to have a total sum of the specified value." />
+	<parameter name="startweights" type="float" default="0" description="Weight value set at initialization." />
+	
+	<input name="INPUT" description="Input data." />
+	<input name="T-INPUT" description="Training data." />
+	<input name="T-OUTPUT" description="Target output." />
+	<input name="LEARN" description="The learning rate is scaled by the input. Learning is set to 1.0 if not connected." />
+	<!--input name="IMAGE" description="Maze." /-->
+	
+	<output name="OUTPUT" description="Output data." size_set="T-OUTPUT"/>
+	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
+	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size_set="IMAGE"/-->
+
+	<module class="LinearNet" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>LinearNet.h</file>
+   		<file>LinearNet.cc</file>
+   		<file>LinearNet.ikc</file>
+   </files>
+</group>
+
+	<!--input name="IMAGE" description="Maze." /-->
+	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size="IMAGE"/>
+	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size="IMAGE"/-->
+	

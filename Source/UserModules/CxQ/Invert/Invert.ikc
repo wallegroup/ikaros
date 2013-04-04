@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<group name="Invert" description="inverts a binary array">
+
+	<description type="text">
+		
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="Invert"
+			name="Invert"
+		/>
+	</example>
+
+	<input name="INPUT" description="The input" />
+
+	<output name="OUTPUT" description="The output" />
+
+	<module class="Invert" />
+
+	<created>2010</created>
+
+   <files>
+   		<file>Invert.h</file>
+   		<file>Invert.cc</file>
+   		<file>Invert.ikc</file>
+   </files>
+
+</group>
+

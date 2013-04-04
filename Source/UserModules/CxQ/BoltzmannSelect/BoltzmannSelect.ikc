@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<group name="BoltzmannSelect" description="Performs BoltzmannSelection on the input array.">
+  <description type="html">
+    <p>
+      Performs BoltzmannSelection on the input array. If the largest input is selected the corresponding index in
+      the output array is set to 1.0, otherwise 0.5. If all inputs are equal selection is random, and the selected output is set to 0.25.
+      If the temerature falls to a value close to zero the selection is greedy, and the output is 0.75.
+    </p>
+  </description>
+  
+  <example description="A simple example">
+    <module class = "BoltzmannSelect"  name = "SELECT"  temp = "0.1" min_temp = "0.005" min_val = "0.1" delta = "0.85" />
+  </example>
+  
+  <parameter name="temp" type="float" default="0.1" min="0" description="A higher temperature give a greater chance of random selection" />
+  <parameter name="min_val" type="float" default="0" min="0" description="Increase all inputs by this value before normalizing them to make small inputs more likely to be selected" />
+  <parameter name="delta" type="float" default="0" min="0" description="Multiply the temperature by delta when a positive reward is received" />
+  <parameter name="min_temp" type="float" default="0" min="0" description="Never lower the temperature below this value" />
+  
+  <input name="ACTION" description="Action input" />
+  <input name="REWARD" description="Reward input" />
+  
+  <output name="ACTION" description="Selected action" />
+  
+  <module class="BoltzmannSelect" />
+  
+  <created>2007</created>
+  
+  <author>
+    <name>Stefan Winberg</name>
+  </author>
+  
+   <files>
+       <file>BoltzmannSelect.h</file>
+       <file>BoltzmannSelect.cc</file>
+       <file>BoltzmannSelect.ikc</file>
+   </files>
+</group>

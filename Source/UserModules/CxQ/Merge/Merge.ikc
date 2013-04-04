@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<group name="Merge" description="Merge two inputs to one output">
+	<description type="html">
+		<p>
+            Merge two to four arrays, or matrixes, to one output array with the total length of all inputs. The size of the inputs can be different.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "Merge" name = "MRG" />
+	</example>
+	
+	<input name="INPUT1" description="First input." />
+    <input name="INPUT2" description="Second input." />
+    <input name="INPUT3" description="Third input." />
+    <input name="INPUT4" description="Fourth input." />
+    <input name="INPUT5" description="Fifth input." />
+	
+	<output name="OUTPUT" description="Output." />
+	
+	<module class="Merge" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>Merge.h</file>
+   		<file>Merge.cc</file>
+   		<file>Merge.ikc</file>
+   </files>
+</group>

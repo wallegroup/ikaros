@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<group name="Punish" description="Punishment learning module">
+	<description type="html">
+		<p>
+			The punishment learning module learn to associate input vectors with punishment.
+			This can be used to make an agent learn obstacle avoidance. A linear artificial 
+			neural network trained with a single error signal representing a punishment, 
+			instead of a target vector.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "Punish" name = "PUN" lr = "1.0" />
+	</example>
+	
+	<parameter name="lr" type="float" default="1.0" description="Learning rate parameter." />
+
+	<input name="OBSTACLES" description="Input data." />
+	<input name="TRAIN_OBSTACLES" description="Training data." />
+	<input name="SELECTED_ACTION" description="Action selected by the selection module." />
+	<input name="PUNISHMENT" description="Recieved punishment." />
+	
+	<output name="ACTION" description="Output action." />
+	
+	<module class="Punish" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>Punish.h</file>
+   		<file>Punish.cc</file>
+   		<file>Punish.ikc</file>
+   </files>
+</group>

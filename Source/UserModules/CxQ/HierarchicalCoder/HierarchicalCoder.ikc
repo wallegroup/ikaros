@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<group name="HierarchicalCoder" description="">
+	<description type="html">
+		<p>
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class="HierarchicalCoder" name="CODER" size="8" />
+	</example>
+
+  <parameter name="size" type="int" default="-1" description="The lenght of the side of the area to code" />
+  <parameter name="value" type="float" default="1" description="Output value" />
+	
+	<input name="COORDINATE" description="Array with location of agent as an x, y value" />
+	
+	<output name="LOCATION" description="Output data" />
+	
+	<module class="HierarchicalCoder" />
+	
+	<created>2013</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>HierarchicalCoder.h</file>
+   		<file>HierarchicalCoder.cc</file>
+   		<file>HierarchicalCoder.ikc</file>
+   </files>
+</group>

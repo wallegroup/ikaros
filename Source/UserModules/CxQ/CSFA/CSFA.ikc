@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<group name="CSFA" description="Context Sensitive Function Approximator">
+	<description type="html">
+		<p>
+			The Context Sensitive Function Approximator is a linear artificial neural network with an additional 
+			input vector for context data. In this kind of network the regualr input is connected to the output units
+			as usual, but the context input is not connected to any output. Instead every context input is 
+			connected to every input-output connection, and is used to inhibit the signals between the regular
+			input and the output.
+		</p>
+		<p>
+			For each connection there is a connection weight and these are used to regulate associations between
+			regular input and output and how much the context will inhibit these association. This will allow the
+			network to inhibit associations in one context while retaining them for use in other contexts.
+		</p>
+		<p>
+			The module is prepared for use together with the Reinforcement Learning Core module and therefore have
+			separate inputs for training.
+		</p>
+		<p>
+			The original algorithm for the CSFA was invented by Christian Balkenius.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "CSFA" name = "ANN" str = "0.2" wea = "0.05" inh = "0.4" dis = "0.1" startweights = "0.0" />
+	</example>
+	
+	<parameter name="str" type="float" default="-1.0" description="Learning rate for strengthening associations." />
+	<parameter name="wea" type="float" default="-1.0" description="Learning rate for weakening associations." />
+	<parameter name="inh" type="float" default="-1.0" description="Learning rate for inhibiting associations." />
+	<parameter name="dis" type="float" default="-1.0" description="Learning rate for disinhibiting associations." />
+	<parameter name="startweights" type="float" default="0.0" description="Initial value for input-output weights." />
+	<parameter name="startinhibition" type="float" default="0.0" description="Initial value for the inhibition of the input-output weights." />
+  <parameter name="limit" type="bool" default="false" description="Limit output by context." />
+	
+	<input name="INPUT" description="Input data." />
+	<input name="CONTEXT" description="Context data." />
+	<input name="T-INPUT" description="Input data used when training." />
+	<input name="T-CONTEXT" description="Context data used when training." />
+	<input name="T-OUTPUT" description="Target output." />
+	<input name="LEARN" description="Can be used to turn off or slow down learning by scaling the learning rate parameters. Learning is always on if left unconnected." />
+	<!--input name="IMAGE" description="Maze." /-->
+	
+	<output name="OUTPUT" description="Output data." size_set="T-OUTPUT"/>
+	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
+	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size_set="IMAGE"/-->
+	
+	<module class="CSFA" />
+	
+	<created>2005</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>CSFA.h</file>
+   		<file>CSFA.cc</file>
+   		<file>CSFA.ikc</file>
+   </files>
+</group>
