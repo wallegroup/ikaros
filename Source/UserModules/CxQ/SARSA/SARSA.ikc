@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<group name="SARSA" description="Reinforcement Learning Core">
+
+	<description type="xhtml">
+		<p>
+      Reinforcement Learning Core using the SARSA algorithm and greedy action selection.
+    </p>
+	</description>
+
+	<example description="A simple example">
+		<module
+			class = "SARSA"
+			name = "CORE"
+			epsilon = "0"
+      gamma = "0.9"
+			/>
+	</example>
+
+  <parameter name="actions" type="int" default="-1" description="Number of actions." />
+  <parameter name="epsilon" type="float" default="0.01" description="Probability of generating a random action." />
+  <parameter name="gamma" type="float" default="0.95" description="Discount factor." />
+  <parameter name="epochs" type="int" default="0" description="The number of times the agent can reach the goal state before the process terminates." />
+
+  <input name="ACTION" description="Input action from the learning module." />
+  <input name="LAST_ACTION" description="Previous action from the learning module." />
+  <input name="REINFORCEMENT" description="Reward form the world module." />
+
+  <output name="ACTION" description="Output action to the select module." />
+  <output name="TARGET" description="Target output to the learning module." />
+
+	<module class="SARSA" />
+	
+	<created>2013</created>
+
+	<author>
+		<name>Stefan Winberg</name>
+		<email>stefan.winberg@lucs.lu.se</email>
+		<affiliation>Lund University Cognitive Science</affiliation>
+	</author>
+
+   <files>
+   		<file>SARSA.h</file>
+   		<file>SARSA.cc</file>
+   		<file>SARSA.ikc</file>
+   </files>
+</group>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<group name="RLCore" description="Reinforcement Learning Core">
+	<description type="html">
+		<p>
+			The Reinforcement Learning Core allows you to build a reinforcement learning system with 
+			learning module, action selection and world separated in to IKAROS-modules. The time delay 
+			associated with reinforcement learning is handled by using delayed connections.
+		</p>
+		<p>
+			Scince a modular reinforcement learning system like this is cyclic the size of the action 
+			vector must be defined manually through the actions parameter. Other parameters are the 
+			discount factor, alpha, that regulates how fast rewards are propagated between states and
+			the epochs parameter that if grater than zero make the module print to standard output the 
+			number of ticks spent since the last reward.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "RLCore" name = "CORE" actions = "4" alpha = "0.8" epochs = "0" />
+	</example>
+	
+	<parameter name="actions" type="int" default="-1" description="Number of actions." />
+	<parameter name="alpha" type="float" default="-1" description="Discount factor." />
+  <parameter name="infinite_horizon" type="int" default="-1" description="" />
+	<parameter name="epochs" type="int" default="0" description="The number of times the agent can reach the goal state before the process terminates." />
+	
+	<input name="ACTION" description="Input action from the learning module." />
+	<input name="LAST_ACTION" description="Previous action from the learning module." />
+	<input name="REINFORCEMENT" description="Reward form the world module." />
+	<input name="SELECTED_ACTION" description="Selected action from the select module." />
+	
+	<output name="ACTION" description="Output action to the select module." />
+	<output name="TARGET" description="Target output to the learning module." />
+	
+	<module class="RLCore" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>RLCore.h</file>
+   		<file>RLCore.cc</file>
+   		<file>RLCore.ikc</file>
+   </files>
+</group>

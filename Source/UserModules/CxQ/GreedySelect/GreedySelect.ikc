@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<group name="GreedySelect" description="Greedy Select">
+	<description type="html">
+		<p>
+			The Greedy Select module used together with the Reinforcement Learning Core module implements 
+			a greedy behaviour with the chance epsilon of taking a random action. When all elements of the
+			input vector are equal (e.g. zero) the module select action randomly. If the parameter delta is
+			set to a value greater than zero, the epsilon parameter will be modified by multiplying epsilon
+			and delta every time a random action is triggered. If the IN_REWARD input is connected as well,
+			the epsilon parameter will only be modified when this input is non zero.
+		</p>
+	</description>
+	
+	<example description="A simple example">
+		<module class = "GreedySelect" name = "SELECT" minval = "0.0" epsilon = "0.01" delta = "0.95" />
+	</example>
+	
+	<parameter name="epsilon" type="float" default="0" description="The chance of taking a random action." />
+	<parameter name="delta" type="float" default="0" description="The speed of reduction of the epsilon parameter." />
+	
+	<input name="ACTION" description="Input action from the core module." />
+	<input name="REWARD" description="Reward for the previous action from the learning world." />
+	
+	<output name="ACTION" description="Output action to the world module." />
+	
+	<module class="GreedySelect" />
+	
+	<created>2007</created>
+	
+	<author>
+		<name>Stefan Winberg</name>
+	</author>
+	
+   <files>
+   		<file>GreedySelect.h</file>
+   		<file>GreedySelect.cc</file>
+   		<file>GreedySelect.ikc</file>
+   </files>
+</group>

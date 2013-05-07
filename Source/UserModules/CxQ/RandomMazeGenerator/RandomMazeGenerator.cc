@@ -26,6 +26,22 @@
 using namespace ikaros;
 
 
+
+RandomMazeGenerator::RandomMazeGenerator(Parameter * p):Module(p)
+{
+	size = GetIntValue("size");
+	if(size < 5)
+		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter must be larger than 4.\n", GetName());
+
+	mode	=	GetIntValueFromList("mode");
+	noise	=	GetFloatValue("noise");
+	startx	=	GetIntValue("x_start");
+	starty	=	GetIntValue("y_start");
+	step	=	min(GetFloatValue("step"), 0.0f);
+}
+
+
+
 RandomMazeGenerator::~RandomMazeGenerator()
 {
 	delete rand_gen;
@@ -36,14 +52,6 @@ RandomMazeGenerator::~RandomMazeGenerator()
 void
 RandomMazeGenerator::SetSizes()
 {
-    size = GetIntValue("size");
-
-	/*if((size < 2) || ((size & (size - 1)) != 0))
-	{
-		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter is a power of two.\n", GetName());
-		return;
-	}*/
-
     SetOutputSize("OUTPUT", size, size);
     SetOutputSize("GOAL", size, size);
 }
@@ -80,8 +88,11 @@ RandomMazeGenerator::GeneratePerfectMaze()
 	}
 
     // Generate the maze
-    
-	int half_size = int(size/2)-1;
+    int s = size;
+	if(s % 2 == 0)
+		s -= 1;
+
+	int half_size = int(s/2);
 	int total_cells = half_size*half_size;
     int * stack = new int [total_cells];
     int sp = 0;
@@ -89,6 +100,7 @@ RandomMazeGenerator::GeneratePerfectMaze()
 	
     int current_cell = (total_cells-1) * rand_gen->Random();
     int visited_cells = 1;
+	int old_r = -1;
 
     while(visited_cells < total_cells)
     {
@@ -100,7 +112,7 @@ RandomMazeGenerator::GeneratePerfectMaze()
         
         yy = 2*y+1;
         xx = 2*(x-1)+1;
-        if(x>0 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1 )
+        if(x>0 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1)
         {
             cell[0] = true;
             cells++;
@@ -108,7 +120,7 @@ RandomMazeGenerator::GeneratePerfectMaze()
         
         yy = 2*y+1;
         xx = 2*(x+1)+1;
-        if(x<half_size-1 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1 )
+        if(x<half_size-1 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1)
         {
             cell[1] = true;
             cells++;
@@ -116,7 +128,7 @@ RandomMazeGenerator::GeneratePerfectMaze()
         
         yy = 2*(y-1)+1;
         xx = 2*x+1;
-        if(y>0 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1 )
+        if(y>0 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1)
         {
             cell[2] = true;
             cells++;
@@ -124,7 +136,7 @@ RandomMazeGenerator::GeneratePerfectMaze()
         
         yy = 2*(y+1)+1;
         xx = 2*x+1;
-        if(y<half_size-1 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1 )
+        if(y<half_size-1 && output[yy][xx-1] == 1  && output[yy][xx+1] == 1  && output[yy-1][xx] == 1  && output[yy+1][xx] == 1)
         {
             cell[3] = true;
             cells++;
@@ -133,6 +145,11 @@ RandomMazeGenerator::GeneratePerfectMaze()
         if(cells > 0)
         {
             int r = min(4*rand_gen->Random(), 3);
+
+			if(old_r > -1 && rand_gen->Random() < 0.333)
+				r = old_r;
+			old_r = r;
+
             while(!cell[r])
                 r = (r+1) % 4;
             
@@ -326,9 +343,15 @@ RandomMazeGenerator::FindMaxDistance()
 {
 	reset_matrix(goal, size, size);
 	goal[starty][startx] = 1;
+
+	int tiles = -1;
+	for(int i=1; i<size-1; ++i)
+		for(int j=1; j<size-1; ++j)
+			if(output[j][i] < 1)
+				++tiles;
 	
 	float max_dist = -1;
-	for(int k=0; k<size; ++k)	// repeat this just in case we have missed a tile
+	for(int k=0; k<tiles; ++k)	// repeat this just in case we missed a tile
 	{
 		for(int i=1; i<size-1; ++i)
 		{
@@ -370,10 +393,10 @@ RandomMazeGenerator::FindMaxDistance()
 				goalx = i;
 				goaly = j;
 			}
-			/*
+			
 			if(goal[j][i] < 0.01)
 				output[j][i] = 1;	// fill inaccessible tiles
-			*/
+			
 			goal[j][i] = step;
 		}
 	}
@@ -386,7 +409,7 @@ RandomMazeGenerator::FindMaxDistance()
 	if(max_dist < size)
 		return FALSE;	// try again
 	
-	printf("distance %i\n", (int)max_dist);
+	printf("distance %i\n", (int)max_dist-1);
 
 	return max_dist;
 }
@@ -399,26 +422,7 @@ RandomMazeGenerator::Init()
 	output	=	GetOutputMatrix("OUTPUT");
 	goal	=	GetOutputMatrix("GOAL");
 
-	mode	=	GetIntValueFromList("mode");
-	noise	=	GetFloatValue("noise");
-	step	=	GetFloatValue("step");
-	startx	=	GetIntValue("x_start");
-	starty	=	GetIntValue("y_start");
-	seed	=	GetIntValue("seed");
-
-	if(seed < 0)
-	{
-		rand_gen = new TRanrotWGenerator((uint32)GetTickCount());
-	}
-	else if(seed > 0)
-	{
-		rand_gen = new TRanrotWGenerator((uint32)seed);
-	}
-	else
-	{
-		rand_gen = new TRanrotWGenerator(rand());
-		srand(GetTickCount());
-	}
+	rand_gen = new TRanrotWGenerator((uint32)rand());	// random double
 
 	if(mode == 0)
 		while(!GenerateRandomMaze());

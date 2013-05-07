@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<group name="HashCoder" description="">
+	<description type="html">
+		<p>
+      The tile-coding software evolved from software developed at the University of New Hampshire for a related but more specialized use called "CMAC".
+      See http://incompleteideas.net/rlai.cs.ualberta.ca/RLAI/RLtoolkit/tiles.html
+    </p>
+	</description>
+	
+	<example description="A simple example">
+		<module class="HashCoder" name="CODER" tile_size="4" tilings="32" />
+	</example>
+
+  <parameter name="tilings" type="int" default="-1" description="" />
+  <parameter name="tile_size" type="int" default="-1" description="The lenght of the side" />
+  
+	
+	<input name="INPUT" description="Input data" />
+	
+	<output name="OUTPUT" description="Output data" />
+	
+	<module class="HashCoder" />
+	
+	<created>2013</created>
+	
+	<author>
+		<name></name>
+	</author>
+	
+   <files>
+   		<file>HashCoder.h</file>
+   		<file>HashCoder.cc</file>
+   		<file>HashCoder.ikc</file>
+   </files>
+</group>

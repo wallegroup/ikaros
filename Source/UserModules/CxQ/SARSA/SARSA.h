@@ -1,5 +1,5 @@
 //
-//	RandomMazeGenerator.h		This file is a part of the IKAROS project
+//	SARSA.h		This file is a part of the IKAROS project
 //                      Implements a simple maze generator
 //
 //    Copyright (C) 2009 Christian Balkenius
@@ -19,41 +19,44 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
  
-#ifndef RandomMazeGenerator_
-#define RandomMazeGenerator_
+#ifndef SARSA_H
+#define SARSA_H
 
 
 #include "IKAROS.h"
 #include "../randomc.h"
 #include <windows.h>
 
-class RandomMazeGenerator: public Module
+class SARSA: public Module
 {
 public:
-	int     size;
-	int     startx;
-	int     starty;
-	int     mode;
+	static Module * Create(Parameter * p) { return new SARSA(p); }
 
-	float   noise;
-	float   step;
-
-	float	**	output;
-	float	**	goal;
-
-	static Module * Create(Parameter * p) { return new RandomMazeGenerator(p); }
-
-	RandomMazeGenerator(Parameter*);
-	virtual ~RandomMazeGenerator();
+	SARSA(Parameter*);
+	virtual ~SARSA();
 
 	void    SetSizes();
 	void 	Init();
-	void 	Tick() {};
-	int		GenerateRandomMaze();
-	int		GeneratePerfectMaze();
-	int		GenerateRoomMaze();
-	float	FindMaxDistance();
+	void 	Tick();
 
+private:
+	int 	Select(float*);
+
+	int		action_length;
+	int		epochs;
+	int		tick;
+	int		print;
+	int		last_print_tick;
+
+	float	epsilon;
+	float	gamma;
+
+	float	*	new_actions;
+	float	*	old_actions;
+	float	*	old_reward;
+	float	*	actions_out;
+	float	*	target_out;
+	
 	TRanrotWGenerator * rand_gen;
 };
 
