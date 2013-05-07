@@ -24,6 +24,7 @@
 
   <parameter name="actions" type="int" default="-1" description="Number of actions." />
   <parameter name="discount" type="float" default="-1" description="Discount factor." />
+  <parameter name="scale" type="float" default="0" description="Reduction of learning rate for every positive reward." />
   <parameter name="infinite_horizon" type="int" default="-1" description="Infinite horizon." />
   <parameter name="epochs" type="int" default="0" description="The number of times the agent can reach the goal state before the process terminates (0 = infinite)." />
 
@@ -36,6 +37,9 @@
 
   <output name="ACTOR_TARGET" description="Target output to the actor." />
   <output name="CRITIC_TARGET" description="Target output to the critic." />
+  <output name="LEARN" description="Learning rate to the actor and critic." />
+  <output name="ACTOR_GRAD" description="" />
+  <output name="CRITIC_GRAD" description="" />
 
   <module class="CriticCore" />
 

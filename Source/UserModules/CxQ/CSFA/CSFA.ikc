@@ -27,13 +27,13 @@
 		<module class = "CSFA" name = "ANN" str = "0.2" wea = "0.05" inh = "0.4" dis = "0.1" startweights = "0.0" />
 	</example>
 	
-	<parameter name="str" type="float" default="-1.0" description="Learning rate for strengthening associations." />
-	<parameter name="wea" type="float" default="-1.0" description="Learning rate for weakening associations." />
-	<parameter name="inh" type="float" default="-1.0" description="Learning rate for inhibiting associations." />
-	<parameter name="dis" type="float" default="-1.0" description="Learning rate for disinhibiting associations." />
-	<parameter name="startweights" type="float" default="0.0" description="Initial value for input-output weights." />
-	<parameter name="startinhibition" type="float" default="0.0" description="Initial value for the inhibition of the input-output weights." />
-  <parameter name="limit" type="bool" default="false" description="Limit output by context." />
+	<parameter name="str" type="float" description="Learning rate for strengthening associations." />
+	<parameter name="wea" type="float" description="Learning rate for weakening associations." />
+	<parameter name="inh" type="float" description="Learning rate for inhibiting associations." />
+	<parameter name="dis" type="float" description="Learning rate for disinhibiting associations." />
+	<parameter name="startweights" type="float" description="Initial value for input-output weights." />
+	<parameter name="startinhibition" type="float" description="Initial value for the inhibition of the input-output weights." />
+  <parameter name="limit" type="bool" default="no" description="Limit output by context." />
 	
 	<input name="INPUT" description="Input data." />
 	<input name="CONTEXT" description="Context data." />

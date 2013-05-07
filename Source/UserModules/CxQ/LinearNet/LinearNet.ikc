@@ -11,20 +11,22 @@
 		<module class = "LinearNet" name = "ANN" lr = "0.07" max_sum = "1.0" startweights = "0.1" />
 	</example>
 	
-	<parameter name="lr" type="float" default="-1.0" description="Learning rate parameter." />
+	<parameter name="lr" type="float" default="-1" description="Learning rate parameter." />
 	<parameter name="min_weight" type="float" default="-1" description="Minimum weight value allowed." />
 	<parameter name="max_weight" type="float" default="1" description="Maximum weight value allowed." />" />
-	<parameter name="max_sum" type="float" default="0" description="If set to grater than zero the weight update rule nomalizes the training data vector to have a total sum of the specified value." />
+  <parameter name="limit" type="bool" default="true" description="Limit weight values or not." />" />
+  <parameter name="max_sum" type="float" default="0" description="If set to grater than zero the weight update rule nomalizes the training data vector to have a total sum of the specified value." />
 	<parameter name="startweights" type="float" default="0" description="Weight value set at initialization." />
+  <parameter name="random" type="float" default="0" min="0" description="Random addition to the weight value set at initialization." />
 	
 	<input name="INPUT" description="Input data." />
 	<input name="T-INPUT" description="Training data." />
 	<input name="T-OUTPUT" description="Target output." />
 	<input name="LEARN" description="The learning rate is scaled by the input. Learning is set to 1.0 if not connected." />
-	<!--input name="IMAGE" description="Maze." /-->
+  <!--input name="IMAGE" description="Maze." /-->
 	
 	<output name="OUTPUT" description="Output data." size_set="T-OUTPUT"/>
-	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
+  <!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
 	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size_set="IMAGE"/-->
 
 	<module class="LinearNet" />
@@ -42,7 +44,6 @@
    </files>
 </group>
 
-	<!--input name="IMAGE" description="Maze." /-->
-	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size="IMAGE"/>
-	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size="IMAGE"/-->
-	
+<!--
+<object class="VectorField" x_module="ANN" x_source="XVALUE" y_module="ANN" y_source="YVALUE" circle_color="gray" x="2" y="0" w="2" h="2" />
+-->

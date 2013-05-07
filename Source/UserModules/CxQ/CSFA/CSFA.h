@@ -34,7 +34,6 @@ class CSFA: public Module
 public:
 			CSFA(Parameter*);	
     virtual ~CSFA(void);
-	
 	static	Module* Create(Parameter* pParam) {return new CSFA(pParam);};
 	
 	void 	Init(void);

@@ -26,10 +26,6 @@
 
 #define ARROWS 0
 
-Module* LinearNet::Create(Parameter *pParam)
-{
-	return new LinearNet(pParam);
-}
 
 LinearNet::LinearNet(Parameter *pParam):Module(pParam)
 {
@@ -46,18 +42,22 @@ LinearNet::LinearNet(Parameter *pParam):Module(pParam)
 	AddOutput("YVALUE");
 #endif
 	
-	m_flLr = GetFloatValue("lr", -1.0f);
-	m_flMinWt = GetFloatValue("min_weight", -1.0f);
-	m_flMaxWt = GetFloatValue("max_weight", 1.0f);
-	m_flMaxSum = GetFloatValue("max_sum", 0.0f);
-	m_flStartWt = GetFloatValue("startweights", 0.0f);
+	m_flLr = GetFloatValue("lr");
+	m_flMinWt = GetFloatValue("min_weight");
+	m_flMaxWt = GetFloatValue("max_weight");
+	m_flMaxSum = GetFloatValue("max_sum");
+	m_flStartWt = GetFloatValue("startweights");
+	m_flRandomWt = GetFloatValue("random");
+	m_bLimit = GetBoolValue("limit");
 }
+
 
 LinearNet::~LinearNet(void)
 {
 	destroy_array(m_pTrainOutput_v);
 	destroy_matrix(m_pWij_m);
 }
+
 
 void LinearNet::Init(void)
 {
@@ -66,40 +66,38 @@ void LinearNet::Init(void)
 	m_pInTeach_v = GetInputArray("T-OUTPUT");
 	
 	if(InputConnected("LEARN"))
-	{
 		m_pInLearn_v = GetInputArray("LEARN");
-	}
 	else
-	{
 		m_pInLearn_v = NULL;
-	}
 	
 	m_pOutOutput_v = GetOutputArray("OUTPUT");
 
 	m_iInputLength   = GetInputSize("INPUT");
 	m_iOutputLength  = GetInputSize("T-OUTPUT");
-	
-	m_pTrainOutput_v = create_array(m_iOutputLength);
-	m_pWij_m = create_matrix(m_iOutputLength, m_iInputLength);	// Store stimuli weights
-	
-	if(m_flStartWt != 0)
-	{
-		int i, j;
-		
-		for(i = 0; i < m_iInputLength; i++)
-		{
-			for(j = 0; j < m_iOutputLength; j++)
-			{
-				m_pWij_m[i][j] = m_flStartWt;
-			}
-		}
-	}
-	
+
 	if(m_flLr < 0)
 	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'lr' parameter is not set.\n", GetName());
         return;
     }
+	
+	m_pTrainOutput_v = create_array(m_iOutputLength);
+	m_pWij_m = create_matrix(m_iOutputLength, m_iInputLength);	// Store stimuli weights
+	
+	rand_gen = new TRanrotWGenerator((uint32)rand());	// random double
+
+	if(m_flStartWt != 0)
+	{
+		for(int i = 0; i < m_iInputLength; i++)
+		{
+			for(int j = 0; j < m_iOutputLength; j++)
+			{
+				m_pWij_m[i][j] = m_flStartWt;
+				if(m_flRandomWt > 0)
+					m_pWij_m[i][j] += rand_gen->Random() * m_flRandomWt - m_flRandomWt * 0.5f;
+			}
+		}
+	}
 
 #if ARROWS
 	m_pInImage_m = GetInputMatrix("IMAGE");
@@ -108,68 +106,54 @@ void LinearNet::Init(void)
 #endif
 }
 
+
 void LinearNet::Tick(void)
 {
-	int i, j;
-	
-	// Calculate output
-	for(j = 0; j < m_iOutputLength; j++)
-	{
-		m_pOutOutput_v[j] = 0.0f;
-		for(i = 0; i < m_iInputLength; i++)
-		{
-			m_pOutOutput_v[j] += m_pInInput_v[i] * m_pWij_m[i][j];
-		}
-	}
-	
+	// Train	
 	if(m_pInLearn_v == NULL || m_pInLearn_v[0] > 0)
 	{
 		float flError, 
 			  flSum = 1.0f,
-			  flScale = 1.0f;
-		
-		// Calculate old output
-		for(j = 0; j < m_iOutputLength; j++)
-		{
-			m_pTrainOutput_v[j] = 0.0f;
-			
-			for(i = 0; i < m_iInputLength; i++)
-			{
-				m_pTrainOutput_v[j] += m_pInTrainInput_v[i] * m_pWij_m[i][j];
-			}
-		}
+			  flScale = m_flLr;
 		
 		if(m_flMaxSum > 0)
-		{
 			flSum = add(m_pInTrainInput_v, m_iInputLength) / m_flMaxSum;
-		}
 		
 		if(m_pInLearn_v != NULL)
-		{
 			flScale *= m_pInLearn_v[0];
-		}
 
-		float flTotalError = 0;
-		
-		// Adjust weights
-		for(j = 0; j < m_iOutputLength; j++)
+		for(int j = 0; j < m_iOutputLength; j++)
 		{
-			flError = m_pInTeach_v[j] - m_pTrainOutput_v[j];	// Calculate error
+			// Calculate old output
+			m_pTrainOutput_v[j] = 0.0f;
+			for(int i = 0; i < m_iInputLength; i++)
+				m_pTrainOutput_v[j] += m_pInTrainInput_v[i] * m_pWij_m[i][j];
 
-			flTotalError += flError;
-			
-			if(flError != 0)
+			flError = m_pInTeach_v[j] - m_pTrainOutput_v[j];	// Calculate error
+			if(flError != 0)	// Adjust weights
 			{
-				for(i = 0; i < m_iInputLength; i++)
+				if(m_bLimit)
 				{
-					if(m_pInTrainInput_v[i] != 0)
-					{
-						//m_pWij_m[i][j] = m_pWij_m[i][j] + m_pInTrainInput_v[i] / flSum * flError * m_flLr * flScale;
-						m_pWij_m[i][j] = max(min(m_pWij_m[i][j] + m_pInTrainInput_v[i] / flSum * flError * m_flLr * flScale, m_flMaxWt), m_flMinWt);						
-					}
+					for(int i = 0; i < m_iInputLength; i++)
+						if(m_pInTrainInput_v[i] != 0)
+							m_pWij_m[i][j] = max(min(m_pWij_m[i][j] + m_pInTrainInput_v[i] / flSum * flError * flScale, m_flMaxWt), m_flMinWt);
+				}
+				else
+				{
+					for(int i = 0; i < m_iInputLength; i++)
+						if(m_pInTrainInput_v[i] != 0)
+							m_pWij_m[i][j] = m_pWij_m[i][j] + m_pInTrainInput_v[i] / flSum * flError * flScale;
 				}
 			}
 		}
+	}
+
+	// Calculate output
+	for(int j = 0; j < m_iOutputLength; j++)
+	{
+		m_pOutOutput_v[j] = 0.0f;
+		for(int i = 0; i < m_iInputLength; i++)
+			m_pOutOutput_v[j] += m_pInInput_v[i] * m_pWij_m[i][j];
 	}
 
 #if ARROWS
@@ -188,49 +172,51 @@ void LinearNet::Tick(void)
 				for(int j = 0; j < m_iOutputLength; j++)
 				{
 					m_pTrainOutput_v[j] = 0.0f;
-					for(i = 0; i < m_iInputLength; i++)
+					for(int i = 0; i < m_iInputLength; i++)
 					{
 						m_pTrainOutput_v[j] += m_pInTrainInput_v[i] * m_pWij_m[i][j];
 					}
 				}
 				
 				m_pInTrainInput_v[pos] = 0;
-				best = arg_max(m_pTrainOutput_v, m_iOutputLength);
-				
-				if(m_pTrainOutput_v[best] > 0)
-				{					
-					if(best == 0)
+				//best = arg_max(m_pTrainOutput_v, m_iOutputLength);
+				best = 0;
+				float value = m_pTrainOutput_v[best];
+				for(int i=1; i<m_iOutputLength; ++i)
+				{
+					if(m_pTrainOutput_v[i] > value)
 					{
-						if(m_pTrainOutput_v[0] == m_pTrainOutput_v[1] && m_pTrainOutput_v[0] == m_pTrainOutput_v[2] && m_pTrainOutput_v[0] == m_pTrainOutput_v[3])
-						{
-							m_pOutValueX_m[y][x] = 0;
-							m_pOutValueY_m[y][x] = 0;
-						}
-						else
-						{
-							m_pOutValueX_m[y][x] = 0;
-							m_pOutValueY_m[y][x] = -1;
-						}
-					}
-					else if(best == 1)
-					{
-						m_pOutValueX_m[y][x] = 1;
-						m_pOutValueY_m[y][x] = 0;
-					}
-					else if(best == 2)
-					{
-						m_pOutValueX_m[y][x] = 0;
-						m_pOutValueY_m[y][x] = 1;
-					}
-					else if(best == 3)
-					{
-						m_pOutValueX_m[y][x] = -1;
-						m_pOutValueY_m[y][x] = 0;
+						value = m_pTrainOutput_v[i];
+						best = i;
 					}
 				}
-				else
+				
+				if(best == 0)
+				{
+					if(m_pTrainOutput_v[0] == m_pTrainOutput_v[1] && m_pTrainOutput_v[0] == m_pTrainOutput_v[2] && m_pTrainOutput_v[0] == m_pTrainOutput_v[3])
+					{
+						m_pOutValueX_m[y][x] = 0;
+						m_pOutValueY_m[y][x] = 0;
+					}
+					else
+					{
+						m_pOutValueX_m[y][x] = 0;
+						m_pOutValueY_m[y][x] = -1;
+					}
+				}
+				else if(best == 1)
+				{
+					m_pOutValueX_m[y][x] = 1;
+					m_pOutValueY_m[y][x] = 0;
+				}
+				else if(best == 2)
 				{
 					m_pOutValueX_m[y][x] = 0;
+					m_pOutValueY_m[y][x] = 1;
+				}
+				else if(best == 3)
+				{
+					m_pOutValueX_m[y][x] = -1;
 					m_pOutValueY_m[y][x] = 0;
 				}
 			}
@@ -240,5 +226,6 @@ void LinearNet::Tick(void)
 	}
 #endif
 }
+
 
 static InitClass init("LinearNet", &LinearNet::Create, "Source/UserModules/CxQ/LinearNet/");

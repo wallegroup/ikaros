@@ -23,6 +23,8 @@
 //
 
 #include "IKAROS.h"
+#include "../randomc.h"
+#include <windows.h>
 
 using namespace ikaros;
 
@@ -32,7 +34,7 @@ public:
 				LinearNet(Parameter*);	
         virtual ~LinearNet(void);
 		
-		static	Module* Create(Parameter*);
+		static	Module* Create(Parameter *pParam) {	return new LinearNet(pParam); };
 		
 		void 	Init(void);
 		void 	Tick(void);
@@ -53,13 +55,18 @@ private:
 		// ANN
 		int		m_iInputLength;
 		int		m_iOutputLength;
+
+		bool	m_bLimit;
 		
 		float	m_flLr;
 		float	m_flMinWt;
 		float	m_flMaxWt;
 		float	m_flMaxSum;
 		float	m_flStartWt;
+		float	m_flRandomWt;
 		
 		float	*m_pTrainOutput_v;
 		float	**m_pWij_m;
+
+		TRanrotWGenerator * rand_gen;
 };

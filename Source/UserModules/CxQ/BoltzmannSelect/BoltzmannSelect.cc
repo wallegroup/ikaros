@@ -49,8 +49,7 @@ void BoltzmannSelect::Init(void)
 	}
 	
 	m_pNormAction_v = create_array(m_iActionLength);
-	
-	m_pRandGen = new TRanrotWGenerator((uint32)GetTickCount());	// random double
+	m_pRand = new TRanrotWGenerator((uint32)rand());	// random double
 }
 
 void BoltzmannSelect::Tick(void)
@@ -61,29 +60,27 @@ void BoltzmannSelect::Tick(void)
 	
 	if(iMax == iMin)	// All outputs are the same
 	{
-		m_pOutAction_v[m_pRandGen->IRandom(0, m_iActionLength - 1)] = 0.25f;
+		m_pOutAction_v[m_pRand->IRandom(0, m_iActionLength - 1)] = 0.25f;
 	}
 	else if(m_flTemp > 0.0015f) // Temperature is valid
 	{
-		int i, iSlct;
 		copy_array(m_pNormAction_v, m_pInAction_v, m_iActionLength);
 		add(m_pNormAction_v, m_flMinVal, m_iActionLength);
 		normalize(m_pNormAction_v, m_iActionLength);
-		
+
+		//copy_array(m_pOutAction_v, m_pNormAction_v, m_iActionLength);
+
 		double dSum = 0;
 		double dAlpha = 1 / m_flTemp;
-		for(i = 0; i < m_iActionLength; i++)
+		for(int i = 0; i < m_iActionLength; i++)
 		{
 			dSum += ::exp(dAlpha * m_pNormAction_v[i]);
 		}
 		
-		if(dSum == 0)
+		int iSlct = m_pRand->IRandom(0, m_iActionLength - 1);
+		if(dSum != 0)
 		{
-			iSlct = m_pRandGen->IRandom(0, m_iActionLength - 1);
-		}
-		else
-		{
-			double dRandom = m_pRandGen->Random() * dSum;
+			double dRandom = m_pRand->Random() * dSum;
 			dSum = 0;
 			for(int i = 0; i < m_iActionLength; i++)
 			{

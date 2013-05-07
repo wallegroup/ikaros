@@ -61,7 +61,7 @@ private:
 	float	*m_pInAction_v;			// From learning module
 	float	*m_pInReward_v;
 	float	*m_pOutAction_v;		// To selection module
-	
-	TRanrotWGenerator	*m_pRandGen;
+
+	TRanrotWGenerator * m_pRand;
 };
 #endif

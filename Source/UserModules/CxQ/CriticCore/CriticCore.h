@@ -31,10 +31,9 @@ using namespace ikaros;
 class CriticCore: public Module 
 {
 public:
-			CriticCore(Parameter*);
-    virtual ~CriticCore(void);
-    
-    static	Module* Create(Parameter*);
+	CriticCore(Parameter *pParam):Module(pParam) {};
+	virtual ~CriticCore(void) {};
+    static	Module* CriticCore::Create(Parameter *pParam) { return new CriticCore(pParam); };
 	
 	void	SetSizes(void);
     void	Init(void);
@@ -51,15 +50,20 @@ private:
 	int		m_iInfinite;
 	
 	float	m_flDiscount;
+	float	m_flScale;
 	
-	float	*m_pInActor_v;			// From learning module
+	float	*m_pInActor_v;					// From learning module
 	float	*m_pInCritic_v;
-	float	*m_pLastActorAction_v;	// Time delay
-	float	*m_pLastCriticAction_v;	// Time delay
-	float	*m_pInReinforcement_v;	// From world module
-	float	*m_pInSelectedAction_v;	// From selection module
+	float	*m_pInLastActorAction_v;		// Time delay
+	float	*m_pInLastCriticAction_v;		// Time delay
+	float	*m_pInReinforcement_v;			// From world module
+	float	*m_pLastReinforcement_v;		// Time delay
+	float	*m_pInSelectedAction_v;			// From selection module
 	float	*m_pInTrainAction_v;
 	
 	float	*m_pOutActorTarget_v;
 	float	*m_pOutCriticTarget_v;
+	float	*m_pOutLearn_v;
+	float	*m_pOutActorGrad_v;
+	float	*m_pOutCriticGrad_v;
 };

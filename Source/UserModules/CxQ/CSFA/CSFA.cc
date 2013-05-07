@@ -128,57 +128,50 @@ void CSFA::Init(void)
 	}
 
 	if(m_LrW_STR < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'str' parameter is not set.\n", GetName());
-		return;
-	}
 
 	if(m_LrW_WEA < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'wea' parameter is not set.\n", GetName());
-		return;
-	}
 
 	if(m_LrU_INH < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'inh' parameter is not set.\n", GetName());
-		return;
-	}
 
 	if(m_LrU_DIS < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'dis' parameter is not set.\n", GetName());
-		return;
-	}
 
 	if(m_StartWt < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'startweights' parameter is not set.\n", GetName());
-		return;
-	}
 
 	if(m_StartInh < 0)
-	{
 		Notify(msg_fatal_error, "Module \"%s\": The 'startinhibition' parameter is not set.\n", GetName());
-		return;
-	}
 }
 
 
 void CSFA::Tick(void)
 {
-	Ask(m_InInput, m_InContext, m_OutOutput);	// Create output
-	
 	if(m_InLearn == NULL)
 	{
-		Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);				// Recreate old output
+		Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);		// Recreate old output
+
+		/*for(int j = 0; j < m_OutputLength; j++)
+			m_InTeach[j] = 0.5f * m_InTeach[j] + 0.5f;*/
+
 		Train(m_InTrainInput, m_InTrainContext, m_TrainOutput, m_InTeach);	// Train network
 	}
 	else if(m_InLearn[0] > 0)
 	{
-		Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);								// Recreate old output
+		Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);		// Recreate old output
+
+		/*for(int j = 0; j < m_OutputLength; j++)
+			m_InTeach[j] = 0.5f * m_InTeach[j] + 0.5f;*/
+
 		Train(m_InTrainInput, m_InTrainContext, m_TrainOutput, m_InTeach, m_InLearn[0]);	// Train network
 	}
+
+	Ask(m_InInput, m_InContext, m_OutOutput);	// Create output
+
+	/*for(int j = 0; j < m_OutputLength; j++)
+		m_OutOutput[j] = (m_OutOutput[j] - 0.5f) * 2.0f;*/
 	
 #if ARROWS
 	if(m_InImage_m != NULL)
@@ -242,8 +235,6 @@ void CSFA::Tick(void)
 
 inline void CSFA::Ask(float *Input, float *Context, float *Output)
 {
-	float Iij;
-	
 	reset_array(Output, m_OutputLength);
 	
 	// Calculate output
@@ -253,7 +244,7 @@ inline void CSFA::Ask(float *Input, float *Context, float *Output)
 		{
 			for(int j = 0; j < m_OutputLength; j++)
 			{
-				Iij = 1.0f;
+				float Iij = 1.0f;
 				
 				for(int k = 0; k < m_ContextLength; k++)
 				{
@@ -274,7 +265,7 @@ inline void CSFA::Ask(float *Input, float *Context, float *Output)
 			{
 				for(int j = 0; j < m_OutputLength; j++)
 				{
-					Output[j] = min(1.0f-m_OutputLimit[k][j]*Context[k], Output[j]);
+					Output[j] = min(1.0f - m_OutputLimit[k][j] * Context[k], Output[j]);
 				}
 			}
 		}
@@ -304,12 +295,12 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 				{
 					for(j = 0; j < m_OutputLength; j++)
 					{
-						m_OutputLimit[k][j] = min(0.5*(1.0f-Target[j])+0.5*m_OutputLimit[k][j], 1.0f);
+						m_OutputLimit[k][j] = min(0.5f * (1.0f-Target[j]) + 0.5f * m_OutputLimit[k][j], 1.0f);
 					}
 				}
 			}
 		}
-		
+
 		// Adjust weights
 		for(i = 0; i < m_InputLength; i++)
 		{
@@ -319,32 +310,36 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 				{
 					if(m_Error[j] > 0)
 					{
-						m_Weights[i][j] = min(m_Weights[i][j] + Input[i] / InputSum * m_Error[j] * m_LrW_STR * Scale, 1.0f);
-						
-						// test m_Weights[i][j] != 0 here!
-						
-						for(k = 0; k < m_ContextLength; k++)
+						if(m_Weights[i][j] != 0)
 						{
-							if(Context[k] > 0 && m_Weights[i][j] != 0)
+							for(k = 0; k < m_ContextLength; k++)
 							{
-								m_Inhibition[i][j][k] = max(m_Inhibition[i][j][k] - Context[k] * m_Error[j] / InputSum * 
-									(1.0f - m_Inhibition[i][j][k]) / m_Weights[i][j] * m_LrU_DIS * Scale, 0.0f);
+								if(Context[k] > 0)
+								{
+									m_Inhibition[i][j][k] = max((m_LrU_DIS * Scale * Context[k] * m_Error[j] * (1.0f-m_Inhibition[i][j][k])) / (m_Weights[i][j] * InputSum), 0.0f);
+								}
 							}
 						}
+
+						m_Weights[i][j] = min(m_Weights[i][j] + Input[i] / InputSum * m_Error[j] * m_LrW_STR * Scale, 1.0f);
 					}
 					else if(m_Error[j] < 0)
 					{
-						m_Weights[i][j] = max(m_Weights[i][j] + Input[i] / InputSum * m_Error[j] * m_LrW_WEA * Scale, 0.0f);
-						
-						// test m_Weights[i][j] != 0 here!
-						
-						for(k = 0; k < m_ContextLength; k++)
+						if(m_Weights[i][j] != 0)
 						{
-							if(Context[k] > 0 && m_Weights[i][j] != 0)
+							for(k = 0; k < m_ContextLength; k++)
 							{
-								m_Inhibition[i][j][k] = min(m_Inhibition[i][j][k] - Context[k] * m_Error[j] / InputSum * 
-									(1.0f - m_Inhibition[i][j][k]) / m_Weights[i][j] * m_LrU_INH * Scale, 1.0f);
+								if(Context[k] > 0)
+								{
+									m_Inhibition[i][j][k] = min(m_Inhibition[i][j][k] - m_LrU_INH * Scale * ((Context[k] * m_Error[j] * 
+										(1.0f-m_Inhibition[i][j][k])) / (m_Weights[i][j] * InputSum)), 1.0f);
+								}
 							}
+						}
+
+						if(m_LrW_WEA > 0)
+						{
+							m_Weights[i][j] = max(m_Weights[i][j] + Input[i] / InputSum * m_Error[j] * m_LrW_WEA * Scale, 0.0f);
 						}
 					}
 				}
