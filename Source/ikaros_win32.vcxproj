@@ -36,7 +36,7 @@
     <OutDir>..\Bin\</OutDir>
     <IntDir>$(Configuration)\Intermediate\</IntDir>
     <TargetName>ikaros</TargetName>
-    <IncludePath>C:\Research\GitHub\ikaros\Source\Kernel;C:\Research\GitHub\ikaros\Source;C:\Research\GitHub\ikaros\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Research\GitHub\ikaros\Source\Kernel;C:\Research\GitHub\ikaros\Source;C:\Research\GitHub\ikaros\Include;C:\Research\GitHub\ikaros\Source\jpeg-9;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Research\GitHub\ikaros\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -181,8 +181,12 @@
     <ClCompile Include="webui\WebUI.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\pthread.h" />
+    <ClInclude Include="..\Include\sched.h" />
+    <ClInclude Include="..\Include\semaphore.h" />
     <ClInclude Include="IKAROS.h" />
     <ClInclude Include="IKAROS_System.h" />
+    <ClInclude Include="jpeg-9\jpeglib.h" />
     <ClInclude Include="kernel\IKAROS_ColorTables.h" />
     <ClInclude Include="kernel\IKAROS_Math.h" />
     <ClInclude Include="kernel\IKAROS_Serial.h" />

@@ -786,18 +786,30 @@
     <ClInclude Include="UserModules\CxQ\MultiCore\MultiCore.h">
       <Filter>CxQ</Filter>
     </ClInclude>
+    <ClInclude Include="jpeg-9\jpeglib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\pthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\sched.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\semaphore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\Lib\jpeg.lib">
-      <Filter>Lib</Filter>
-    </Library>
-    <Library Include="..\Lib\pthreadVC2.lib">
-      <Filter>Lib</Filter>
-    </Library>
     <Library Include="..\..\..\..\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\WinMM.Lib">
       <Filter>Lib</Filter>
     </Library>
     <Library Include="..\..\..\..\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\WS2_32.Lib">
+      <Filter>Lib</Filter>
+    </Library>
+    <Library Include="..\Lib\jpeg.lib">
+      <Filter>Lib</Filter>
+    </Library>
+    <Library Include="..\Lib\pthreadVC2.lib">
       <Filter>Lib</Filter>
     </Library>
   </ItemGroup>
