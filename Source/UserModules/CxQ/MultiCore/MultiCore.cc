@@ -65,10 +65,10 @@ void MultiCore::Init(void)
 	m_pOutActorGrad_v	 = GetOutputArray("ACTOR_GRAD");
 	m_pOutCriticGrad_v	 = GetOutputArray("CRITIC_GRAD");
 	
-	m_flDiscount = GetFloatValue("discount", unknown_size);
-	m_flScale = GetFloatValue("scale", 0);
-	m_iInfinite = GetIntValue("infinite_horizon", unknown_size);
-	m_iEpochs = GetIntValue("epochs", 0);
+	m_flDiscount = GetFloatValue("discount");
+	m_flScale = GetFloatValue("scale");
+	m_iInfinite = GetIntValue("infinite_horizon");
+	m_iEpochs = GetIntValue("epochs");
 	
 	m_iTick = 0;
 	m_iPrint = 0;
@@ -94,7 +94,18 @@ void MultiCore::Tick(void)
 	}
 	else if(m_iInfinite == 2)
 	{
-		
+		for(int i=0; i<m_iActionLength; ++i)
+			m_pOutActorTarget_v[i] = m_pInLastActorAction_v[i];
+
+		if(*m_pInReinforcement_v > 0)	// Reward the action that lead to the rewarding state
+		{
+			m_pOutActorTarget_v[iSelected] = m_pOutCriticTarget_v[iSelected] = *m_pInReinforcement_v;
+		}
+		else	// The reward for the last tick is based on the ANN output this tick
+		{
+			m_pOutCriticTarget_v[iSelected] = *m_pInReinforcement_v + m_flDiscount * max(m_pInCritic_v, m_iActionLength);
+			m_pOutActorTarget_v[iSelected] = max(log((0.01f+m_pOutCriticTarget_v[iSelected]) / (0.01f+m_pInLastCriticAction_v[iSelected])), 0.0f);
+		}
 	}
 	else
 	{

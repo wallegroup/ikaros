@@ -39,6 +39,8 @@
 	<parameter name="mode" type="list" values="max/sum/relative_max/relative_sum/relative_move/relative_test" default="max" description="How to use the MOVE input" />
 	<parameter name="x_start" type="int" default="1" description="Starting x coordinate for the agent" />
 	<parameter name="y_start" type="int" default="1" description="Starting y coordinate for the agent" />
+  <parameter name="x_first" type="int" default="-1" description="Starting x coordinate for the agent, the first epoch (equal to x_start if less than zero)" />
+  <parameter name="y_first" type="int" default="-1" description="Starting y coordinate for the agent, the first epoch (equal to y_start if less than zero)" />
 	<parameter name="normalize_coordinate" type="bool" default="no" description="Map coordinate output to the interval 0..1" />
 
 	<input name="MOVE" description="Move in absolute directions (N, E, S, W) or relative (Forward, Turn-Left, Turn-Right)." />

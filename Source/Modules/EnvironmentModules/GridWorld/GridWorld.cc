@@ -103,24 +103,24 @@ GridWorld::Init()
 
 	x = x_start;
 	y = y_start;
-	old_x = x_start;
-	old_y = y_start;
+
+	if(GetIntValue("x_first") > 0)
+		x = GetIntValue("x_first");
+
+	if(GetIntValue("y_first") > 0)
+		y = GetIntValue("y_first");
+
+	location[y][x] = 1;
+
+	old_x = x;
+	old_y = y;
 	dir = 0;
 	old_dir = 0;
 
-	location[old_y][old_x] = 0;
-	location[y][x] = 1;
-
 	if(mode > 1 && mode < 5)
-	{
-		state[old_dir*(size_x*size_y)+old_y*size_x+old_x] = 0;
 		state[dir*(size_x*size_y)+y*size_x+x] = 1;
-	}
 	else
-	{
-		state[old_y*size_x+old_x] = 0;
 		state[y*size_x+x] = 1;
-	}
 
 	SetSurrounding();
 	Draw(x_start, y_start);

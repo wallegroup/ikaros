@@ -40,7 +40,7 @@
     <LibraryPath>C:\Research\GitHub\ikaros\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Research\GitHub\ikaros\Source\Kernel;C:\Research\GitHub\ikaros\Source;C:\Research\GitHub\ikaros\Include;$(IncludePath);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
+    <IncludePath>C:\Research\GitHub\ikaros\Source\Kernel;C:\Research\GitHub\ikaros\Source;C:\Research\GitHub\ikaros\Source\jpeg-9;$(IncludePath);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include</IncludePath>
     <LibraryPath>C:\Research\GitHub\ikaros\Lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
     <OutDir>C:\Research\GitHub\ikaros\Bin\</OutDir>
     <IntDir>$(Configuration)\int\</IntDir>
@@ -76,6 +76,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

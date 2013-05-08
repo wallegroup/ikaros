@@ -19,8 +19,8 @@
   <parameter name="mode" type="list" values="random/perfect/room" default="random" description="What kind of maze to generate" />
   <parameter name="size" type="int" default="8" description="The lenght of the side of the maze." />
   <parameter name="noise" type="float" default="0.25" min="0" max="0.95" description="The chance that a square is non-traversable" />
-  <parameter name="x_start" type="int" default="2" min="1" description="Where the agent start" />
-  <parameter name="y_start" type="int" default="2" min="1" description="Where the agent start" />
+  <parameter name="x_start" type="int" default="1" min="1" description="Where the agent start" />
+  <parameter name="y_start" type="int" default="1" min="1" description="Where the agent start" />
   <parameter name="step" type="float" default="0" description="Default reward for any step that does not lead to a goal (never > 0)" />
 
 	<output name="OUTPUT" description="The generated maze" />
