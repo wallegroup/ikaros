@@ -1,0 +1,1409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{5e5b120e-4d07-4f0c-b8f0-42c4b62be832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CxQ">
+      <UniqueIdentifier>{ffa525b0-0130-40f8-a48f-26e1c31a751a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ikc">
+      <UniqueIdentifier>{214dc052-6d52-45ee-bf4a-4ae90f4a781f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ikc\modules">
+      <UniqueIdentifier>{b0dfd85c-ea39-4363-bb81-9d5bc6a8f8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WebUI">
+      <UniqueIdentifier>{3dc41334-df2f-4118-9c85-1709a23a5831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel">
+      <UniqueIdentifier>{c84649ff-fbfa-454e-82aa-811a80135134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CxQ\Random">
+      <UniqueIdentifier>{116cc897-1a15-4657-8ea8-105245d67934}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="modules\ann\perceptron\Perceptron.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_amygdala\M02_Amygdala.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_cortex\M02_Cortex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_hippocampus\M02_Hippocampus.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_ofc\M02_OFC.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_sensorycortex\M02_SensoryCortex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\brainmodels\moren2002\m02_thalamus\M02_Thalamus.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\codingmodules\coarsecoder\CoarseCoder.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\codingmodules\intervalcoder\IntervalCoder.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\codingmodules\intervaldecoder\IntervalDecoder.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\controlmodules\kalmanfilter\KalmanFilter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\controlmodules\pidcontroller\PIDController.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\environmentmodules\gridworld\GridWorld.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\environmentmodules\mazegenerator\MazeGenerator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\environmentmodules\planararm\PlanarArm.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\examples\delayone\DelayOne.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\examples\sum\Sum.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputfile\InputFile.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputjpeg\InputJPEG.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputpng\InputPNG.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputqtaudio\InputQTAudio.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputqtaudio\MTAudioBufferListUtils.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputqtaudio\QuickTimeAudioUtils.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileinput\inputrawimage\InputRawImage.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileoutput\outputfile\OutputFile.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileoutput\outputjpeg\OutputJPEG.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileoutput\outputpng\OutputPNG.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileoutput\outputqtaudiovisual\OutputQTAudioVisual.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\fileoutput\outputrawimage\OutputRawImage.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\iomodules\video\networkcamera\NetworkCamera.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\learningmodules\knn\KD_Tree.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\learningmodules\knn\KNN.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\learningmodules\knn_pick\KNN_Pick.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\learningmodules\linearassociator\LinearAssociator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\learningmodules\qlearning\QLearning.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\dynamixel\Dynamixel.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\dynamixel\DynamixelComm.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\dynamixel\DynamixelConfigure.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\dynamixel\DynamixelServo.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\epuck\Epuck.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\robotmodules\ssc32\SSC32.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\abs\Abs.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\add\Add.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\arbiter\Arbiter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\argmax\ArgMax.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\average\Average.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\constant\Constant.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\counter\Counter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\delay\Delay.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\distance\Distance.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\divide\Divide.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\functiongenerator\FunctionGenerator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\gate\Gate.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\integrator\Integrator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\matrixmultiply\MatrixMultiply.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\max\Max.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\min\Min.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\multiply\Multiply.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\noise\Noise.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\normalize\Normalize.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\outerproduct\OuterProduct.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\polynomial\Polynomial.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\randomizer\Randomizer.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\scale\Scale.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\selectmax\SelectMax.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\shift\Shift.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\softmax\Softmax.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\subtract\Subtract.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\sweep\Sweep.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\utilitymodules\threshold\Threshold.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="usermodules\minimalmodule\MinimalModule.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="usermodules\mymodule\MyModule.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="webui\WebUI.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\CSFA\CSFA.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\LinearNet\LinearNet.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\CriticCore\CriticCore.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\Invert\Invert.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\Decode\Decode.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\Punish\Punish.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\HierarchicalCoder\HierarchicalCoder.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_XML.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Math.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Serial_WIN.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Signal.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Socket_WIN.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Threads_pthread.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Timer_WIN.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\IKAROS_Utils.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\main.cc">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\RLCore\RLCore.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\BoltzmannSelect\BoltzmannSelect.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\GreedySelect\GreedySelect.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\Merge\Merge.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\ranrotw.cpp">
+      <Filter>CxQ\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\SARSA\SARSA.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\HashCoder\HashCoder.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\HashCoder\hashed_tiles.cpp">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+    <ClCompile Include="UserModules\CxQ\MultiCore\MultiCore.cc">
+      <Filter>CxQ</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IKAROS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_ColorTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Serial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Socket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Threads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Timer_none.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\IKAROS_XML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\ann\perceptron\Perceptron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_amygdala\M02_Amygdala.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_cortex\M02_Cortex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_hippocampus\M02_Hippocampus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_ofc\M02_OFC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_sensorycortex\M02_SensoryCortex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\brainmodels\moren2002\m02_thalamus\M02_Thalamus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\codingmodules\coarsecoder\CoarseCoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\codingmodules\intervalcoder\IntervalCoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\codingmodules\intervaldecoder\IntervalDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\controlmodules\kalmanfilter\KalmanFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\controlmodules\pidcontroller\PIDController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\environmentmodules\gridworld\GridWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\environmentmodules\mazegenerator\MazeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\environmentmodules\planararm\PlanarArm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\examples\delayone\DelayOne.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\examples\sum\Sum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputfile\InputFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputjpeg\InputJPEG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputpng\InputPNG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputqtaudio\InputQTAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputqtaudio\MTAudioBufferListUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputqtaudio\QuickTimeAudioUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputqtmovie\InputQTMovie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputrawimage\InputRawImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileinput\inputvideofile\InputVideoFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileoutput\outputfile\OutputFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileoutput\outputjpeg\OutputJPEG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileoutput\outputpng\OutputPNG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileoutput\outputqtaudiovisual\OutputQTAudioVisual.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\fileoutput\outputrawimage\OutputRawImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\network\yarpport\YARPPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\video\inputvideoqt\InputVideoQT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\video\inputvideoqt\QTGrab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\video\kinect\Kinect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\iomodules\video\networkcamera\NetworkCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\learningmodules\knn\KD_Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\learningmodules\knn\KNN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\learningmodules\knn_pick\KNN_Pick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\learningmodules\linearassociator\LinearAssociator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\learningmodules\qlearning\QLearning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\dynamixel\Dynamixel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\dynamixel\DynamixelComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\dynamixel\DynamixelConfigure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\dynamixel\DynamixelServo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\epuck\Epuck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\phidgets\Phidgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\robotmodules\ssc32\SSC32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\abs\Abs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\add\Add.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\arbiter\Arbiter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\argmax\ArgMax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\average\Average.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\constant\Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\counter\Counter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\delay\Delay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\distance\Distance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\divide\Divide.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\functiongenerator\FunctionGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\gate\Gate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\integrator\Integrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\matrixmultiply\MatrixMultiply.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\max\Max.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\min\Min.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\multiply\Multiply.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\noise\Noise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\normalize\Normalize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\outerproduct\OuterProduct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\polynomial\Polynomial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\randomizer\Randomizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\scale\Scale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\selectmax\SelectMax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\shift\Shift.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\softmax\Softmax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\subtract\Subtract.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\sweep\Sweep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\utilitymodules\threshold\Threshold.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\attentionfocus\AttentionFocus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\colorclassifier\ColorClassifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\colormatch\ColorMatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\colortransform\ColorTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\depthprocessing\depthcontourtrace\DepthContourTrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\depthprocessing\depthhistogram\DepthHistogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\depthprocessing\depthsegmentation\DepthSegmentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageconvolution\ImageConvolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\changedetector\ChangeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\curvaturedetectors\harrisdetector\HarrisDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\cannyedgedetector\CannyEdgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\gaussianedgedetector\GaussianEdgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\hysteresisthresholding\HysteresisThresholding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\prewittedgedetector\PrewittEdgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\robertsedgedetector\RobertsEdgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\edgedetectors\sobeledgedetector\SobelEdgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\gaborfilter\GaborFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\morphologicaloperators\dilate\Dilate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\imageoperators\morphologicaloperators\erode\Erode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\markertracker\MarkerTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\MPIFaceDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpeyefinder\beyesobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpeyefinder\define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpeyefinder\faceobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpeyefinder\eyeweightsfiles\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\ci.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\faceboxlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\featuredata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\gentleFace1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\mpiimage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\mpisearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\mpisearchBinary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\mpisearchFaceDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\rimage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\roi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\mpifacedetector\mpisearch\square.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\saliencepoints\SaliencePoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\saliencymap\SaliencyMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\scaling\downsample\Downsample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\scaling\upsample\Upsample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\spatialclustering\SpatialClustering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\visionmodules\whitebalance\WhiteBalance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="usermodules\minimalmodule\MinimalModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="usermodules\mymodule\MyModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="webui\WebUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IKAROS_System.h" />
+    <ClInclude Include="UserModules\CxQ\Invert\Invert.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\LinearNet\LinearNet.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\CSFA\CSFA.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\CriticCore\CriticCore.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\Decode\Decode.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\Punish\Punish.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\HierarchicalCoder\HierarchicalCoder.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\RLCore\RLCore.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\BoltzmannSelect\BoltzmannSelect.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\GreedySelect\GreedySelect.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\Merge\Merge.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\randomc.h">
+      <Filter>CxQ\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\SARSA\SARSA.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\HashCoder\HashCoder.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\HashCoder\hashed_tiles.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+    <ClInclude Include="UserModules\CxQ\MultiCore\MultiCore.h">
+      <Filter>CxQ</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\Lib\jpeg.lib">
+      <Filter>Lib</Filter>
+    </Library>
+    <Library Include="..\Lib\pthreadVC2.lib">
+      <Filter>Lib</Filter>
+    </Library>
+    <Library Include="..\..\..\..\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\WinMM.Lib">
+      <Filter>Lib</Filter>
+    </Library>
+    <Library Include="..\..\..\..\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\WS2_32.Lib">
+      <Filter>Lib</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\AC-CxQ\AC-CxQ-4.ikc">
+      <Filter>ikc</Filter>
+    </None>
+    <None Include="..\..\..\AC-CxQ\Maze_4.ikc">
+      <Filter>ikc</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN_Pick\Examples\5neighbors_categorical.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN\Examples\1000learn_420find.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN\Examples\10000learn_1000find.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN\Examples\100000learn_1000find.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Abs\Abs.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Abs\Examples\Abs_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Add\Add.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Add\Examples\Add_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Arbiter\Arbiter.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Arbiter\Examples\Arbiter_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\ArgMax\ArgMax.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\ArgMax\Examples\ArgMax_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Average\Average.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Average\Examples\Average_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Epuck\Examples\blink_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\CoarseCoder\Examples\CoarseCoded_GridWorld_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\CoarseCoder\Examples\CoarseCoded_GridWorld2_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\CoarseCoder\CoarseCoder.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\CoarseCoder\Examples\CoarseCoder_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Constant\Constant.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Constant\Examples\Constant_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Counter\Counter.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Counter\Examples\Counter_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Delay\Delay.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\Examples\DelayOne\DelayOne.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Differentiator\Differentiator.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Distance\Distance.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Distance\Examples\Distance_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Divide\Divide.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Divide\Examples\Divide_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Dynamixel\Dynamixel.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Dynamixel\Examples\Dynamixel_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Dynamixel\DynamixelConfigure.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Dynamixel\Examples\DynamixelConfigure_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Epuck\Epuck.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Epuck\Examples\Epuck_camera_mic.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Epuck\Examples\Epuck_inputs.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Epuck\Examples\Epuck_movements.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\FunctionGenerator\FunctionGenerator.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\FunctionGenerator\Examples\FunctionGenerator_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Gate\Gate.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Gate\Examples\Gate_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\GridWorld\GridWorld.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\GridWorld\Examples\GridWorld_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputFile\InputFile.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputFile\Examples\inputfile_static_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputFile\Examples\inputfile_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputJPEG\InputJPEG.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputJPEG\Examples\InputJPEG_color_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputJPEG\Examples\InputJPEG_gray_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputPNG\InputPNG.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputPNG\Examples\InputPNG_color_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputPNG\Examples\InputPNG_gray_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTAudio\InputQTAudio.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTAudio\Examples\InputQTAudio_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTAudio\Examples\InputQTAudio_test2.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTMovie\InputQTMovie.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTMovie\Examples\InputQTMovie_fun.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputQTMovie\Examples\InputQTMovie_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputRawImage\InputRawImage.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputRawImage\Examples\InputRawImage_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputVideoFile\InputVideoFile.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileInput\InputVideoFile\Examples\InputVideoFile_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\InputVideoQT\InputVideoQT.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\InputVideoQT\Examples\InputVideoQT_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\InputVideoQT\Examples\InputVideoQT_two_camera_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Integrator\Integrator.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Integrator\Examples\Integrator_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\IntervalCoder\IntervalCoder.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\IntervalCoder\Examples\IntervalCoder_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\IntervalDecoder\IntervalDecoder.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\CodingModules\IntervalDecoder\Examples\IntervalDecoder_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ControlModules\KalmanFilter\KalmanFilter.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ControlModules\KalmanFilter\Examples\KalmanFilter_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\Kinect\Kinect.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\Kinect\Examples\Kinect_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN\KNN.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN_Pick\KNN_Pick.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\LinearAssociator\LinearAssociator.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\LinearAssociator\Examples\LinearAssociator_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ANN\Perceptron\Examples\logical_operators_and.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_Amygdala\M02_Amygdala.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_Cortex\M02_Cortex.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_Hippocampus\M02_Hippocampus.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_OFC\M02_OFC.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_SensoryCortex\M02_SensoryCortex.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\M02_Thalamus\M02_Thalamus.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\MatrixMultiply\MatrixMultiply.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\MatrixMultiply\Examples\MatrixMultiply_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Max\Max.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Max\Examples\Max_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\MazeGenerator\MazeGenerator.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\MazeGenerator\Examples\MazeGenerator_and_QL_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\MazeGenerator\Examples\MazeGenerator_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Min\Min.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Min\Examples\Min_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ANN\Perceptron\Examples\multi.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Multiply\Multiply.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Multiply\Examples\Multiply_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\Examples\Discrimination\network.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\Examples\Disinhibition\network.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\Examples\Disinhibition2\network.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\NetworkCamera\NetworkCamera.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Video\NetworkCamera\Examples\NetworkCamera_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Noise\Noise.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Noise\Examples\Noise_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Normalize\Normalize.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Normalize\Examples\Normalize_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\OuterProduct\OuterProduct.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\OuterProduct\Examples\OuterProduct_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputFile\OutputFile.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputJPEG\OutputJPEG.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputJPEG\Examples\OutputJPEG_RGB_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputJPEG\Examples\OutputJPEG_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputPNG\OutputPNG.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputPNG\Examples\OutputPNG_gray_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputPNG\Examples\OutputPNG_rgb_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputQTAudioVisual\OutputQTAudioVisual.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputQTAudioVisual\Examples\OutputQTAudioVisual_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\FileOutput\OutputRawImage\OutputRawImage.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ANN\Perceptron\Perceptron.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Phidgets\Phidgets.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\Phidgets\Examples\Phidgets_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ControlModules\PIDController\PIDController.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ControlModules\PIDController\Examples\PIDController_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\PlanarArm\PlanarArm.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\EnvironmentModules\PlanarArm\Examples\PlanarArm_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Polynomial\Polynomial.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Polynomial\Examples\Polynomial_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\QLearning\QLearning.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\QLearning\Examples\QLearning_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Randomizer\Randomizer.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Randomizer\Examples\Randomizer_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Scale\Scale.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Scale\Examples\Scale_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\SelectMax\SelectMax.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\SelectMax\Examples\SelectMax_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Shift\Shift.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Shift\Examples\Shift_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Softmax\Softmax.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Softmax\Examples\Softmax_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\SSC32\SSC32.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\RobotModules\SSC32\Examples\SSC32_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Subtract\Subtract.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Subtract\Examples\Subtract_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\Examples\Sum\Sum.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\Examples\Sum\Examples\Sum_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Sweep\Sweep.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Sweep\Examples\Sweep_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\BrainModels\Moren2002\Examples\test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\LearningModules\KNN\Examples\test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Threshold\Threshold.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\UtilityModules\Threshold\Examples\Threshold_test.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\ANN\Perceptron\Examples\vowel.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Network\YARPPort\YARPPort.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="Modules\IOModules\Network\YARPPort\Examples\YARPPort_example.ikc">
+      <Filter>ikc\modules</Filter>
+    </None>
+    <None Include="WebUI\Classes\ArrayLine.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\BarGraph.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Button.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Circle.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\control.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Cross.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Editor\editor.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Grid.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Image.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Inspector\inspector.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Label.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Line.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Lines.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Mouse.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Path.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Plot.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Plot3D.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\PolarPlot.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Rectangle.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\ScatterPlot.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Slider.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Switch.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Table.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Text.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Trace.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\Vector.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Classes\VectorField.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="WebUI\Viewer\viewer.js">
+      <Filter>WebUI</Filter>
+    </None>
+    <None Include="UserModules\CxQ\CSFA\CSFA.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\Invert\Invert.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\LinearNet\LinearNet.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\CriticCore\CriticCore.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\Decode\Decode.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\Punish\Punish.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\HierarchicalCoder\HierarchicalCoder.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\RLCore\RLCore.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\BoltzmannSelect\BoltzmannSelect.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\GreedySelect\GreedySelect.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\Merge\Merge.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\SARSA\SARSA.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\HashCoder\HashCoder.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+    <None Include="UserModules\CxQ\MultiCore\MultiCore.ikc">
+      <Filter>CxQ</Filter>
+    </None>
+  </ItemGroup>
+</Project>

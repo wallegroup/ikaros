@@ -36,9 +36,9 @@
 			/>
 	</example>
 
-	<parameter name="move" type="list" values=" max/sum/relative_max/relative_sum" default="max" description="How to use the MOVE input" />
-	<parameter name="start_x" type="int" default="1" description="Starting x coordinate for the agent" />
-	<parameter name="start_y" type="int" default="1" description="Starting y coordinate for the agent" />
+	<parameter name="mode" type="list" values="max/sum/relative_max/relative_sum/relative_move/relative_test" default="max" description="How to use the MOVE input" />
+	<parameter name="x_start" type="int" default="1" description="Starting x coordinate for the agent" />
+	<parameter name="y_start" type="int" default="1" description="Starting y coordinate for the agent" />
 	<parameter name="normalize_coordinate" type="bool" default="no" description="Map coordinate output to the interval 0..1" />
 
 	<input name="MOVE" description="Move in absolute directions (N, E, S, W) or relative (Forward, Turn-Left, Turn-Right)." />
@@ -47,6 +47,7 @@
 	<input name="VALUES" description="Matrix with values" />
 
 	<output name="LOCATION" description="Matrix with location of agent" />
+  <output name="STATE" description="State array" />
 	<output name="COORDINATE" description="Array with location of agent as an x, y value" />
 	<output name="LOCAL_OBSTACLES" description="3x3 grid around agent" />
 	<output name="LOCAL_VALUES" description="3x3 grid around agent" />

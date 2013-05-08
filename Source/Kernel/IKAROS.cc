@@ -61,8 +61,6 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <ftw.h>    //****************** TEMPORARY
-
 #ifdef WINDOWS
 #include <direct.h>
 #else
@@ -1362,7 +1360,7 @@ void
 Kernel::SetOptions(Options * opt)
 {
     options             = opt;
-    useThreads          = options->GetOption('t') || options->GetOption('T');
+    useThreads          = true;	//options->GetOption('t') || options->GetOption('T');
     max_ticks           = string_to_int(options->GetArgument('s'), -1);
     tick_length         = string_to_int(options->GetArgument('r'), 0);
     nan_checks          = options->GetOption('n');
@@ -1385,19 +1383,17 @@ Kernel::SetOptions(Options * opt)
         Notify(msg_fatal_error, "The Ikaros root directory could not be established. Please set an absolute IKAROSPATH in IKAROS_System.h\n");
     
     // Compute ikc path and name
-                        
-   ikc_dir = options->GetFileDirectory();
-            ikc_file_name =  options->GetFileName();
-                        
+
+	ikc_dir = options->GetFileDirectory();
+	ikc_file_name = options->GetFileName();
+
     // Seed random number generator
-                        
+
     if(options->GetOption('z'))
-#ifdef WINDOWS32
         srand(string_to_int(options->GetArgument('z')));
-#else
-        srandom(string_to_int(options->GetArgument('z')));
-#endif
-    
+	else
+		srand(GetTickCount());
+
     // Fix module paths
     
     for(ModuleClass * c = classes; c != NULL; c = c->next)
@@ -1414,7 +1410,7 @@ Kernel::SetOptions(Options * opt)
 Kernel::Kernel(Options * opt)
 {
     options             = opt;
-    useThreads          = options->GetOption('t') || options->GetOption('T');
+    useThreads          = true;	//options->GetOption('t') || options->GetOption('T');
     max_ticks           = string_to_int(options->GetArgument('s'), -1);
     tick_length         = string_to_int(options->GetArgument('r'), 0);
     nan_checks          = options->GetOption('n');
@@ -1458,13 +1454,10 @@ Kernel::Kernel(Options * opt)
     ikc_file_name =  options->GetFileName();
 	
 	// Seed random number generator
-	
 	if(options->GetOption('z'))
-#ifdef WINDOWS32
-    srand(string_to_int(options->GetArgument('z')));
-#else
-    srandom(string_to_int(options->GetArgument('z')));
-#endif
+		srand(string_to_int(options->GetArgument('z')));
+	else
+		srand(GetTickCount());
 }
 
 Kernel::~Kernel()
@@ -2575,6 +2568,7 @@ Kernel::BuildGroup(XMLElement * group_xml, const char * current_class)
 			else if (class_name  != NULL)	// Create the module using standard class
 			{
 				Parameter * parameter = new Parameter(this, xml_node);
+				//printf("%s\n", parameter->kernel->GetSeed());
 				Module * m = CreateModule(classes, class_name, xml_node->GetAttribute("name"), parameter);
 				delete parameter;
 				if (m == NULL)

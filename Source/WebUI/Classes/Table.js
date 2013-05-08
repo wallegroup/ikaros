@@ -23,15 +23,15 @@ Table.prototype.Init = function(data)
 	this.inited = true;    
     this.sizey = d.length;
 	this.sizex = d[0].length;	
-	var box_width = (this.width-4)/this.sizex;
-	var box_height = (this.height-4-23)/this.sizey;
+	var box_width = (this.width-2)/this.sizex;
+	var box_height = (this.height-2)/this.sizey;
 	this.box = new Array(this.sizey);
     var cc = 0;
 	for(var j=0; j<this.sizey; j++)
 	{
 		this.box[j] = new Array(this.sizex);
 		for(var i=0; i<this.sizex; i++)
-			this.box[j][i] = this.graph.AddText(box_width*(i+1)-2, box_height*(j+1)-14+23, '0', box_width, box_height, 'end', this.font_size, this.LUTp[cc++ % this.LUTp.length]);
+			this.box[j][i] = this.graph.AddText(box_width*(i+1)-6, box_height*(j+1)-6, '0', box_width, box_height, 'end', this.font_size, this.LUTp[cc++ % this.LUTp.length]);
 	}
 }
 

@@ -18,11 +18,13 @@
 	<parameter name="gamma" type="float" default="0.9" description="Discount factor" />
 	<parameter name="epsilon" type="float" default="0.0" description="Selection parameter" />
 	<parameter name="initial" type="float" default="0.1" description="Initial weights" />
+  <parameter name="epochs" type="int" default="0" description="The number of times the agent can reach the goal state before the process terminates (0 = infinite)." />
 
 	<input name="STATE" description="Sensory input" />
 	<input name="REINFORCEMENT" description="Current reinforcement" />
 
 	<output name="ACTION" description="Selected action" size="4" />
+  <output name="SELECT" description="Selected action value" size="4" />
 	<output name="VALUE" description="Global value" size_set="STATE" />
 
 	<module class="QLearning" />

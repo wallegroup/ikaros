@@ -24,19 +24,6 @@
 //
 
 
-
-//
-//	Target system can be set using a compiler flag, e.g., -DMAC_OS_X or -DWINDOWS
-//	Alternatively, the appropriate #define below can be uncommented
-//
-
-//#define MINIMAL
-//#define MAC_OS_X
-//#define LINUX
-//#define WINDOWS
-//#define WINDOWS32
-
-
 //
 //  IKAROSPATH is the path to the Ikaros root directory relative to the Ikaros binary  
 //  OR the absolute path to the Ikaros root directory. A relative path is useful when
@@ -50,7 +37,7 @@
 //
 
 #ifndef IKAROSPATH
-#define IKAROSPATH	"../"
+#define IKAROSPATH	"C:\\Research\\GitHub\\ikaros\\"
 #endif
 
 
@@ -91,7 +78,6 @@
 #define USE_BLAS
 #define USE_LIBPNG
 //#define USE_MPI
-//#define USE_THREADED_WEBUI
 #endif
 
 
@@ -115,7 +101,6 @@
 #define USE_LAPACK
 #define USE_THREADS
 #define USE_MPI
-//#define USE_THREADED_WEBUI    // 1.3
 #endif
 
 
@@ -130,10 +115,7 @@
 #define USE_WIN_SOCKET
 #define USE_LIBJPEG
 #define USE_THREADS
-//#define USE_LIBPNG
-//#define USE_BLAS
 #define USE_WIN_SERIAL
-//#define USE_THREADED_WEBUI
 #include <direct.h> // Include chdir
 #define chdir _chdir
 #define getcwd _getcwd
@@ -157,7 +139,9 @@
 #define _CRT_NONSTDC_NO_DEPRECATE
 #pragma warning( disable : 4305)
 #pragma warning( disable : 4244) 
-#pragma warning( disable : 4290) 
+#pragma warning( disable : 4290)
+#pragma warning( disable : 4800)
+#pragma warning( disable : 4996)
 #endif
 
 

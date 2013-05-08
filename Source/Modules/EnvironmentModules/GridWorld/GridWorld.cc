@@ -29,35 +29,30 @@
 
 using namespace ikaros;
 
-Module * GridWorld::Create(Parameter * p)
+static int dx[4] = { 0, 1, 0, -1 };
+static int dy[4] = { -1, 0, 1, 0 };
+
+
+
+GridWorld::GridWorld(Parameter * p):Module(p)
 {
-    return new GridWorld(p);
-}
+	AddInput("OBSTACLES");
+	AddInput("VALUES");
 
+	AddInput("MOVE");
 
+	AddOutput("REWARD", 1);
+	AddOutput("COLLISION", 1);
+	AddOutput("COORDINATE", 2);
+	AddOutput("LOCATION");
+	AddOutput("STATE");
+	AddOutput("LOCAL_OBSTACLES", 3, 3);
+	AddOutput("LOCAL_VALUES", 3, 3);
 
-GridWorld::GridWorld(Parameter * p):
-        Module(p)
-{
-    AddInput("OBSTACLES");
-    AddInput("VALUES");
+	AddOutput("IMAGE");
 
-    AddInput("MOVE");
-
-    AddOutput("REWARD", 1);
-    AddOutput("COLLISION", 1);
-    AddOutput("COORDINATE", 2);
-    AddOutput("LOCATION");
-    AddOutput("LOCAL_OBSTACLES", 3, 3);
-    AddOutput("LOCAL_VALUES", 3, 3);
-	
-    AddOutput("IMAGE");
-
-    x_start	= GetIntValue("x_start", 1);
-    y_start	= GetIntValue("y_start", 1);
-   
-    mode	= GetIntValueFromList("mode");
-    normalize_coordinate = GetBoolValue("normalize_coordinate");
+	normalize_coordinate = GetBoolValue("normalize_coordinate");
+	mode = GetIntValueFromList("mode");
 }
 
 
@@ -65,101 +60,90 @@ GridWorld::GridWorld(Parameter * p):
 void
 GridWorld::SetSizes()
 {
-   int  sizex = GetInputSizeX("OBSTACLES");
-   int  sizey = GetInputSizeY("OBSTACLES");
-   
-   if(sizex == unknown_size || sizey == unknown_size)
-	return;
+	image_size_x = size_x = GetInputSizeX("OBSTACLES");
+	image_size_y = size_y = GetInputSizeY("OBSTACLES");
 
-   SetOutputSize("LOCATION", sizex, sizey);
-   SetOutputSize("IMAGE", sizex, sizey);   
+	if(size_x == unknown_size || size_y == unknown_size)
+		return;
+
+	SetOutputSize("IMAGE", size_x, size_y);
+
+	if(mode > 1 && mode < 5)
+		SetOutputSize("STATE", size_x * size_y * 4);	// with facing data
+	else
+		SetOutputSize("STATE", size_x * size_y);		// without facing data
+
+	SetOutputSize("LOCATION", size_x, size_y);
 }
 
-
-
-void
-GridWorld::Draw(int _x, int _y)
-{
-    copy_matrix(image, obstacles, size_x, size_y);
-
-    for (int j=0; j<size_y; j++)
-        for (int i=0; i<size_x; i++)
-	     if (values[j][i] > 0)
-                image[j][i] = 3;
-
-    image[_y][_x] = 2.0;
-}
 
 
 
 void
 GridWorld::Init()
 {
-    move		=	GetInputArray("MOVE");
+	move		=	GetInputArray("MOVE");
 	
-    location		=	GetOutputMatrix("LOCATION");
-    coordinate	=	GetOutputArray("COORDINATE");
+	location	=	GetOutputMatrix("LOCATION");
+	state		=	GetOutputArray("STATE");
+	coordinate	=	GetOutputArray("COORDINATE");
 
-    local_obstacles	=	GetOutputMatrix("LOCAL_OBSTACLES");
-    local_values		=	GetOutputMatrix("LOCAL_VALUES");
+	local_obstacles	=	GetOutputMatrix("LOCAL_OBSTACLES");
+	local_values	=	GetOutputMatrix("LOCAL_VALUES");
  
-    obstacles	=	GetInputMatrix("OBSTACLES");
-    values		=	GetInputMatrix("VALUES");
+	obstacles	=	GetInputMatrix("OBSTACLES");
+	values		=	GetInputMatrix("VALUES");
 
-    reward		=	GetOutputArray("REWARD");
-    collision   =   GetOutputArray("COLLISION");
-    image		=	GetOutputMatrix("IMAGE");
+	reward		=	GetOutputArray("REWARD");
+	collision   =   GetOutputArray("COLLISION");
+	image		=	GetOutputMatrix("IMAGE");
 
-   size_x = GetInputSizeX("OBSTACLES");
-   size_y = GetInputSizeY("OBSTACLES");
+	x_start = max(min(GetIntValue("x_start"), size_x-2), 1);
+	y_start = max(min(GetIntValue("y_start"), size_y-2), 1);
 
-    // Check inputs here
-    
-    if((size_x != GetInputSizeX("VALUES")) || (size_y != GetInputSizeY("VALUES")))
-    {
-        Notify(msg_fatal_error, "Size of VALUES input of module %s (%s) does not match OBSTACLES input\n", GetName(), GetClassName());
-        return;
-    }
+	x = x_start;
+	y = y_start;
+	old_x = x_start;
+	old_y = y_start;
+	dir = 0;
+	old_dir = 0;
 
+	location[old_y][old_x] = 0;
+	location[y][x] = 1;
 
-    // CHECK INPUT SIZE 3 or 4 !!!!!
+	if(mode > 1 && mode < 5)
+	{
+		state[old_dir*(size_x*size_y)+old_y*size_x+old_x] = 0;
+		state[dir*(size_x*size_y)+y*size_x+x] = 1;
+	}
+	else
+	{
+		state[old_y*size_x+old_x] = 0;
+		state[y*size_x+x] = 1;
+	}
 
-    x_start = max(min(x_start, size_x-2), 1);
-    y_start = max(min(y_start, size_y-2), 1);
-
-    x = x_start;
-    y = y_start;
-
-    Draw(x_start, y_start);
+	SetSurrounding();
+	Draw(x_start, y_start);
 }
 
 
-
-GridWorld::~GridWorld()
-{
-}
-
-
-
-static int dx[4] = { 0, 1, 0, -1 };
-static int dy[4] = { -1, 0, 1, 0 };
 
 void
 GridWorld::Tick()
 {
-    if (move == NULL || zero(move, (mode < 2 ? 4 : 3)))
-    {
-        reward[0] = 0;
-        Draw(x, y);
-        return;
-    }
+	if(move == NULL || zero(move, ((mode == 4 || mode < 2) ? 4 : 3)))
+	{
+		reward[0] = 0;
+		Draw(x, y);
+		return;
+	}
 
-    int xr = 0;
-    int yr = 0;
-    int mv = 0;
+	int xr = 0;
+	int yr = 0;
+	int mv = 0;
 
-    switch (mode)
-    {
+	switch (mode)
+	{
 		case 0: // sum
 		{
 			float m[4] = {move[0]-move[2], move[1]-move[3], move[2]-move[0], move[3]-move[1]};
@@ -177,113 +161,188 @@ GridWorld::Tick()
 
 		case 2: // relative sum
 		{
-			float m[3] = {move[0]-move[1], move[1]-move[0], move[3]};
-			mv = arg_max(m, 3);
-			if (mv == 2)
+			mv = arg_max(move, 3);
+			if(mv == 2)
 			{
 				xr = dx[dir];
 				yr = dy[dir];
 			}
-			else if (mv == 1)
+			else if(mv == 1)
 				dir = (dir + 1) % 4;
-			else if (mv == 1)
+			else
 				dir = (dir - 1 + 4) % 4;
 		}	break;
 
 		case 3: // relative max
 		{
-			mv = arg_max(move, 3);
-			if (mv == 2)
+			float m[3] = {move[0]-move[1], move[1]-move[0], move[3]};
+			mv = arg_max(m, 3);
+			if(mv == 2)
 			{
 				xr = dx[dir];
 				yr = dy[dir];
 			}
-			else if (mv == 1)
+			else if(mv == 1)
 				dir = (dir + 1) % 4;
-			else if (mv == 1)
+			else
 				dir = (dir - 1 + 4) % 4;
+		}	break;
+
+		case 4: // relative turn & move
+		case 5:
+		{
+			mv = arg_max(move, 4);
+			if(mv == 1)			// move right
+				dir = (dir + 1) % 4;
+			else if(mv == 2)	// move left
+				dir = (dir - 1 + 4) % 4;
+			else if(mv == 3)	// move back
+				dir = (dir - 2 + 4) % 4;
+
+			xr = dx[dir];
+			yr = dy[dir];
 		}	break;
 
 		default:
 			;
-    }
+	}
 
-    // Agent can not occupy the outer border of the grid
+	// Agent can not occupy the outer border of the grid
 
-    if (x+xr > 0 && x+xr < size_x-1 && y+yr > 0 && y+yr < size_y-1 && obstacles[y+yr][x+xr] != 1)
-    {
-        x += xr;
-        y += yr;
-        *collision = 1;
-    }
-    else
-        *collision = 0;
+	if(x+xr > 0 && x+xr < size_x-1 && y+yr > 0 && y+yr < size_y-1 && obstacles[y+yr][x+xr] != 1)
+	{
+		x += xr;
+		y += yr;
+		*collision = 1;
+	}
+	else
+	{
+		*collision = 0;
+	}
+	
+	Draw(x, y);
 
-    Draw(x, y);
+	reward[0] = values[y][x];
 
-    reward[0] = values[y][x];
-    
-    if (reward != NULL && reward[0] > 0)
-    {
-//        reward[0] = 0.0;
-        x = x_start;
-        y = y_start;
-//        reward[0] = values[y][x];
-        if(normalize_coordinate)
-        {
-            coordinate[0] = 1/(2*float(size_x)) + float(x)/float(size_x);
-            coordinate[1] = 1/(2*float(size_y)) + float(y)/float(size_y);
-        }
-        else
-        {
-            coordinate[0] = x;
-            coordinate[1] = y;
-        }
+	if(reward != NULL && reward[0] > 0)
+	{
+		x = x_start;
+		y = y_start;
+		dir = 0;
+	}
 
-        // The rest should be used in ONE place
+	if(normalize_coordinate)
+	{
+		coordinate[0] = 1.0f / (2.0f*float(image_size_x)) + float(x) / float(image_size_x);
+		coordinate[1] = 1.0f / (2.0f*float(image_size_y)) + float(y) / float(image_size_y);
+	}
+	else
+	{
+		coordinate[0] = x;
+		coordinate[1] = y;
+	}
 
-        reset_matrix(location, size_x, size_y);
-        location[y][x] = 1;
-        Draw(x, y);
+	location[old_y][old_x] = 0;
+	location[y][x] = 1;
 
-        // Set surrounding
+	if(mode > 1 && mode < 5)
+	{
+		state[old_dir*(size_x*size_y)+old_y*size_x+old_x] = 0;
+		state[dir*(size_x*size_y)+y*size_x+x] = 1;
+	}
+	else
+	{
+		state[old_y*size_x+old_x] = 0;
+		state[y*size_x+x] = 1;
+	}
 
-        for (int i=0; i<3; i++)
-            for (int j=0; j<3; j++)
-                local_obstacles[j][i] = obstacles[y+j-1][x+i-1];
+	old_x = x;
+	old_y = y;
+	old_dir = dir;
 
-        for (int i=0; i<3; i++)
-            for (int j=0; j<3; j++)
-                local_values[j][i] = values[y+j-1][x+i-1];
-
-        return;
-    }
-
-    if(normalize_coordinate)
-    {
-        coordinate[0] = 1/(2*float(size_x)) + float(x)/float(size_x);
-        coordinate[1] = 1/(2*float(size_y)) + float(y)/float(size_y);
-    }
-    else
-    {
-        coordinate[0] = x;
-        coordinate[1] = y;
-    }
-
-    reset_matrix(location, size_x, size_y);
-    location[y][x] = 1.0;
-
-    // Set surrounding
-
-    for (int i=0; i<3; i++)
-        for (int j=0; j<3; j++)
-           local_obstacles[j][i] = obstacles[y+j-1][x+i-1];
-
-    for (int i=0; i<3; i++)
-        for (int j=0; j<3; j++)
-            local_values[j][i] = values[y+j-1][x+i-1];
+	SetSurrounding();
 }
 
+
+
+void
+GridWorld::Draw(int _x, int _y)
+{
+	copy_matrix(image, obstacles, image_size_x, image_size_x);
+
+	for (int j=0; j<image_size_x; j++)
+		for (int i=0; i<image_size_x; i++)
+			if(values[j][i] > 0)
+				image[j][i] = 3;
+
+	image[_y][_x] = 2;
+
+	// Draw facing
+
+	if(mode > 1)
+		image[_y+dy[dir]][_x+dx[dir]] = 2;
+}
+
+
+
+void
+GridWorld::SetSurrounding()
+{
+	if(dir == 0)	// N
+	{
+		for (int i=0; i<3; i++)
+			for (int j=0; j<3; j++)
+			   local_obstacles[j][i] = obstacles[y+j-1][x+i-1];
+
+		for (int i=0; i<3; i++)
+			for (int j=0; j<3; j++)
+				local_values[j][i] = values[y+j-1][x+i-1];
+	}
+	else if(dir == 1)	// E
+	{
+		local_obstacles[0][0] = obstacles[y-1][x+1];
+		local_obstacles[0][1] = obstacles[y][x+1];
+		local_obstacles[0][2] = obstacles[y+1][x+1];
+
+		local_obstacles[1][0] = obstacles[y-1][x];
+		local_obstacles[1][1] = obstacles[y][x];
+		local_obstacles[1][2] = obstacles[y+1][x];
+
+		local_obstacles[2][0] = obstacles[y-1][x-1];
+		local_obstacles[2][1] = obstacles[y][x-1];
+		local_obstacles[2][2] = obstacles[y+1][x-1];
+
+	}
+	else if(dir == 2)	// S
+	{
+		local_obstacles[0][0] = obstacles[y+1][x+1];
+		local_obstacles[0][1] = obstacles[y+1][x];
+		local_obstacles[0][2] = obstacles[y+1][x-1];
+
+		local_obstacles[1][0] = obstacles[y][x+1];
+		local_obstacles[1][1] = obstacles[y][x];
+		local_obstacles[1][2] = obstacles[y][x-1];
+
+		local_obstacles[2][0] = obstacles[y-1][x+1];
+		local_obstacles[2][1] = obstacles[y-1][x];
+		local_obstacles[2][2] = obstacles[y-1][x-1];
+	}
+	else	// W
+	{
+		local_obstacles[0][0] = obstacles[y+1][x-1];
+		local_obstacles[0][1] = obstacles[y][x-1];
+		local_obstacles[0][2] = obstacles[y-1][x-1];
+
+		local_obstacles[1][0] = obstacles[y+1][x];
+		local_obstacles[1][1] = obstacles[y][x];
+		local_obstacles[1][2] = obstacles[y-1][x];
+
+		local_obstacles[2][0] = obstacles[y+1][x+1];
+		local_obstacles[2][1] = obstacles[y][x+1];
+		local_obstacles[2][2] = obstacles[y-1][x+1];
+	}
+}
+
+
+
 static InitClass init("GridWorld", &GridWorld::Create, "Source/Modules/EnvironmentModules/GridWorld/");
-
-

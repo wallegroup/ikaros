@@ -29,13 +29,14 @@
 
 #ifdef WINDOWS
 #include <direct.h>
+#include <Windows.h>
 #else
 #include <unistd.h>
+#include <atomic> // required C++11
 #endif
 
 #include <string.h>
 #include <fcntl.h>
-#include <atomic> // required C++11
 
 
 using namespace ikaros;
@@ -53,7 +54,7 @@ base64_encode(const unsigned char * data,
     char *encoded_data = (char *)malloc(*size_out);
     if (encoded_data == NULL) return NULL;
     
-    for (int i = 0, j = 0; i < size_in;)
+    for (size_t i = 0, j = 0; i < size_in;)
     {
         unsigned int octet_a = i < size_in ? data[i++] : 0;
         unsigned int octet_b = i < size_in ? data[i++] : 0;
@@ -1056,8 +1057,11 @@ WebUI::CopyUIData()
     }
     
     // Step 3: store in ui_data
-
-    float * old_ui_data = atomic_exchange(&ui_data, local_ui_data);
+#ifdef WINDOWS
+    float * old_ui_data = (float*)InterlockedExchangePointer(&ui_data, local_ui_data);
+#else
+	float * old_ui_data = atomic_exchange(&ui_data, local_ui_data);
+#endif
 
     if(old_ui_data)
         destroy_array(old_ui_data);
@@ -1072,7 +1076,14 @@ WebUI::SendUIData() // TODO: allow number of decimals to be changed - or use E-f
 {
     // Grab ui data 
         
-    float * p = atomic_exchange(&ui_data, (float *)(NULL));
+    float * p;
+
+#ifdef WINDOWS
+    p = (float*)InterlockedExchangePointer(&ui_data, (float *)(NULL));
+#else
+	p = atomic_exchange(&ui_data, (float *)(NULL));
+#endif
+
     float * q = p;
 
     long int s = 0;

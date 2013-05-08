@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<group name="MultiCore" description="Reinforcement Learning Core">
+  <description type="html">
+	  <p>
+		  The Reinforcement Learning Core allows you to build a reinforcement learning system with 
+		  learning module, action selection and world separated in to IKAROS-modules. The time delay 
+		  associated with reinforcement learning is handled by using delayed connections.
+	  </p>
+	  <p>
+		  Scince a modular reinforcement learning system like this is cyclic the size of the action 
+		  vector must be defined manually through the actions parameter. Other parameters are the 
+		  discount factor, alpha, that regulates how fast rewards are propagated between states and
+		  the epochs parameter that if grater than zero make the module print to standard output the 
+		  number of ticks spent since the last reward.
+	  </p>
+  </description>
+
+  <example description="A simple example">
+	  <module class = "MultiCore" name = "CORE" actions = "4" alpha = "0.8" epochs = "0" />
+  </example>
+
+  <parameter name="actions" type="int" default="-1" description="Number of actions." />
+  <parameter name="discount" type="float" default="-1" description="Discount factor." />
+  <parameter name="scale" type="float" default="0" description="Reduction of learning rate for every positive reward." />
+  <parameter name="infinite_horizon" type="int" default="-1" description="Infinite horizon." />
+  <parameter name="epochs" type="int" default="0" description="The number of times the agent can reach the goal state before the process terminates (0 = infinite)." />
+
+  <input name="ACTOR" description="Input action from the actor module." />
+  <input name="CRITIC" description="Input action from the critic module." />
+  <input name="LAST_ACTOR" description="Input action previous tick." />
+  <input name="LAST_CRITIC" description="Input action previous tick." />
+  <input name="REINFORCEMENT" description="Reward form the world module." />
+  <input name="SELECTED_ACTION" description="Selected action from the select module." />
+
+  <output name="ACTOR_TARGET" description="Target output to the actor." />
+  <output name="CRITIC_TARGET" description="Target output to the critic." />
+  <output name="LEARN" description="Learning rate to the actor and critic." />
+  <output name="ACTOR_GRAD" description="" />
+  <output name="CRITIC_GRAD" description="" />
+
+  <module class="MultiCore" />
+
+  <created>2007</created>
+
+  <author>
+	  <name>Stefan Winberg</name>
+  </author>
+
+  <files>
+    <file>MultiCore.h</file>
+    <file>MultiCore.cc</file>
+    <file>MultiCore.ikc</file>
+  </files>
+</group>

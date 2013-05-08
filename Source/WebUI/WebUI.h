@@ -27,9 +27,13 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include <atomic>
-
 #include "IKAROS.h"
+
+#ifdef WINDOWS
+#include <Windows.h>
+#else
+#include <atomic> // required C++11
+#endif
 
 #ifdef USE_SOCKET
 
@@ -121,10 +125,17 @@ public:
     int             ui_state;
     int             iterations_per_runstep;
     
+#ifdef WINDOWS
+    float * ui_data;
+    bool copying_data;
+    bool dont_copy_data;
+    bool is_running;
+#else
     std::atomic<float *>  ui_data;
     std::atomic<bool> copying_data;
     std::atomic<bool> dont_copy_data;
     std::atomic<bool> is_running;
+#endif
     
     ModuleData *	view_data;
     

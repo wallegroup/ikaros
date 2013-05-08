@@ -241,8 +241,6 @@ main(int argc, char *argv[])
     
     // Create and Init kernel
 
-//    Kernel	k(options);
-
     Kernel & k = kernel();    // Get global kernel
     k.SetOptions(options);
     
@@ -261,12 +259,8 @@ main(int argc, char *argv[])
 
         if (!k.Terminate() && (options->GetOption('w') || options->GetOption('W')))
         {
-#ifdef USE_SOCKET
             WebUI webUI(&k);
             webUI.Run();
-#else
-            printf("IKAROS was compiled without support for sockets and WebUI\n");
-#endif
         }
         else
         {
@@ -286,34 +280,25 @@ main(int argc, char *argv[])
         k.Notify(msg_exception, "Could not allocate memory. Program terminates.\n");
         return 1;	// MEMORY ERROR
     }
-    /*
-    	catch(XMLError ex)
-    	{
-    		k.Notify(msg_exception, "%s at line %d. Program terminates (%d).\n", ex.string, ex.line, ex.internal_reference);
-    		return 2;	// XML ERROR
-    	}
-    */
     
     catch (SerialException se)
     {
         k.Notify(msg_exception, "Serial Exception: %s (%d). Program terminates.\n", se.string, se.internal_reference);        
     }
-#ifdef USE_SOCKET
+
     catch (SocketException ex)
     {
         k.Notify(msg_exception, "Socket(%d): %s\n", ex.internal_reference, ex.string);
         return 3;	// SOCKET ERROR
     }
-#endif
+
     catch (int i)
     {
-        //	k.Init();
         k.Notify(msg_exception, "%d. Program terminates.\n", i);
         return i;	// OTHER ERROR
     }
     catch (...)
     {
-//        k.Init();
         k.Notify(msg_exception, "Undefined exception. Program terminates.\n");
         return -1;	// UNDEFINED ERROR
     }

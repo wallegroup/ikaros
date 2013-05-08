@@ -26,7 +26,6 @@
 #ifndef IKAROS
 #define IKAROS
 
-
 #define VERSION "1.4"
 
 #include "IKAROS_System.h"

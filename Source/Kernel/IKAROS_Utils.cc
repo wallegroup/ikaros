@@ -19,6 +19,7 @@
 //
 //	Created: July 17 2001
 //
+
 #include "IKAROS_Utils.h"
 #include "IKAROS_System.h"
 
@@ -552,9 +553,9 @@ destroy_matrix(float **** a)
     free(a);
 }
 
-float * copy_array(float * r, float * a, int size)
+float * copy_array(float * destination, float * source, int size)
 {
-    return (float *)memcpy(r, a, size*sizeof(float));
+    return (float *)memcpy(destination, source, size*sizeof(float));
 }
 
 float ** copy_matrix(float ** r, float ** a, int sizex, int sizey)

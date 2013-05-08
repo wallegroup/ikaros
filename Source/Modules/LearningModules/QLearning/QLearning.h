@@ -25,12 +25,14 @@
 #define QLEARNING
 
 #include "IKAROS.h"
+#include "../../../UserModules/CxQ/randomc.h"
 
 class QLearning: public Module 
 {
 public:
 	float **    state;
 	float *     action;
+	float *     select;
 	float *     reinforcement;
 	float ** 	Q[4];
     float **    value;
@@ -43,6 +45,10 @@ public:
 	int         last_y;
 	
     int         horizon;    // 0 = infinite, 1 = finite
+	int			steps;
+	int			epochs;
+	int			end_epochs;
+
 	float		alpha;
 	float		gamma;
 	float		epsilon;
@@ -58,6 +64,8 @@ public:
 	void		RunQ(float R);
 
     void 		Tick();
+
+	TRanrotWGenerator * rand_gen;
 		
 };
 

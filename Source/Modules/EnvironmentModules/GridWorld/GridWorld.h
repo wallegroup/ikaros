@@ -33,6 +33,7 @@ class GridWorld: public Module
 public:
     float	*	move;
     float	**	location;
+	float	*	state;
     float	*	coordinate;
     float	**	obstacles;
     float	**	values;
@@ -50,17 +51,24 @@ public:
 
     int		x;
     int		y;
+    int		old_x;
+    int		old_y;
     int		dir;
+	int		old_dir;
+	int		location_size;
 
     int		size_x;
     int		size_y;
+    int		image_size_x;
+    int		image_size_y;
 
     GridWorld(Parameter * p);
-    virtual ~GridWorld();
+	virtual ~GridWorld() {};
 
-    static Module * Create(Parameter * p);
+    static Module * Create(Parameter * p) { return new GridWorld(p); };
 
     void		Draw(int x, int y);
+	void		SetSurrounding();
 
     void		SetSizes();
     void 		Init();
