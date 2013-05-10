@@ -110,6 +110,12 @@ GridWorld::Init()
 	if(GetIntValue("y_first") > 0)
 		y = GetIntValue("y_first");
 
+	if(x > size_x-2 || x < 1)
+		Notify(msg_fatal_error, "Module \"%s\": The 'x_first' parameter is out of bounds.\n", GetName());
+
+	if(y > size_y-2 || y < 1)
+		Notify(msg_fatal_error, "Module \"%s\": The 'y_first' parameter is out of bounds.\n", GetName());
+
 	location[y][x] = 1;
 
 	old_x = x;
@@ -268,9 +274,9 @@ GridWorld::Tick()
 void
 GridWorld::Draw(int _x, int _y)
 {
-	copy_matrix(image, obstacles, image_size_x, image_size_x);
+	copy_matrix(image, obstacles, image_size_y, image_size_x);
 
-	for (int j=0; j<image_size_x; j++)
+	for (int j=0; j<image_size_y; j++)
 		for (int i=0; i<image_size_x; i++)
 			if(values[j][i] > 0)
 				image[j][i] = 3;

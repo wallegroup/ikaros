@@ -25,45 +25,46 @@
 //
 
 #include "IKAROS.h"
+#include "../randomc.h"
 
 using namespace ikaros;
 
 class MultiCore: public Module 
 {
 public:
-	MultiCore(Parameter *pParam):Module(pParam) {};
-	virtual ~MultiCore(void) {};
-    static	Module* MultiCore::Create(Parameter *pParam) { return new MultiCore(pParam); };
+	MultiCore(Parameter * param):Module(param) {};
+	virtual ~MultiCore(void);
+    static	Module* MultiCore::Create(Parameter * param) { return new MultiCore(param); };
 	
 	void	SetSizes(void);
     void	Init(void);
     void	Tick(void);
 
 private:
-	int		m_iTick;
-	int		m_iPrint;
-	int		m_iLastPrintTick;
-	int		m_iAverage;
-	int		m_iEpochs;
-	int		m_iCrossTraining;
-	int		m_iActionLength;		// The length of the action vector
-	int		m_iInfinite;
+	int		tick;
+	int		print;
+	int		average;
+	int		last_print_tick;
+	int		last_action;
+
+	int		action_length;				// The length of the action vector
+	int		infinite_horizon;
+	int		select;
+	int		epochs;
 	
-	float	m_flDiscount;
-	float	m_flScale;
+	float	discount;
+	float	exploration;
 	
-	float	*m_pInActor_v;					// From learning module
-	float	*m_pInCritic_v;
-	float	*m_pInLastActorAction_v;		// Time delay
-	float	*m_pInLastCriticAction_v;		// Time delay
-	float	*m_pInReinforcement_v;			// From world module
-	float	*m_pLastReinforcement_v;		// Time delay
-	float	*m_pInSelectedAction_v;			// From selection module
-	float	*m_pInTrainAction_v;
+	float	*	InGradient;				// From learning module
+	float	*	InLastGradient;
+	float	*	InBias;					// From learning module
+	float	*	InLastBias;
+	float	*	InPunish;				// From learning module
+	float	*	InReward;				// From world module
 	
-	float	*m_pOutActorTarget_v;
-	float	*m_pOutCriticTarget_v;
-	float	*m_pOutLearn_v;
-	float	*m_pOutActorGrad_v;
-	float	*m_pOutCriticGrad_v;
+	float	*	OutGradientTarget;
+	float	*	OutBiasTarget;
+	float	*	OutSelectedAction;
+
+	TRanrotWGenerator * rand_gen;
 };

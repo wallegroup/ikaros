@@ -1417,5 +1417,8 @@
     <None Include="UserModules\CxQ\MultiCore\MultiCore.ikc">
       <Filter>CxQ</Filter>
     </None>
+    <None Include="WebUI\Classes\FourBars.js">
+      <Filter>WebUI</Filter>
+    </None>
   </ItemGroup>
 </Project>

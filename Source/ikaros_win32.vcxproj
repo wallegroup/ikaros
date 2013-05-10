@@ -522,7 +522,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="UserModules\CxQ\Merge\Merge.ikc" />
-    <None Include="UserModules\CxQ\MultiCore\MultiCore.ikc" />
+    <None Include="UserModules\CxQ\MultiCore\MultiCore.ikc">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="UserModules\CxQ\Punish\Punish.ikc" />
     <None Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.ikc" />
     <None Include="UserModules\CxQ\RLCore\RLCore.ikc" />
@@ -532,6 +534,7 @@
     <None Include="WebUI\Classes\Button.js" />
     <None Include="WebUI\Classes\Circle.js" />
     <None Include="WebUI\Classes\Cross.js" />
+    <None Include="WebUI\Classes\FourBars.js" />
     <None Include="WebUI\Classes\Grid.js" />
     <None Include="WebUI\Classes\Image.js" />
     <None Include="WebUI\Classes\Label.js" />
