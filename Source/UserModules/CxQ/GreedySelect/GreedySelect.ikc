@@ -16,7 +16,7 @@
 		<module class = "GreedySelect" name = "SELECT" minval = "0.0" epsilon = "0.01" delta = "0.95" />
 	</example>
 	
-	<parameter name="epsilon" type="float" default="0" description="The chance of taking a random action." />
+	<parameter name="epsilon" type="float" default="0.01" description="The chance of taking a random action." />
 	<parameter name="delta" type="float" default="0" description="The speed of reduction of the epsilon parameter." />
 	
 	<input name="ACTION" description="Input action from the core module." />

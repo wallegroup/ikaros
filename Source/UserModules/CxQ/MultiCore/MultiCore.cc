@@ -31,6 +31,7 @@
 MultiCore::~MultiCore()
 {
 	delete rand_gen;
+	destroy_array(ActionScore);
 }
 
 
@@ -61,8 +62,10 @@ void MultiCore::Init(void)
 	discount = GetFloatValue("discount");
 	infinite_horizon = GetIntValue("infinite_horizon");
 	select = GetIntValueFromList("select");
-	exploration = GetFloatValue("exploration");
+	exploration = double(GetFloatValue("exploration"));
 	epochs = GetIntValue("epochs");
+
+	ActionScore = create_array(action_length);
 	
 	tick = 0;
 	print = 0;
@@ -77,84 +80,82 @@ void MultiCore::Init(void)
 
 void MultiCore::Tick(void)
 {
-	copy_array(OutGradientTarget, InLastGradient, action_length);
-	
+	copy_array(ActionScore, InGradient, action_length);
+	add(ActionScore, InPunish, action_length);
+	add(ActionScore, InBias, action_length);
+
 	if(last_action > -1)
 	{
+		copy_array(OutGradientTarget, InLastGradient, action_length);
+		copy_array(OutBiasTarget, InLastBias, action_length);
+
 		if(*InReward > 0)	// reward the action that lead to the rewarding state
+		{
 			OutGradientTarget[last_action] = *InReward;
+		}
 		else	// the reward for the last tick is based on the ANN output this tick
-			OutGradientTarget[last_action] = *InReward + discount * max(InGradient, action_length);
+		{
+			OutGradientTarget[last_action] = *InReward + discount * max(ActionScore, action_length);
+		}
+
+		if(OutGradientTarget[last_action] * discount >= InLastGradient[last_action])
+			OutBiasTarget[last_action] = 0;
+		else
+			OutBiasTarget[last_action] = 0;
 
 		OutSelectedAction[last_action] = 0;	// clear the old action
 	}
 
-	float tmp[] = {0,0,0,0};
-	add(tmp, InPunish, action_length);
-	add(tmp, InGradient, action_length);
-
 	// select a new action
-	if(zero(tmp, action_length))
+	int action = rand_gen->IRandom(0, action_length-1);
+	if(!zero(ActionScore, action_length))
 	{
-		last_action = rand_gen->IRandom(0, action_length-1);
-	}
-	else
-	{
-		if(select == 0)
+		if(select == 0)	// greedy
 		{
-			// epsilon greedy
-			last_action = 0;
-			for(int i=1; i<action_length; ++i)
-			{
-				if(tmp[i] > tmp[last_action])
-					last_action = i;
-				else if(tmp[i] == tmp[last_action] && rand_gen->Random() < 0.5)
-					last_action = i;
-			}
-
-			if(rand_gen->Random() < exploration)
-			{
-				int random_action;
-				do
-				{
-					random_action = rand_gen->IRandom(0, action_length-1);
-				}
-				while(last_action == random_action);
-			}
+			if(rand_gen->Random() > exploration)
+				for(int i=0; i<action_length; ++i)
+					if(ActionScore[i] > ActionScore[action])
+						action = i;
 		}
 		else
 		{
-			// boltzmann select
-			last_action = -1;
-
-			float low = min(tmp, action_length);
-			if(low < 0)
-				add(tmp, low, action_length);
-
-			double sum = 0;
-			double alpha = 1.0 / double(exploration);
-			
-			for(int i=0; i<action_length; ++i)
-				sum += ::exp(alpha*double(tmp[i]));
-			
-			double rs = rand_gen->Random() * sum;
-			double ss = 0;
-			for (int i=0; i<action_length; i++)
+			if(exploration > 0.0015)	// boltzmann
 			{
-				ss += ::exp(alpha*double(tmp[i]));
-				if (ss >= rs)
+				normalize(ActionScore, action_length);
+
+				double sum = 0;
+				double alpha = 1 / exploration;
+				for(int i=0; i<action_length; ++i)
+					sum += ::exp(alpha * ActionScore[i]);
+		
+				if(0 != sum)
 				{
-					last_action = i;
-					break;
+					double limit = rand_gen->Random() * sum;
+					action = action_length - 1;
+					sum = 0;
+
+					for(int i=0; i<action_length; ++i)
+					{
+						sum += ::exp(alpha * ActionScore[i]);
+						if(sum >= limit)
+						{
+							action = i;
+							break;
+						}
+					}
 				}
 			}
-		
-			if(last_action < 0)
-				last_action = rand_gen->IRandom(0, action_length-1);
+			else	// greedy
+			{
+				for(int i=0; i<action_length; ++i)
+					if(ActionScore[i] > ActionScore[action])
+						action = i;
+			}
 		}
 	}
 
-	OutSelectedAction[last_action] = 1;	// set the next action
+	OutSelectedAction[action] = 1;	// set the next action
+	last_action = action;
 
 	if(epochs > 0 && *InReward > 0)	// arrived at goal state
 	{

@@ -66,5 +66,7 @@ private:
 	float	*	OutBiasTarget;
 	float	*	OutSelectedAction;
 
+	float	*	ActionScore;
+
 	TRanrotWGenerator * rand_gen;
 };

@@ -98,19 +98,6 @@ void RLCore::Tick(void)
 	{
 		m_pOutTarget_v[iSelected] = *m_pInReinforcement_v + m_flDiscount * max(m_pInAction_v, m_iActionLength);
 	}
-	else if(m_iInfinite == 2)
-	{		
-		if(*m_pInReinforcement_v > 0)	// Reward the action that lead to the rewarding state
-			m_pOutTarget_v[iSelected] = *m_pInReinforcement_v;
-		else	// The reward for the last tick is based on the ANN output this tick
-		{
-			float tmp = max(m_pInAction_v, m_iActionLength);
-			if(tmp > 0)
-				m_pOutTarget_v[iSelected] = *m_pInReinforcement_v + m_flDiscount * tmp;
-			else
-				m_pOutTarget_v[iSelected] = *m_pInReinforcement_v + (2.0f-m_flDiscount) * tmp;
-		}
-	}
 	else
 	{		
 		if(*m_pInReinforcement_v > 0)	// Reward the action that lead to the rewarding state
