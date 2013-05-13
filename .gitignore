@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.obj
 
 # Packages #
 ############
@@ -25,6 +26,9 @@
 *.log
 *.sql
 *.sqlite
+*.sdf
+*.opensdf
+*.pdb
 
 # OS generated files #
 ######################
@@ -36,3 +40,6 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+/Debug/
+/Release/
+/ipch/
