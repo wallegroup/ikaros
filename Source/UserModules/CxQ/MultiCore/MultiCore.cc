@@ -82,7 +82,6 @@ void MultiCore::Tick(void)
 {
 	copy_array(ActionScore, InGradient, action_length);
 	add(ActionScore, InPunish, action_length);
-	add(ActionScore, InBias, action_length);
 
 	if(last_action > -1)
 	{
@@ -98,13 +97,15 @@ void MultiCore::Tick(void)
 			OutGradientTarget[last_action] = *InReward + discount * max(ActionScore, action_length);
 		}
 
-		if(OutGradientTarget[last_action] * discount >= InLastGradient[last_action])
-			OutBiasTarget[last_action] = 0;
+		if(OutGradientTarget[last_action] * discount >= InLastGradient[last_action] && OutGradientTarget[last_action] != 0)
+			OutBiasTarget[last_action] = 0.2;
 		else
 			OutBiasTarget[last_action] = 0;
 
 		OutSelectedAction[last_action] = 0;	// clear the old action
 	}
+
+	add(ActionScore, InBias, action_length);
 
 	// select a new action
 	int action = rand_gen->IRandom(0, action_length-1);

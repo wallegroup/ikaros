@@ -30,6 +30,16 @@
 class RandomMazeGenerator: public Module
 {
 public:
+	static Module * Create(Parameter * p) { return new RandomMazeGenerator(p); }
+
+	RandomMazeGenerator(Parameter*);
+	virtual ~RandomMazeGenerator();
+
+	void    SetSizes();
+	void 	Init();
+	void 	Tick() {};
+
+private:
 	int     size;
 	int     startx;
 	int     starty;
@@ -41,17 +51,11 @@ public:
 	float	**	output;
 	float	**	goal;
 
-	static Module * Create(Parameter * p) { return new RandomMazeGenerator(p); }
-
-	RandomMazeGenerator(Parameter*);
-	virtual ~RandomMazeGenerator();
-
-	void    SetSizes();
-	void 	Init();
-	void 	Tick() {};
 	int		GenerateRandomMaze();
 	int		GeneratePerfectMaze();
 	int		GenerateRoomMaze();
+	int		Generate4Maze();
+
 	float	FindMaxDistance();
 
 	TRanrotWGenerator * rand_gen;

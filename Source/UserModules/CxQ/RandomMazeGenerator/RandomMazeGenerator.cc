@@ -338,6 +338,20 @@ RandomMazeGenerator::GenerateRoomMaze()
 
 
 
+int
+RandomMazeGenerator::Generate4Maze()
+{
+	int x, y;
+	float ** tmp = create_matrix("1 1 1 1 1 1 1 1 1 1 1 1 1 1; 		1 0 0 0 0 0 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1", x, y);
+
+	copy_matrix(output, tmp, x, y);
+			
+	// flood fill the maze to find the furthest accessible tile
+	return FindMaxDistance();
+}
+
+
+
 float
 RandomMazeGenerator::FindMaxDistance()
 {
@@ -430,6 +444,8 @@ RandomMazeGenerator::Init()
 		while(!GeneratePerfectMaze());
 	else if(mode == 2)
 		while(!GenerateRoomMaze());
+	else
+		while(!Generate4Maze());
 }
 
 
