@@ -341,6 +341,9 @@ RandomMazeGenerator::GenerateRoomMaze()
 int
 RandomMazeGenerator::Generate4Maze()
 {
+	if(14 != size)
+		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter must equal 14.\n", GetName());
+
 	int x, y;
 	float ** tmp = create_matrix("1 1 1 1 1 1 1 1 1 1 1 1 1 1; 		1 0 0 0 0 0 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1", x, y);
 
