@@ -36,6 +36,7 @@ public:
 		
 		static	Module* Create(Parameter *pParam) {	return new LinearNet(pParam); };
 		
+		void	SetSizes(void);
 		void 	Init(void);
 		void 	Tick(void);
 
@@ -55,6 +56,8 @@ private:
 		// ANN
 		int		m_iInputLength;
 		int		m_iOutputLength;
+		int		m_iImgSizeY;
+		int		m_iImgSizeX;
 
 		bool	m_bLimit;
 		

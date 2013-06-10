@@ -25,107 +25,16 @@
 
 #include "CSFA.h"
 
+
+
 CSFA::CSFA(Parameter *pParam):Module(pParam)
 {
-	AddInput("INPUT");
-	AddInput("CONTEXT");
-	AddInput("T-INPUT");
-	AddInput("T-CONTEXT");
-	AddInput("T-OUTPUT");
-	AddInput("LEARN");
-	
-	AddOutput("OUTPUT");
-
-#if ARROWS
-	AddInput("IMAGE");
-	AddOutput("XVALUE");
-	AddOutput("YVALUE");
-
-	m_OutValueX_m = NULL;
-	m_OutValueY_m = NULL;
-#endif
-	
-	m_InInput			= NULL;
-	m_InContext			= NULL;
-	m_InTrainInput		= NULL;
-	m_InTrainContext	= NULL;
-	m_InTeach			= NULL;
-	m_InLearn			= NULL;
-	m_OutOutput			= NULL;
-	
-	m_LrW_STR  = GetFloatValue("str", -1.0f);
-	m_LrW_WEA  = GetFloatValue("wea", -1.0f);
-	m_LrU_INH  = GetFloatValue("inh", -1.0f);
-	m_LrU_DIS  = GetFloatValue("dis", -1.0f);
-	m_StartWt  = GetFloatValue("startweights", -1.0f);
-	m_StartInh = GetFloatValue("startinhibition", -1.0f);
-
-	m_limit = GetBoolValue("limit");
-}
-
-
-CSFA::~CSFA(void)
-{
-	destroy_array(m_TrainOutput);
-	destroy_array(m_Error);
-	destroy_matrix(m_Weights);
-	destroy_matrix(m_OutputLimit);
-	destroy_cube(m_Inhibition);
-}
-
-
-void CSFA::Init(void)
-{	
-	m_InInput			= GetInputArray("INPUT");
-	m_InContext			= GetInputArray("CONTEXT");
-	m_InTrainInput		= GetInputArray("T-INPUT");
-	m_InTrainContext	= GetInputArray("T-CONTEXT");
-	m_InTeach			= GetInputArray("T-OUTPUT");
-	
-	if(InputConnected("LEARN"))
-	{
-		m_InLearn = GetInputArray("LEARN");
-	}
-	else
-	{
-		m_InLearn = NULL;
-	}
-	
-	m_OutOutput = GetOutputArray("OUTPUT");
-
-#if ARROWS
-	m_InImage_m   = GetInputMatrix("IMAGE");
-	m_OutValueX_m = GetOutputMatrix("XVALUE");
-	m_OutValueY_m = GetOutputMatrix("YVALUE");
-#endif
-
-	m_InputLength   = GetInputSize("INPUT");
-	m_ContextLength = GetInputSize("CONTEXT");
-	m_OutputLength  = GetInputSize("T-OUTPUT");
-	
-	m_TrainOutput = create_array(m_OutputLength);
-	m_Error = create_array(m_OutputLength);										// Store output error
-	m_Weights = create_matrix(m_OutputLength, m_InputLength);					// Store stimuli weights
-	m_OutputLimit = create_matrix(m_OutputLength, m_ContextLength);				// Store maximum allowed output
-	m_Inhibition = create_cube(m_ContextLength, m_OutputLength, m_InputLength);	// Store context weights
-
-	set_matrix(m_OutputLimit, 0.0f, m_OutputLength, m_ContextLength);	// Allow max output
-	
-	if(m_StartWt > 0 || m_StartInh > 0)
-	{
-		for(int i = 0; i < m_InputLength; i++)
-		{
-			for(int j = 0; j < m_OutputLength; j++)
-			{
-				m_Weights[i][j] = m_StartWt;
-				
-				for(int k = 0; k < m_ContextLength; k++)
-				{
-					m_Inhibition[i][j][k] = m_StartInh;
-				}
-			}
-		}
-	}
+	m_LrW_STR  = GetFloatValue("str");
+	m_LrW_WEA  = GetFloatValue("wea");
+	m_LrU_INH  = GetFloatValue("inh");
+	m_LrU_DIS  = GetFloatValue("dis");
+	m_StartWt  = GetFloatValue("startweights");
+	m_StartInh = GetFloatValue("startinhibition");
 
 	if(m_LrW_STR < 0)
 		Notify(msg_fatal_error, "Module \"%s\": The 'str' parameter is not set.\n", GetName());
@@ -144,11 +53,117 @@ void CSFA::Init(void)
 
 	if(m_StartInh < 0)
 		Notify(msg_fatal_error, "Module \"%s\": The 'startinhibition' parameter is not set.\n", GetName());
+
+	m_limit = GetBoolValue("limit");
 }
+
+
+
+CSFA::~CSFA(void)
+{
+	destroy_array(m_TrainOutput);
+	destroy_array(m_Error);
+	destroy_matrix(m_Weights);
+	destroy_matrix(m_OutputLimit);
+	destroy_matrix(m_Inhibition);
+}
+
+
+
+void CSFA::SetSizes(void)
+{
+	m_InputLength   = GetInputSize("INPUT");
+	m_ContextLength = GetInputSize("CONTEXT");
+	m_OutputLength  = GetInputSize("T-OUTPUT");
+
+	SetOutputSize("OUTPUT", m_OutputLength);
+
+#if ARROWS
+	if(InputConnected("IMAGE"))
+	{
+		m_ImgSizeX = GetInputSizeX("IMAGE");
+		m_ImgSizeY = GetInputSizeY("IMAGE");
+	}
+	else
+	{
+		m_ImgSizeX = m_ImgSizeY = 9;
+	}
+
+	SetOutputSize("XVALUE", m_ImgSizeX, m_ImgSizeY);
+	SetOutputSize("YVALUE", m_ImgSizeX, m_ImgSizeY);
+#endif
+}
+
+
+
+void CSFA::Init(void)
+{
+	m_InInput		 = GetInputArray("INPUT");
+	m_InContext		 = GetInputArray("CONTEXT");
+	m_InTrainInput	 = GetInputArray("T-INPUT");
+	m_InTrainContext = GetInputArray("T-CONTEXT");
+	m_InTeach		 = GetInputArray("T-OUTPUT");
+	
+	if(InputConnected("LEARN"))
+		m_InLearn = GetInputArray("LEARN");
+	else
+		m_InLearn = NULL;
+	
+	m_OutOutput = GetOutputArray("OUTPUT");
+	
+	m_TrainOutput = create_array(m_OutputLength);
+	m_Error = create_array(m_OutputLength);											// Store output error
+	m_Weights = create_matrix(m_OutputLength, m_InputLength);						// Store stimuli weights
+	m_OutputLimit = create_matrix(m_OutputLength, m_ContextLength);					// Store maximum allowed output
+	m_Inhibition = create_matrix(m_ContextLength, m_OutputLength, m_InputLength);	// Store context weights
+
+	//m_Test = create_matrix(m_OutputLength, m_ContextLength);	// Context to output weights (degrades performance)
+	m_OldTrainInput = create_array(m_InputLength);
+
+	if(m_StartWt > 0 || m_StartInh > 0)
+	{
+		for(int i = 0; i < m_InputLength; i++)
+		{
+			for(int j = 0; j < m_OutputLength; j++)
+			{
+				m_Weights[i][j] = m_StartWt;
+				for(int k = 0; k < m_ContextLength; k++)
+					m_Inhibition[i][j][k] = m_StartInh;
+			}
+		}
+	}
+
+	m_OldContext = -1;
+
+	// DEBUG
+#if ARROWS
+	m_OutValueX_m = GetOutputMatrix("XVALUE");
+	m_OutValueY_m = GetOutputMatrix("YVALUE");
+	if(InputConnected("IMAGE"))
+		m_InImage_m = GetInputMatrix("IMAGE");
+	else
+		m_InImage_m = NULL;
+#endif
+}
+
 
 
 void CSFA::Tick(void)
 {
+	int cx = -1;
+	for(int k = 0; k < m_ContextLength; k++)
+	{
+		if(m_InTrainContext[k] > 0)
+		{
+			cx = k;
+			break;
+		}
+	}
+
+	if(m_OldContext > -1 && cx != m_OldContext) PropagateContext(m_OldTrainInput, m_InTrainInput, m_OldContext, cx);
+	m_OldContext = cx;
+	copy_array(m_OldTrainInput, m_InTrainInput, m_InputLength);
+
 	if(m_InLearn == NULL)
 	{
 		Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);		// Recreate old output
@@ -176,28 +191,29 @@ void CSFA::Tick(void)
 #if ARROWS
 	if(m_InImage_m != NULL)
 	{
-		reset_array(m_InTrainInput, m_InputLength);
-		reset_array(m_InTrainContext, m_ContextLength);
+		float * tmpInput = create_array(m_InputLength);
+		float * tmpContext = create_array(m_ContextLength);
 		
 		int dir = 0;
 		int pos = 0;
 		int best = 0;
-		int xlen = GetInputSizeX("IMAGE");
-		int ylen = GetInputSizeY("IMAGE");
 		
-		for(int y = 1; y < ylen-1; y++)
+		for(int y=1; y<m_ImgSizeY-1; ++y)
 		{
-			for(int x = 1; x < xlen-1; x++)
+			for(int x=1; x<m_ImgSizeX-1; ++x)
 			{
-				SetSurrounding(x, y);
-				if(m_InTrainInput[4] < 1.01f && m_InTrainInput[4] > 0.99f)
+				if(m_InImage_m[y][x] < 1.0f)
 				{
-					pos = y*xlen + x;
-					m_InTrainContext[pos] = 1;
-					Ask(m_InTrainInput, m_InTrainContext, m_TrainOutput);
-					m_InTrainContext[pos] = 0;
+					m_OutValueX_m[y][x] = m_OutValueY_m[y][x] = 0;
+					SetSurrounding(x, y, tmpInput);
+				
+					pos = y * m_ImgSizeX + x;
+					tmpContext[pos] = 1;
+					Ask(tmpInput, tmpContext, m_TrainOutput);
+					tmpContext[pos] = 0;
+
 					best = arg_max(m_TrainOutput, m_OutputLength);
-					if(m_TrainOutput[best] > 0)
+					if(m_TrainOutput[best] > 0 && (m_TrainOutput[best] != m_TrainOutput[arg_min(m_TrainOutput, m_OutputLength)]))
 					{
 						if(best == 0)	// Up
 						{
@@ -219,24 +235,34 @@ void CSFA::Tick(void)
 							m_OutValueX_m[y][x] = -1;
 							m_OutValueY_m[y][x] = 0;
 						}
-					}
-					else
-					{
-						m_OutValueX_m[y][x] = 0;
-						m_OutValueY_m[y][x] = 0;
+						else	// Error
+						{
+							m_OutValueX_m[y][x] = -1;
+							m_OutValueY_m[y][x] = -1;
+						}
 					}
 				}
 			}
 		}
+
+		destroy_array(tmpInput);
+		destroy_array(tmpContext);
 	}
 #endif
 }
 
 
+
 inline void CSFA::Ask(float *Input, float *Context, float *Output)
 {
 	reset_array(Output, m_OutputLength);
-	
+	/*
+	// Context to output weights (degrades performance)
+	for(int k = 0; k < m_ContextLength; k++)
+		if(Context[k] != 0)
+			for(int j = 0; j < m_OutputLength; j++)
+				Output[j] += Context[k] * m_Test[k][j];
+	*/
 	// Calculate output
 	for(int i = 0; i < m_InputLength; i++)
 	{
@@ -245,11 +271,8 @@ inline void CSFA::Ask(float *Input, float *Context, float *Output)
 			for(int j = 0; j < m_OutputLength; j++)
 			{
 				float Iij = 1.0f;
-				
 				for(int k = 0; k < m_ContextLength; k++)
-				{
 					Iij *= 1.0f - Context[k] * m_Inhibition[i][j][k];
-				}
 				
 				Output[j] += Input[i] * m_Weights[i][j] * Iij;
 			}
@@ -264,13 +287,12 @@ inline void CSFA::Ask(float *Input, float *Context, float *Output)
 			if(Context[k] > 0)
 			{
 				for(int j = 0; j < m_OutputLength; j++)
-				{
 					Output[j] = min(1.0f - m_OutputLimit[k][j] * Context[k], Output[j]);
-				}
 			}
 		}
 	}
 }
+
 
 
 inline void CSFA::Train(float *Input, float *Context, float *Output, float *Target, float Scale)
@@ -282,9 +304,7 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 	{
 		// Calculate errors
 		for(j = 0; j < m_OutputLength; j++)
-		{
 			m_Error[j] = Target[j] - Output[j];
-		}
 
 		// Adjust output limit
 		if(m_limit)
@@ -294,12 +314,21 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 				if(Context[k] > 0)
 				{
 					for(j = 0; j < m_OutputLength; j++)
-					{
 						m_OutputLimit[k][j] = min(0.5f * (1.0f-Target[j]) + 0.5f * m_OutputLimit[k][j], 1.0f);
-					}
 				}
 			}
 		}
+		/*
+		// Adjust context to output weights (degrades performance)
+		for(j = 0; j < m_OutputLength; j++)
+		{
+			if(m_Error[j] != 0)
+			{
+				for(k = 0; k < m_ContextLength; k++)
+					if(Context[k] != 0)
+						m_Test[k][j] += Context[k] * m_Error[j] * m_LrW_STR * Scale;
+			}
+		}*/
 
 		// Adjust weights
 		for(i = 0; i < m_InputLength; i++)
@@ -316,7 +345,8 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 							{
 								if(Context[k] > 0)
 								{
-									m_Inhibition[i][j][k] = max((m_LrU_DIS * Scale * Context[k] * m_Error[j] * (1.0f-m_Inhibition[i][j][k])) / (m_Weights[i][j] * InputSum), 0.0f);
+									m_Inhibition[i][j][k] = max((m_LrU_DIS * Scale * Context[k] * m_Error[j] * 
+										(1.0f-m_Inhibition[i][j][k])) / (m_Weights[i][j] * InputSum), 0.0f);
 								}
 							}
 						}
@@ -338,9 +368,7 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 						}
 
 						if(m_LrW_WEA > 0)
-						{
 							m_Weights[i][j] = max(m_Weights[i][j] + Input[i] / InputSum * m_Error[j] * m_LrW_WEA * Scale, 0.0f);
-						}
 					}
 				}
 			}
@@ -349,45 +377,75 @@ inline void CSFA::Train(float *Input, float *Context, float *Output, float *Targ
 }
 
 
-#if ARROWS
-void CSFA::SetSurrounding(int xpos, int ypos)
-{
-	int k = 0;
-	for (int y = 0; y < 3; y++)
-	{
-		for (int x = 0; x < 3; x++)
-		{
-			if(m_InImage_m[ypos+y-1][xpos+x-1] != 1)
-			{
-				m_InTrainInput[k] = 1.0f;
-			}
-			else
-			{
-				m_InTrainInput[k] = 0.0f;
-			}
 
-			k++;
+inline void	CSFA::PropagateContext(float * InputOld, float * InputNew, int OldCx, int Cx)
+{
+	for(int i = 0; i < m_InputLength; i++)
+	{
+		if(InputOld[i] > 0 && InputNew[i] > 0)
+		{
+			for(int j = 0; j < m_OutputLength; j++)
+			{
+				m_Inhibition[i][j][Cx] = m_Inhibition[i][j][Cx] * 0.8 + m_Inhibition[i][j][OldCx] * 0.2;
+			}
 		}
 	}
+}
 
-	for (int y = 0; y < 3; y++)
+
+#if ARROWS
+void CSFA::SetSurrounding(int xpos, int ypos, float * input)
+{
+	if(m_InputLength == 256)
 	{
-		for (int x = 0; x < 3; x++)
+		int obst[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+		int j = 0;
+		int k = 0;
+		for(int dy=0; dy<3; ++dy)
 		{
-			if(m_InImage_m[ypos+y-1][xpos+x-1] != 1)
+			for(int dx=0; dx<3; ++dx)
 			{
-				m_InTrainInput[k] = 0.0f;
-			}
-			else
-			{
-				m_InTrainInput[k] = 1.0f;
-			}
+				if(m_InImage_m[ypos+dy-1][xpos+dx-1] > 0.99f && m_InImage_m[ypos+dy-1][xpos+dx-1] < 1.01f)
+					obst[k] = 1;
 
-			k++;
+				k++;
+			}
+		}
+
+		k = 0;
+		for(int i=0; i<9; i++)
+		{
+			if(i != 4)
+			{
+				if(obst[i] > 0)
+					j += pow(2, k);
+
+				++k;
+			}
+		}
+	
+		input[j] = 1.0f;
+	}
+	else if(m_InputLength == 18)
+	{
+		int j = 0;
+		int k = 0;
+		for(int dy=0; dy<3; ++dy)
+		{
+			for(int dx=0; dx<3; ++dx)
+			{
+				if(m_InImage_m[ypos+dy-1][xpos+dx-1] > 0.99f && m_InImage_m[ypos+dy-1][xpos+dx-1] < 1.01f)
+					input[k] = 1;
+				else
+					input[k+9] = 1;
+
+				k++;
+			}
 		}
 	}
 }
 #endif
+
 
 
 static InitClass init("CSFA", &CSFA::Create, "Source/UserModules/CxQ/CSFA/");

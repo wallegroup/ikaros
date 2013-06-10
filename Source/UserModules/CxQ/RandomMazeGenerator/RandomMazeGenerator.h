@@ -55,6 +55,7 @@ private:
 	int		GeneratePerfectMaze();
 	int		GenerateRoomMaze();
 	int		Generate4Maze();
+	int		GenerateSMaze();
 
 	float	FindMaxDistance();
 

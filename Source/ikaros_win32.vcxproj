@@ -526,7 +526,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="UserModules\CxQ\Punish\Punish.ikc" />
-    <None Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.ikc" />
+    <None Include="UserModules\CxQ\RandomMazeGenerator\RandomMazeGenerator.ikc">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="UserModules\CxQ\RLCore\RLCore.ikc" />
     <None Include="UserModules\CxQ\SARSA\SARSA.ikc" />
     <None Include="WebUI\Classes\ArrayLine.js" />

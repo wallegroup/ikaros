@@ -74,8 +74,8 @@ void        destroy_matrix(float ** m);
 void        destroy_matrix(float *** m);
 void        destroy_matrix(float **** m);
 
-float *     copy_array(float * r, float * a, int size);
-float **    copy_matrix(float ** r, float ** a, int sizex, int sizey);
+float *     copy_array(float * destination, float * source, int size);
+float **    copy_matrix(float ** destination, float ** source, int sizex, int sizey);
 
 float *     reset_array(float * a, int size);
 float **	reset_matrix(float ** m, int sizex, int sizey);

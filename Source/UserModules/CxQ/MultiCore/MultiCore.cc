@@ -32,6 +32,7 @@ MultiCore::~MultiCore()
 {
 	delete rand_gen;
 	destroy_array(ActionScore);
+	destroy_array(LastPunish);
 }
 
 
@@ -41,10 +42,9 @@ void MultiCore::SetSizes(void)
 	action_length = GetIntValue("actions");
 	SetOutputSize("GRADIENT_TARGET", action_length);
 	SetOutputSize("BIAS_TARGET", action_length);
+	SetOutputSize("EXPLORE_TARGET", action_length);
 	SetOutputSize("ACTION", action_length);
 }
-
-
 
 void MultiCore::Init(void)
 {
@@ -52,11 +52,14 @@ void MultiCore::Init(void)
 	InLastGradient	= GetInputArray("LAST_GRAD");
 	InBias			= GetInputArray("BIAS");
 	InLastBias		= GetInputArray("LAST_BIAS");
+	InExplore		= GetInputArray("EXPLORE");
+	InLastExplore	= GetInputArray("LAST_EXPLORE");
 	InPunish		= GetInputArray("PUNISH");
 	InReward		= GetInputArray("REWARD");
 	
 	OutGradientTarget	= GetOutputArray("GRADIENT_TARGET");
 	OutBiasTarget		= GetOutputArray("BIAS_TARGET");
+	OutExploreTarget	= GetOutputArray("EXPLORE_TARGET");
 	OutSelectedAction	= GetOutputArray("ACTION");
 	
 	discount = GetFloatValue("discount");
@@ -66,6 +69,7 @@ void MultiCore::Init(void)
 	epochs = GetIntValue("epochs");
 
 	ActionScore = create_array(action_length);
+	LastPunish = create_array(action_length);
 	
 	tick = 0;
 	print = 0;
@@ -83,29 +87,34 @@ void MultiCore::Tick(void)
 	copy_array(ActionScore, InGradient, action_length);
 	add(ActionScore, InPunish, action_length);
 
+	// train
 	if(last_action > -1)
 	{
 		copy_array(OutGradientTarget, InLastGradient, action_length);
 		copy_array(OutBiasTarget, InLastBias, action_length);
+		copy_array(OutExploreTarget, InLastExplore, action_length);
+
+		add(OutExploreTarget, LastPunish, action_length);
+		OutExploreTarget[last_action] = discount * max(InLastExplore, action_length) - 0.01f;
 
 		if(*InReward > 0)	// reward the action that lead to the rewarding state
-		{
 			OutGradientTarget[last_action] = *InReward;
-		}
 		else	// the reward for the last tick is based on the ANN output this tick
+			OutGradientTarget[last_action] = discount * max(ActionScore, action_length) + *InReward;
+
+		if(OutGradientTarget[last_action] > 0)
 		{
-			OutGradientTarget[last_action] = *InReward + discount * max(ActionScore, action_length);
+			if(OutGradientTarget[last_action] * discount >= InLastGradient[last_action])
+				OutBiasTarget[last_action] = 1;
+			else
+				OutBiasTarget[last_action] = -1;
 		}
 
-		if(OutGradientTarget[last_action] * discount >= InLastGradient[last_action] && OutGradientTarget[last_action] != 0)
-			OutBiasTarget[last_action] = 0.2;
-		else
-			OutBiasTarget[last_action] = 0;
-
-		OutSelectedAction[last_action] = 0;	// clear the old action
+		OutSelectedAction[last_action] = 0;	// clear the previous action
 	}
 
 	add(ActionScore, InBias, action_length);
+	add(ActionScore, InExplore, action_length);
 
 	// select a new action
 	int action = rand_gen->IRandom(0, action_length-1);
@@ -157,6 +166,7 @@ void MultiCore::Tick(void)
 
 	OutSelectedAction[action] = 1;	// set the next action
 	last_action = action;
+	copy_array(LastPunish, InPunish, action_length);
 
 	if(epochs > 0 && *InReward > 0)	// arrived at goal state
 	{

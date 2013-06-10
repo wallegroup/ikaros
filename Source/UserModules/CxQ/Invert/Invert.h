@@ -38,7 +38,7 @@ public:
 	void	SetSizes();
     void	Tick();
 
-	int		size;
+	int		input_size;
 
     float *	input;
     float * output;

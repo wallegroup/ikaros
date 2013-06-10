@@ -23,11 +23,11 @@
 	<input name="T-INPUT" description="Training data." />
 	<input name="T-OUTPUT" description="Target output." />
 	<input name="LEARN" description="The learning rate is scaled by the input. Learning is set to 1.0 if not connected." />
-  <!--input name="IMAGE" description="Maze." /-->
+  <input name="IMAGE" description="Maze." />
 	
-	<output name="OUTPUT" description="Output data." size_set="T-OUTPUT"/>
-  <!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
-	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size_set="IMAGE"/-->
+	<output name="OUTPUT" description="Output data." />
+  <output name="XVALUE" description="Estimated reward for moving in the x-axis." />
+	<output name="YVALUE" description="Estimated reward for moving in the y-axis." />
 
 	<module class="LinearNet" />
 	

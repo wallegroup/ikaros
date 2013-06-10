@@ -27,20 +27,22 @@
 
 using namespace ikaros;
 
-#define ARROWS 0
+#define ARROWS 1
 
 class CSFA: public Module
 {
 public:
 			CSFA(Parameter*);	
     virtual ~CSFA(void);
-	static	Module* Create(Parameter* pParam) {return new CSFA(pParam);};
+	static	Module* Create(Parameter* pParam) { return new CSFA(pParam); };
 	
+	void	SetSizes(void);
 	void 	Init(void);
 	void	Tick(void);
 	
 private:
 	inline void	 Ask(float*, float*, float*);
+	inline void	 PropagateContext(float*, float*, int, int);
 	inline void	 Train(float*, float*, float*, float*, float flScale = 1.0f);
 	
 	// IKAROS
@@ -51,11 +53,13 @@ private:
 	float	*m_InTeach;
 	float	*m_InLearn;
 	float	*m_OutOutput;
+	float	*m_OldTrainInput;
 	
 	// ANN
 	int		m_InputLength;
 	int		m_ContextLength;
 	int		m_OutputLength;
+	int		m_OldContext;
 
 	bool	m_limit;
 	
@@ -66,32 +70,19 @@ private:
 	float	m_StartWt;
 	float	m_StartInh;
 	
-	float	*m_TrainOutput;
-	float	*m_Error;
-	float	**m_Weights;
-	float	**m_OutputLimit;
-	float	***m_Inhibition;
-	
-	float *** create_cube(int iSizeX, int iSizeY, int iSizeZ)
-	{
-		float ***a = new float** [iSizeZ];
-		for(int i = 0; i < iSizeZ; i++)
-			a[i] = create_matrix(iSizeX, iSizeY);
-		return a;
-	}
-	
-	void destroy_cube(float ***a)
-	{
-		if(a == NULL)
-			return;
-		free(**a);
-		free(*a);
-		free(a);
-	}
+	float	*	m_TrainOutput;
+	float	*	m_Error;
+	float	**	m_Weights;
+	float	**	m_OutputLimit;
+	float	**	m_Test;
+	float	***	m_Inhibition;
 
 	// DEBUG
 #if ARROWS
-	void	SetSurrounding(int, int);
+	void	SetSurrounding(int, int, float*);
+
+	int		m_ImgSizeX;
+	int		m_ImgSizeY;
 
 	float	**m_InImage_m;
 	float	**m_OutValueX_m;

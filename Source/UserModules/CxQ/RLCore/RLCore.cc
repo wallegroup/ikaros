@@ -29,23 +29,6 @@
 
 RLCore::RLCore(Parameter *pParam):Module(pParam)
 {
-	AddInput("ACTION");			// Action output from the learning module
-	AddInput("LAST_ACTION");
-	AddInput("REINFORCEMENT");	// Reinforcement from the world module
-	AddInput("SELECTED_ACTION");	// The action corresponding to the incomming reinforcement
-	
-	AddOutput("ACTION");			// Action to the selection module
-	AddOutput("TARGET");			// Target output to the learning module
-	
-	m_pInAction_v		  = NULL;
-	m_pLastInAction_v	  = NULL;
-	m_pInReinforcement_v  = NULL;
-	m_pInSelectedAction_v = NULL;
-	m_pInTrainAction_v	  = NULL;
-	
-	m_pOutAction_v = NULL;
-	m_pOutTarget_v = NULL;
-	
 	m_iActionLength = GetIntValue("actions");
 	m_flDiscount = GetFloatValue("discount");
 	m_iInfinite = GetIntValue("infinite_horizon");

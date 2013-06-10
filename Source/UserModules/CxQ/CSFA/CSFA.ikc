@@ -27,12 +27,12 @@
 		<module class = "CSFA" name = "ANN" str = "0.2" wea = "0.05" inh = "0.4" dis = "0.1" startweights = "0.0" />
 	</example>
 	
-	<parameter name="str" type="float" description="Learning rate for strengthening associations." />
-	<parameter name="wea" type="float" description="Learning rate for weakening associations." />
-	<parameter name="inh" type="float" description="Learning rate for inhibiting associations." />
-	<parameter name="dis" type="float" description="Learning rate for disinhibiting associations." />
-	<parameter name="startweights" type="float" description="Initial value for input-output weights." />
-	<parameter name="startinhibition" type="float" description="Initial value for the inhibition of the input-output weights." />
+	<parameter name="str" type="float" default="-1" description="Learning rate for strengthening associations." />
+	<parameter name="wea" type="float" default="0" description="Learning rate for weakening associations." />
+	<parameter name="inh" type="float" default="-1" description="Learning rate for inhibiting associations." />
+	<parameter name="dis" type="float" default="-1" description="Learning rate for disinhibiting associations." />
+	<parameter name="startweights" type="float" default="-1" description="Initial value for input-output weights." />
+	<parameter name="startinhibition" type="float" default="0" description="Initial value for the inhibition of the input-output weights." />
   <parameter name="limit" type="bool" default="no" description="Limit output by context." />
 	
 	<input name="INPUT" description="Input data." />
@@ -41,11 +41,11 @@
 	<input name="T-CONTEXT" description="Context data used when training." />
 	<input name="T-OUTPUT" description="Target output." />
 	<input name="LEARN" description="Can be used to turn off or slow down learning by scaling the learning rate parameters. Learning is always on if left unconnected." />
-	<!--input name="IMAGE" description="Maze." /-->
+	<input name="IMAGE" description="Maze." />
 	
-	<output name="OUTPUT" description="Output data." size_set="T-OUTPUT"/>
-	<!--output name="XVALUE" description="Estimated reward for moving in the x-axis." size_set="IMAGE"/>
-	<output name="YVALUE" description="Estimated reward for moving in the y-axis." size_set="IMAGE"/-->
+	<output name="OUTPUT" description="Output data." />
+	<output name="XVALUE" description="Estimated reward for moving in the x-axis." />
+  <output name="YVALUE" description="Estimated reward for moving in the y-axis." />
 	
 	<module class="CSFA" />
 	

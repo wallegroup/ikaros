@@ -44,6 +44,7 @@ public:
 private:
 	int		m_iInputSize;
 	int		m_iLastValue;
+	int		m_iSkipIndex;
 	
 	float	*m_pInInput_v;
 	float	*m_pOutOutput_v;

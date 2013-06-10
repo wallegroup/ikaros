@@ -21,6 +21,7 @@
 
 #include "Invert.h"
 
+
 void
 Invert::Init()
 {
@@ -28,17 +29,19 @@ Invert::Init()
     output = GetOutputArray("OUTPUT");
 }
 
+
 void
 Invert::SetSizes()
 {
-	size = GetInputSize("INPUT");
-	SetOutputSize("OUTPUT", size);
+	input_size = GetInputSize("INPUT");
+	SetOutputSize("OUTPUT", input_size);
 }
+
 
 void
 Invert::Tick()
 {
-    for(int i = 0; i < size; i++)
+    for(int i = 0; i < input_size; ++i)
 	{
 		if(input[i] > 0.5f)
 			output[i] = 0.0f;
@@ -46,5 +49,6 @@ Invert::Tick()
 			output[i] = 1.0f;
 	}
 }
+
 
 static InitClass init("Invert", &Invert::Create, "Source/UserModules/CxQ/Invert/");

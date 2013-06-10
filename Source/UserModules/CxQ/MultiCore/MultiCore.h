@@ -59,11 +59,15 @@ private:
 	float	*	InLastGradient;
 	float	*	InBias;					// From learning module
 	float	*	InLastBias;
+	float	*	InExplore;				// From learning module
+	float	*	InLastExplore;
 	float	*	InPunish;				// From learning module
+	float	*	LastPunish;
 	float	*	InReward;				// From world module
 	
 	float	*	OutGradientTarget;
 	float	*	OutBiasTarget;
+	float	*	OutExploreTarget;
 	float	*	OutSelectedAction;
 
 	float	*	ActionScore;

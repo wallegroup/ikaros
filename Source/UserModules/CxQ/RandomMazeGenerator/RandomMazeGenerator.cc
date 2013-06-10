@@ -24,16 +24,22 @@
 #include "RandomMazeGenerator.h"
 
 using namespace ikaros;
+enum MazeMode { MAZE_RANDOM, MAZE_PERFECT, MAZE_ROOM, MAZE_FOUR, MAZE_S };
 
 
 
 RandomMazeGenerator::RandomMazeGenerator(Parameter * p):Module(p)
 {
+	mode = GetIntValueFromList("mode");
 	size = GetIntValue("size");
-	if(size < 5)
-		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter must be larger than 4.\n", GetName());
 
-	mode	=	GetIntValueFromList("mode");
+	if(mode == MAZE_FOUR)
+		size = 14;
+	else if(mode == MAZE_S)
+		size = 9;
+	else if(size < 5)
+		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter must be larger than 4.\n", GetName());
+	
 	noise	=	GetFloatValue("noise");
 	startx	=	GetIntValue("x_start");
 	starty	=	GetIntValue("y_start");
@@ -265,19 +271,21 @@ RandomMazeGenerator::GenerateRoomMaze()
 
 	// Generate the rooms
 
+	float rooms = rand_gen->IRandom(3, 6);
+
 	int j = 0;
 	while(true)
 	{
-		j = j + rand_gen->IRandom(4, max(5, size*0.6));
+		j = j + rand_gen->IRandom(4, max(5, size/rooms));
 		if(j < size-3)
 		{
-			float chance = 0.04;
+			float chance = 0.1 / rooms;
 			for(int i=1; i<size-1; ++i)
 			{
 				if(rand_gen->Random() < chance)
 				{
 					output[j][i] -= 1;
-					chance = 0.04;
+					chance = 0.1 / rooms;
 				}
 				else
 				{
@@ -292,19 +300,21 @@ RandomMazeGenerator::GenerateRoomMaze()
 		}
 	}
 
+	rooms = rand_gen->IRandom(3, 6);
+
 	int i = 0;
 	while(true)
 	{
-		i = i + rand_gen->IRandom(4, max(5, size*0.6));
+		i = i + rand_gen->IRandom(4, max(5, size*0.25));
 		if(i < size-3)
 		{
-			float chance = 0.04;
+			float chance = 0.1 / rooms;
 			for(int j=1; j<size-1; ++j)
 			{
 				if(rand_gen->Random() < chance)
 				{
 					output[j][i] -= 1;
-					chance = 0.04;
+					chance = 0.1 / rooms;
 				}
 				else
 				{
@@ -341,18 +351,38 @@ RandomMazeGenerator::GenerateRoomMaze()
 int
 RandomMazeGenerator::Generate4Maze()
 {
-	if(14 != size)
-		Notify(msg_fatal_error, "Module \"%s\": The 'size' parameter must equal 14.\n", GetName());
-
 	int x, y;
-	float ** tmp = create_matrix("1 1 1 1 1 1 1 1 1 1 1 1 1 1; 		1 0 0 0 0 0 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 1 1 1 1 1 1 1;		1 1 1 1 1 1 0 0 0 0 0 0 0 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1;		1 1 1 1 1 1 1 1 1 1 1 1 1 1", x, y);
-
-	copy_matrix(output, tmp, x, y);
-			
+	float ** maze = create_matrix("1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 0 0 0 0 0 0 0 0 0 0 0 0 1; 1 1 1 1 1 1 0 1 1 1 1 1 1 1; 1 1 1 1 1 1 0 1 1 1 1 1 1 1; 1 1 1 1 1 1 0 1 1 1 1 1 1 1; 1 1 1 1 1 1 0 1 1 1 1 1 1 1; 1 1 1 1 1 1 0 1 1 1 1 1 1 1; 1 1 1 1 1 1 0 0 0 0 0 0 0 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1 1 1 1 1 1", x, y);
+	copy_matrix(output, maze, x, y);
+	destroy_matrix(maze);
+	
 	// flood fill the maze to find the furthest accessible tile
 	return FindMaxDistance();
 }
 
+
+/*
+1 1 1 1 1 1 1 1 1;
+1 0 0 0 0 0 0 0 1;
+1 1 1 1 1 0 1 1 1;
+1 0 0 0 0 0 1 1 1;
+1 0 1 1 1 1 1 1 1;
+1 0 0 0 0 0 0 0 1;
+1 1 1 1 1 1 1 1 1;
+1 1 1 1 1 1 1 1 1;
+1 1 1 1 1 1 1 1 1
+*/
+int
+RandomMazeGenerator::GenerateSMaze()
+{
+	int x, y;
+	float ** maze = create_matrix("1 1 1 1 1 1 1 1 1; 1 0 0 0 0 0 0 0 1; 1 1 1 1 1 0 1 1 1; 1 0 0 0 0 0 1 1 1; 1 0 1 1 1 1 1 1 1; 1 0 0 0 0 0 0 0 1; 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1; 1 1 1 1 1 1 1 1 1", x, y);
+	copy_matrix(output, maze, x, y);
+	destroy_matrix(maze);
+	
+	// flood fill the maze to find the furthest accessible tile
+	return FindMaxDistance();
+}
 
 
 float
@@ -440,15 +470,18 @@ RandomMazeGenerator::Init()
 	goal	=	GetOutputMatrix("GOAL");
 
 	rand_gen = new TRanrotWGenerator((uint32)rand());	// random double
-
-	if(mode == 0)
+	
+	if(mode == MAZE_RANDOM)
 		while(!GenerateRandomMaze());
-	else if(mode == 1)
+	else if(mode == MAZE_PERFECT)
 		while(!GeneratePerfectMaze());
-	else if(mode == 2)
+	else if(mode == MAZE_ROOM)
 		while(!GenerateRoomMaze());
-	else
+	else if(mode == MAZE_FOUR)
 		while(!Generate4Maze());
+	else if(mode == MAZE_S)
+		while(!GenerateSMaze());
+		return;
 }
 
 

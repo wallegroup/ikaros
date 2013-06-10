@@ -24,25 +24,15 @@
 
 #include "LinearNet.h"
 
-#define ARROWS 0
+#define ARROWS 1
 
 
 LinearNet::LinearNet(Parameter *pParam):Module(pParam)
 {
-	AddInput("INPUT");
-	AddInput("T-INPUT");
-	AddInput("T-OUTPUT");
-	AddInput("LEARN");
-
-	AddOutput("OUTPUT");
-
-#if ARROWS
-	AddInput("IMAGE");
-	AddOutput("XVALUE");
-	AddOutput("YVALUE");
-#endif
-	
 	m_flLr = GetFloatValue("lr");
+	if(m_flLr < 0)
+		Notify(msg_fatal_error, "Module \"%s\": The 'lr' parameter is not set.\n", GetName());
+
 	m_flMinWt = GetFloatValue("min_weight");
 	m_flMaxWt = GetFloatValue("max_weight");
 	m_flMaxSum = GetFloatValue("max_sum");
@@ -59,6 +49,29 @@ LinearNet::~LinearNet(void)
 }
 
 
+void LinearNet::SetSizes(void)
+{
+	m_iInputLength  = GetInputSize("INPUT");
+	m_iOutputLength = GetInputSize("T-OUTPUT");
+	SetOutputSize("OUTPUT", m_iOutputLength);
+
+#if ARROWS
+	if(InputConnected("IMAGE"))
+	{
+		m_iImgSizeX = GetInputSizeX("IMAGE");
+		m_iImgSizeY = GetInputSizeY("IMAGE");
+	}
+	else
+	{
+		m_iImgSizeX = m_iImgSizeY = 9;
+	}
+
+	SetOutputSize("XVALUE", m_iImgSizeX, m_iImgSizeY);
+	SetOutputSize("YVALUE", m_iImgSizeX, m_iImgSizeY);
+#endif
+}
+
+
 void LinearNet::Init(void)
 {
 	m_pInInput_v = GetInputArray("INPUT");
@@ -69,17 +82,8 @@ void LinearNet::Init(void)
 		m_pInLearn_v = GetInputArray("LEARN");
 	else
 		m_pInLearn_v = NULL;
-	
+
 	m_pOutOutput_v = GetOutputArray("OUTPUT");
-
-	m_iInputLength   = GetInputSize("INPUT");
-	m_iOutputLength  = GetInputSize("T-OUTPUT");
-
-	if(m_flLr < 0)
-	{
-		Notify(msg_fatal_error, "Module \"%s\": The 'lr' parameter is not set.\n", GetName());
-        return;
-    }
 	
 	m_pTrainOutput_v = create_array(m_iOutputLength);
 	m_pWij_m = create_matrix(m_iOutputLength, m_iInputLength);	// Store stimuli weights
@@ -100,7 +104,11 @@ void LinearNet::Init(void)
 	}
 
 #if ARROWS
-	m_pInImage_m = GetInputMatrix("IMAGE");
+	if(InputConnected("IMAGE"))
+		m_pInImage_m = GetInputMatrix("IMAGE");
+	else
+		m_pInImage_m = NULL;
+
 	m_pOutValueX_m = GetOutputMatrix("XVALUE");
 	m_pOutValueY_m = GetOutputMatrix("YVALUE");
 #endif
@@ -157,71 +165,74 @@ void LinearNet::Tick(void)
 	}
 
 #if ARROWS
-	reset_array(m_pInTrainInput_v, m_iInputLength);
-	
-	int dir = 0;
-	int pos = 0;
-	int best = 0;
-	for(int y = 0; y < GetInputSizeY("IMAGE"); y++)
+	if(m_pInImage_m != NULL)
 	{
-		for(int x = 0; x < GetInputSizeX("IMAGE"); x++)
+		reset_array(m_pInTrainInput_v, m_iInputLength);
+	
+		int dir = 0;
+		int pos = 0;
+		int best = 0;
+		for(int y = 0; y < m_iImgSizeY; y++)
 		{
-			if(m_pInImage_m[y][x] != 1)
+			for(int x = 0; x < m_iImgSizeX; x++)
 			{
-				m_pInTrainInput_v[pos] = 1;
-				for(int j = 0; j < m_iOutputLength; j++)
+				if(m_pInImage_m[y][x] != 1)
 				{
-					m_pTrainOutput_v[j] = 0.0f;
-					for(int i = 0; i < m_iInputLength; i++)
+					m_pInTrainInput_v[pos] = 1;
+					for(int j = 0; j < m_iOutputLength; j++)
 					{
-						m_pTrainOutput_v[j] += m_pInTrainInput_v[i] * m_pWij_m[i][j];
+						m_pTrainOutput_v[j] = 0.0f;
+						for(int i = 0; i < m_iInputLength; i++)
+						{
+							m_pTrainOutput_v[j] += m_pInTrainInput_v[i] * m_pWij_m[i][j];
+						}
 					}
-				}
 				
-				m_pInTrainInput_v[pos] = 0;
-				//best = arg_max(m_pTrainOutput_v, m_iOutputLength);
-				best = 0;
-				float value = m_pTrainOutput_v[best];
-				for(int i=1; i<m_iOutputLength; ++i)
-				{
-					if(m_pTrainOutput_v[i] > value)
+					m_pInTrainInput_v[pos] = 0;
+					//best = arg_max(m_pTrainOutput_v, m_iOutputLength);
+					best = 0;
+					float value = m_pTrainOutput_v[best];
+					for(int i=1; i<m_iOutputLength; ++i)
 					{
-						value = m_pTrainOutput_v[i];
-						best = i;
+						if(m_pTrainOutput_v[i] > value)
+						{
+							value = m_pTrainOutput_v[i];
+							best = i;
+						}
 					}
-				}
 				
-				if(best == 0)
-				{
-					if(m_pTrainOutput_v[0] == m_pTrainOutput_v[1] && m_pTrainOutput_v[0] == m_pTrainOutput_v[2] && m_pTrainOutput_v[0] == m_pTrainOutput_v[3])
+					if(best == 0)
 					{
-						m_pOutValueX_m[y][x] = 0;
+						if(m_pTrainOutput_v[0] == m_pTrainOutput_v[1] && m_pTrainOutput_v[0] == m_pTrainOutput_v[2] && m_pTrainOutput_v[0] == m_pTrainOutput_v[3])
+						{
+							m_pOutValueX_m[y][x] = 0;
+							m_pOutValueY_m[y][x] = 0;
+						}
+						else
+						{
+							m_pOutValueX_m[y][x] = 0;
+							m_pOutValueY_m[y][x] = -1;
+						}
+					}
+					else if(best == 1)
+					{
+						m_pOutValueX_m[y][x] = 1;
 						m_pOutValueY_m[y][x] = 0;
 					}
-					else
+					else if(best == 2)
 					{
 						m_pOutValueX_m[y][x] = 0;
-						m_pOutValueY_m[y][x] = -1;
+						m_pOutValueY_m[y][x] = 1;
+					}
+					else if(best == 3)
+					{
+						m_pOutValueX_m[y][x] = -1;
+						m_pOutValueY_m[y][x] = 0;
 					}
 				}
-				else if(best == 1)
-				{
-					m_pOutValueX_m[y][x] = 1;
-					m_pOutValueY_m[y][x] = 0;
-				}
-				else if(best == 2)
-				{
-					m_pOutValueX_m[y][x] = 0;
-					m_pOutValueY_m[y][x] = 1;
-				}
-				else if(best == 3)
-				{
-					m_pOutValueX_m[y][x] = -1;
-					m_pOutValueY_m[y][x] = 0;
-				}
-			}
 			
-			pos++;
+				pos++;
+			}
 		}
 	}
 #endif

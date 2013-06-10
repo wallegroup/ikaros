@@ -12,9 +12,9 @@
 	<example description="A simple example">
 		<module class = "Decode" name = "DECODER" />
 	</example>
-	
+
+  <parameter name="skip_index" type="int" default="-1" description="Skip this input. Reduces the output lenght." />
 	<input name="INPUT" description="Input data." />
-	
 	<output name="OUTPUT" description="Output data." />
 	
 	<module class="Decode" />

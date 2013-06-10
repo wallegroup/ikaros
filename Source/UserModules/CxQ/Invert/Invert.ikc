@@ -14,7 +14,6 @@
 	</example>
 
 	<input name="INPUT" description="The input" />
-
 	<output name="OUTPUT" description="The output" />
 
 	<module class="Invert" />

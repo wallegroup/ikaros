@@ -20,11 +20,14 @@
   <input name="LAST_GRAD" description="Input action previous tick." />
   <input name="BIAS" description="Input action from the bias module." />
   <input name="LAST_BIAS" description="Input action previous tick." />
+  <input name="EXPLORE" description="Input action from the ANN." />
+  <input name="LAST_EXPLORE" description="Input action previous tick." />
   <input name="PUNISH" description="Input action from the punish module." />
   <input name="REWARD" description="Reward form the world module." />
 
-  <output name="GRADIENT_TARGET" description="Target output to the actor." />
-  <output name="BIAS_TARGET" description="Target output to the critic." />
+  <output name="GRADIENT_TARGET" description="Target output to the ANN." />
+  <output name="BIAS_TARGET" description="Target output to the ANN." />
+  <output name="EXPLORE_TARGET" description="Target output to the ANN." />
   <output name="ACTION" description="Selected action." />
 
   <module class="MultiCore" />

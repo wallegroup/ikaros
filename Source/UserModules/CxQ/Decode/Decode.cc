@@ -21,10 +21,14 @@ Decode::~Decode(void)
 void Decode::SetSizes(void)
 {
 	m_iInputSize = GetInputSize("INPUT");
+	m_iSkipIndex = GetIntValue("skip_index");
 	
 	if(m_iInputSize > 0)
 	{
-		SetOutputSize("OUTPUT", pow(2, m_iInputSize));
+		if(m_iSkipIndex > -1)
+			SetOutputSize("OUTPUT", pow(2, m_iInputSize-1));
+		else
+			SetOutputSize("OUTPUT", pow(2, m_iInputSize));
 	}
 }
 
@@ -38,13 +42,19 @@ void Decode::Init(void)
 
 void Decode::Tick(void)
 {
-	int i, j = 0;
-	
-	for(i = 0; i < m_iInputSize; i++)
+	int j = 0,
+		k = 0;
+
+	for(int i = 0; i < m_iInputSize; ++i)
 	{
-		if(m_pInInput_v[i] > 0)
+		if(i != m_iSkipIndex)
 		{
-			j += pow(2, i);
+			if(m_pInInput_v[i] > 0)
+			{
+				j += pow(2, k);
+			}
+
+			++k;
 		}
 	}
 	
