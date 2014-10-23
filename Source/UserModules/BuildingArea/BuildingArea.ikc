@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<group name="BuildingArea" description="Converts MarkerTracker location to sensor oriented coordinate system">
+
+	<description type="text">
+		We can fix a nicer description later..
+	</description>
+
+	<example description="A simple example, which defines a building area that spans from -80mm to the left to 80 mm to the right, 250mm from the camera to 400mm from the camera and -100mm below the camera to 500mm above the camera">
+		<module
+			class="BuildingArea"
+			name="BuildingArea"
+            boundary_x_furthest ="250"
+            boundary_x_closest ="450"
+            boundary_y_right ="80"
+            boundary_y_left ="-80"
+            boundary_z_top ="500"
+            boundary_z_bottom ="-100"
+            focus_point_z = "-30"
+		/>
+	</example>
+    <parameter name="boundary_x_furthest" type="float" default="250" description="The furthest boundary of the building area"/>
+    <parameter name="boundary_x_closest" type="float" default="400" description="The closest boundary of the building area"/>
+
+    <parameter name="boundary_y_right" type="float" default="75.0" description="The othermost boundary to the right of the building area from the center of the coordination system."/>
+    <parameter name="boundary_y_left" type="float" default="-75.0" description="The othermost boundary to the left of the building area from the center of the coordination system."/>
+    
+    <parameter name="boundary_z_top" type="float" default="300" description="The top-most boundary of the building area"/>
+    <parameter name="boundary_z_bottom" type="float" default="-50" description="The bottom-most bounday of the building area"/>
+    
+    <parameter name="focus_point_z" type="float" default="0" description="The bottom-most bounday of the building area"/>
+    
+
+	<input name="INPUT" description="Input, should be a homogenous matrix from MarkerTracker" />
+
+	<output name="OUTPUT" description="Output is a matrix" size_x="5" size_y="10"/>
+    <output name="BACoords" description="Constant output, which is the boundaries of the BuildingArea(BA) as well as the center of the BA" size_x="3" size_y="4"/>
+
+	<module class="BuildingArea" />
+
+	<author>
+		<name>walle-E team</name>
+		<email>walle@robots.io</email>
+		<affiliation>Lund University Cognitive Science/Lund University Faculty of Engineering (LTH)</affiliation>
+		<homepage>http://walle.robots.io</homepage>
+	</author>
+
+   <files>
+   		<file>BuildingArea.h</file>
+   		<file>BuildingArea.cc</file>
+   		<file>BuildingArea.ikc</file>
+   </files>
+
+</group>
+

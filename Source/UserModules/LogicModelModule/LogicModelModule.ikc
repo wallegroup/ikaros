@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<group name="LogicModelModule" description="A mathematical model of the Dynamixel-robot in the room">
+
+	<description type="text">
+		Module that is a mathematical model of the Dynamixel-robot in the room. The model uses a coordinate-system with a resolution in millimeters to address every point in a room. The simulate that the robot(Dynamixel) is looking at a point simple linear algebra is used to transform a motion from one point to another to the difference in degrees every servo has to move.
+        
+        At this point only servo 0 and 2 is used and the eyes of the robot are thought to be placed at the axis of servo 2. The view angle is perpendicular to the servo. Our ambition is later make the module more versatile by adding servo 1 to the equation as well as more options for modes (looking, reaching etc.)
+	</description>
+
+	<example description="A simple example how to use the module. The offsets are the distance in every direction from the camera to the foot of the Dynamixel-robot">
+		<module
+			class="LogicModelModule"
+			name="LogicModelModule"
+			camera_x_offset = "0"
+			camera_y_offset = "240"
+			camera_z_offset = "-55"
+		/>
+	</example>
+
+	<parameter name="camera_x_offset" type="int" default="0" description="Camera x offset" />
+	<parameter name="camera_y_offset" type="int" default="240" description="Camera y offset" />
+	<parameter name="camera_z_offset" type="int" default="0" description="Camera z offset" />
+
+	<input name="INPUT" description="Linear coordinates sent from for example a camera module. These coordinates is the point as where the robot should focus" />
+
+	<output name="OUTPUT" description="The goal positions in degrees for every servo." size="3" />
+
+	<module class="LogicModelModule" />
+
+	<author>
+		<name>Robert Bagge, Olof Knape, Henrik Siljestråle</name>
+		<email>bagge.robert@gmail.com</email>
+        <affiliation>Lund University, course - Interaktion 1: Neuromodellering, kognitiv robotik och agenter</affiliation>
+		<homepage>http://www.eat.lth.se/kurser/interaktionsdesign/neuromodellering-kognitiv-robotik-och-agenter-mamn10/</homepage>
+	</author>
+
+   <files>
+   		<file>LogicModelModule.h</file>
+   		<file>LogicModelModule.cc</file>
+   		<file>LogicModelModule.ikc</file>
+   </files>
+
+</group>
+

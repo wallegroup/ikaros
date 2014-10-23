@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<group name="AverageMatrixValue" description="Calculates the average value of a matrix">
+
+	<description type="text">
+		Calculates the average value of a matrix
+	</description>
+
+	<example description="Calculate the average value of a matrix">
+		<module
+			class="AverageMatrixValue"
+			name="AverageMatrixValue"
+		/>
+	</example>
+
+	<parameter name="threshold" type="float" default="0.004" description="values below the threshold will not be in the calculation of the average" />
+
+	<input name="INPUT" description="The matrix" />
+	<output name="OUTPUT" description="Averge matrix value" size="1" />
+
+	<module class="AverageMatrixValue" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>AverageMatrixValue.h</file>
+   		<file>AverageMatrixValue.cc</file>
+   		<file>AverageMatrixValue.ikc</file>
+   </files>
+
+</group>
+

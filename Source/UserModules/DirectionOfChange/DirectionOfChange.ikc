@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<group name="DirectionOfChange" description="Direction of Change exampel">
+
+	<description type="text">
+		A module that decides if changes is made to the right or to the left in the array.
+	</description>
+
+	<example description="A direction of change exampel">
+		<module
+			class="DirectionOfChange"
+			name="DirectionOfChange"
+		/>
+	</example>
+
+	<parameter name="parameter1" type="float" default="7.0" description="The first parameter" />
+	<parameter name="parameter2" type="int" default="2" description="The second parameter" />
+
+	<input name="INPUT" description="Input" />
+
+	<output name="OUTPUT" description="Outputs 1 for right, 2 for left and 0 for no change" size="1" />
+
+	<module class="DirectionOfChange" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>Olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>DirectionOfChange.h</file>
+   		<file>DirectionOfChange.cc</file>
+   		<file>DirectionOfChange.ikc</file>
+   </files>
+
+</group>
+

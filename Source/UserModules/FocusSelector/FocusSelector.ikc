@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<group name="FocusSelector" description="minimal example module">
+
+	<description type="text">
+
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="FocusSelector"
+			name="FocusSelector"
+			parameter1 = "3.14"
+			parameter2 = "42"
+		/>
+	</example>
+
+
+	<input name="INPUT_CHANGE" description="The first input" />
+	<input name="INPUT_FACE" description="The second input" />
+	<input name="INPUT_MARKER" description="The second input" />
+
+	<output name="OUTPUT" description="The first output" size="3" />
+
+
+	<module class="FocusSelector" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>FocusSelector.h</file>
+   		<file>FocusSelector.cc</file>
+   		<file>FocusSelector.ikc</file>
+   </files>
+
+</group>
+

@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<group title="testChangeDetector">
+    
+
+         
+        <module
+            class   = "Kinect"
+            name    = "CAMERA"
+            _mode    = "mm"
+        />
+
+
+        <module 
+            class = "ChangeDetector" 
+            name = "ChangeDetector" 
+            />
+
+        <_module
+            class = "AverageMatrixValue"
+            name = "AverageMatrixValue"
+            />
+
+        <module
+            class = "DepthSeg"
+            name = "DepthSeg"
+            />
+
+        <module 
+            class = "DirectionOfChange"
+            name = "DirectionOfChange"
+            />
+
+        <module
+            class = "SummedBoxes"
+            name = "SummedBoxes"
+            />
+       
+
+      
+        <connection sourcemodule = "CAMERA" source = "DEPTH" targetmodule = "DepthSeg" target = "INPUT" />
+        <connection sourcemodule = "DepthSeg" source = "OUTPUT" targetmodule = "ChangeDetector" target = "INPUT" />
+        <connection sourcemodule = "ChangeDetector" source = "OUTPUT" targetmodule = "SummedBoxes" target = "INPUT" />
+        <connection sourcemodule = "SummedBoxes" source = "OUTPUT" targetmodule = "DirectionOfChange" target = "INPUT" />
+
+
+        
+        <view name="Inputs">
+                
+                <object
+                class   ="Image"
+                title   = "Camera"
+                type    = "spectrum"
+                module  = "CAMERA"
+                source  = "DEPTH"
+                x="0" y="0"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+               <object
+                class   ="Image"
+                title   = "Depth"
+                type    = "spectrum"
+                module  = "DepthSeg"
+                source  = "OUTPUT"
+                x="3" y="0"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+                <object
+                class   ="Image"
+                title   = "Change detector"
+                type    = "spectrum"
+                module  = "ChangeDetector"
+                source  = "OUTPUT"
+                x="0" y="2"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+                class="Table" 
+                title="boxes"
+                module="SummedBoxes"
+                source="OUTPUT"
+                x="3"
+                y="2"
+                w="5"
+                h="1"
+                decimals="5" 
+            />
+
+                <object
+                class="Table" 
+                title="Direction (1=L, -1=H)"
+                module="DirectionOfChange"
+                source="OUTPUT"
+                x="3"
+                y="3"
+                w="1"
+                h="1"
+                decimals="0" 
+            />
+           
+
+        </view>
+
+</group>
+

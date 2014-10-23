@@ -1,5 +1,5 @@
 //
-//	MyModule.cc		This file is a part of the IKAROS project
+//	ConstantOutput.cc		This file is a part of the IKAROS project
 //
 //    Copyright (C) 2012 <Author Name>
 //
@@ -24,7 +24,7 @@
 //  If you prefer to start with a clean example, use he module MinimalModule instead.
 //
 
-#include "MyModule.h"
+#include "ConstantOutput.h"
 
 // use the ikaros namespace to access the math library
 // this is preferred to using math.h
@@ -33,7 +33,7 @@ using namespace ikaros;
 
 
 void
-MyModule::Init()
+ConstantOutput::Init()
 {
     // To get the parameters from the IKC file, use the Bind
     // function for each parameter. The parameters are initialized
@@ -52,24 +52,17 @@ MyModule::Init()
     // to the inputs. We will treat it an array in this module
     // anyway.
 
-    input_array = GetInputArray("INPUT1");
-    input_array_size = GetInputSize("INPUT1");
 
-    // Get pointer to a matrix and treat it as a matrix. If an array is
-    // connected to this input, size_y will be 1.
+    output_matrix = GetOutputMatrix("OUTPUT1");
+    output_matrix_size_x = GetOutputSizeX("OUTPUT1");
+    output_matrix_size_y = GetOutputSizeY("OUTPUT1");
 
-    input_matrix = GetInputMatrix("INPUT2");
-    input_matrix_size_x = GetInputSizeX("INPUT2");
-    input_matrix_size_y = GetInputSizeY("INPUT2");
-
-    // Do the same for the outputs
-
-    output_array = GetOutputArray("OUTPUT1");
-    output_array_size = GetOutputSize("OUTPUT1");
-
-    output_matrix = GetOutputMatrix("OUTPUT2");
-    output_matrix_size_x = GetOutputSizeX("OUTPUT2");
-    output_matrix_size_y = GetOutputSizeY("OUTPUT2");
+    output_matrix2 = GetOutputMatrix("OUTPUT2");
+    output_matrix2_size_x = GetOutputSizeX("OUTPUT2");
+    output_matrix2_size_y = GetOutputSizeY("OUTPUT2");
+    
+    output_array = GetOutputArray("OUTPUT3");
+    output_array_size = GetOutputSize("OUTPUT3");
 
     // Allocate some data structures to use internaly
     // in the module
@@ -83,7 +76,6 @@ MyModule::Init()
     // IMPORTANT: For the matrix the sizes are given as X, Y
     // which is the OPPOSITE of ROW, COLUMN.
 
-    internal_matrix = create_matrix(input_matrix_size_x, input_matrix_size_y);
 
     // To acces the matrix use internal_matrix[y][x].
     //
@@ -94,16 +86,20 @@ MyModule::Init()
     // should be used to make sure that memeory is
     // allocated in a way that is suitable for the math
     // library and fast copying operations.
+    matrix = create_matrix(4,3);
+    matrix2 = create_matrix(4,3);
 }
 
 
 
-MyModule::~MyModule()
+ConstantOutput::~ConstantOutput()
 {
     // Destroy data structures that you allocated in Init.
 
     destroy_array(internal_array);
     destroy_matrix(internal_matrix);
+    destroy_matrix(matrix);
+    destroy_matrix(matrix2);
 
     // Do NOT destroy data structures that you got from the
     // kernel with GetInputArray, GetInputMatrix etc.
@@ -112,38 +108,38 @@ MyModule::~MyModule()
 
 
 void
-MyModule::Tick()
+ConstantOutput::Tick()
 {
-    // This is where you implement your algorithm
-    // to calculate the outputs from the inputs
 
-    // This example makes a copy of the data on INPUT2 which is now
-    // in input_matrix to internal_matrix
-    // Arrays can be copied with copy_array
-    // To clear an array or matrix use reset_array and reset_matrix
+    matrix[0][0]=1;
+    matrix[0][1]=2;
+    matrix[0][2]=3;
+    matrix[0][3]=4;
 
-    copy_matrix(internal_matrix, input_matrix, input_matrix_size_x, input_matrix_size_y);
+    matrix[1][0]=8;
+    matrix[1][1]=7;
+    matrix[1][2]=6;
+    matrix[1][3]=5;
 
-    // Calculate the output by iterating over the elements of the
-    // output matrix. Note the order of the indices into the matrix.
-    //
-    // In most cases it is much faster to put the for-loops with
-    // the row index (j) in the outer loop, because it will lead
-    // to more efficient cache use.
+    matrix[2][0]=4;
+    matrix[2][1]=3;
+    matrix[2][2]=2;
+    matrix[2][3]=1;
 
-    for (int j=0; j<output_matrix_size_y; j++)
-        for (int i=0; i<output_matrix_size_x; i++)
-            output_matrix[j][i] = 0.5;
+    //copy_matrix(matrix2,matrix,640,480);
+    copy_matrix(output_matrix,matrix,4,3);
+    integral_image(matrix2, matrix, 4, 3);
+    copy_matrix(output_matrix2,matrix2,4,3);
 
-    // Fill the output array with random values
+    output_array[0] = output_matrix2[0][4];
 
-    random(output_array, 0.0, 1.0, output_array_size);
+    //copy_matrix(output_matrix,matrix,3,3);
 }
 
 
 
 // Install the module. This code is executed during start-up.
 
-static InitClass init("MyModule", &MyModule::Create, "Source/UserModules/MyModule/");
+static InitClass init("ConstantOutput", &ConstantOutput::Create, "Source/UserModules/ConstantOutput/");
 
 

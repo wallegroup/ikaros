@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<group name="FocusSelector2" description="Selects focus and outputs focus cordinates">
+
+	<description type="text">
+		Selects focus and outputs focus cordinates
+	</description>
+
+	<example description="FocusSelctor example">
+		<module
+			class="FocusSelector2"
+			name="FocusSelector2"
+		/>
+	</example>
+
+	<parameter name="z_movementThreshold" type="int" default="3" description="Z-Values bigger then the threshold will be registerad as movement for the markers" />
+	<parameter name="tick_faceThreshold" type="int" default="10" description="The number of tics between no movement and face focus" />
+	<parameter name="change_threshold" type="float" default="0" description="The threshold value for change" />
+
+	<input name="INPUT_DOC" description="DirectionOfChange output" />
+	<input name="INPUT_MARKERS" description="Markers output from BuildingArea" />
+	<input name="INPUT_BA" description="Building area output from BuildingArea" />
+	<input name="INPUT_FACE" description="Cordinates for the face" />
+	<input name="INPUT_CHANGE" description="Average value of change" />
+
+	<output name="OUTPUT" description="Cordinates" size="3" />
+
+	<module class="FocusSelector2" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>FocusSelector2.h</file>
+   		<file>FocusSelector2.cc</file>
+   		<file>FocusSelector2.ikc</file>
+   </files>
+
+</group>
+
