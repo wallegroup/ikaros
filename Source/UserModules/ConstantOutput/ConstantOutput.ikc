@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<group name="ConstantOutput" description="minimal example module">
+
+	<description type="text">
+		Module that can be used as a start for a new module.
+		Simply change all occurrences of "ConstantOutput" to the name of your new module in
+		ConstantOutput.cc, ConstantOutput.h and ConstantOutput.ikc (this file), rename the files, and fill
+		in the new code and documentation. This module is located in the
+		UserModules directory.
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="ConstantOutput"
+			name="ConstantOutput"
+			parameter1 = "3.14"
+			parameter2 = "42"
+		/>
+	</example>
+
+	<parameter name="parameter1" type="float" default="7.0" description="The first parameter" />
+	<parameter name="parameter2" type="int" default="2" description="The second parameter" />
+
+	<output name="OUTPUT1" description="The first output" size="12"/>
+	<output name="OUTPUT2" description="The first output" size="12"/>
+	<output name="OUTPUT3" description="The first output" size="1"/>
+
+
+	<module class="ConstantOutput" />
+
+	<author>
+		<name>Christian Balkenius</name>
+		<email>christian.balkenius@lucs.lu.se</email>
+		<affiliation>Lund University Cognitive Science</affiliation>
+		<homepage>http://www.lucs.lu.se/Christian.Balkenius</homepage>
+	</author>
+
+   <files>
+   		<file>ConstantOutput.h</file>
+   		<file>ConstantOutput.cc</file>
+   		<file>ConstantOutput.ikc</file>
+   </files>
+
+</group>
+

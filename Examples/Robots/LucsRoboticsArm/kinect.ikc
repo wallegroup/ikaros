@@ -1,0 +1,108 @@
+<?xml version = "1.0"?>
+
+<group title = "Robot Arm Example">
+	
+    <description>
+		This is an example file for using the LUCS MAMN10 Robot arm in ikaros.
+    </description>
+	
+	<!-- Kinect part -->	
+	<!-- This modules uses the open kinnect library to read depth matrix from the kinect sensor. It can also fetch the kinect camera image and control the onboard motors of the sensor. -->
+	 
+	<module
+		class 	 = "Kinect"
+		name 	 = "KINECT"
+		mode     = "mm"
+     />
+    <connection sourcemodule="KINECT" source="DEPTH" targetmodule="Scale" target="INPUT" />
+
+    <module
+        class 			= "Scale"
+        name 			= "Scale"
+        factor          = "0.000048851978505"
+        comment         = "This module could be removed if Image-object allowed scaling."
+    />
+
+    <!-- old scale factor: 0.00048851978505 -->
+    
+	<!-- Edge detection part -->
+	<!-- This module finds edges -->
+	
+	 <module
+		class	 = "GaussianEdgeDetector"
+		name 	 = "EdgeDetector"
+		scale 	 = "1.5"
+    />
+        
+    <connection sourcemodule  = "KINECT" source  = "INTENSITY" targetmodule  = "EdgeDetector" target  = "INPUT" />
+
+    <!-- this will show changes in the image -->
+    <module
+      class = "ChangeDetector"
+      name = "ChangeDetector"
+  	/>
+
+  	<connection sourcemodule="KINECT" source="INTENSITY" targetmodule="ChangeDetector" target="INPUT" />
+
+  	<!-- now we shall find curves&corners -->
+
+  	<module
+  		class = "HarrisDetector"
+  		name = "CornerDetector"
+  	/>
+
+  	<connection sourcemodule="EdgeDetector" source="dx" targetmodule="CornerDetector" target="DX" />
+  	<connection sourcemodule="EdgeDetector" source="dy" targetmodule="CornerDetector" target="DY" />
+
+        
+	<view name = "Lucs Robotic Arm" object_size = "50" >
+
+		<!-- change detection -->
+
+		<object
+			class = "Image"
+			title = "cha-cha-changes"
+			type = "spectrum"
+			module = "ChangeDetector"
+			source = "OUTPUT"
+			x = "0" y = "0"
+			w = "6" h = "5"
+		/>
+
+		<!-- regular camera -->		
+		<object
+			class    = "Image"
+            title    = "Kinect camera"
+			type	 = "rgb"
+			module   = "KINECT"
+			source   = "RED+GREEN+BLUE"
+			x = "6" y = "0"
+			w = "6" h = "5"
+		/>
+			
+		<!-- KINNECT objects -->
+		<object 
+        	class 	= "Image"
+        	type 	= "fire"
+        	title   = "Los Edgos" 
+        	name 	= "Edges" 
+        	module  = "EdgeDetector" 
+        	source  = "OUTPUT" 
+        	x = "12" y = "0" 
+			w = "6" h = "5"
+        />
+
+        <object
+        	class	= "Image"
+        	type	= "green"
+        	title	= "corners and curves"
+        	name	= "Corners"
+        	modules = "CornerDetector"
+        	source  = "OUTPUT"
+        	x = "19" y = "0"
+        	w = "6" h = "5"
+        />
+
+    </view>
+</group>
+ 

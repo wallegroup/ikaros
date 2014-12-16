@@ -1,0 +1,2 @@
+/home/olof/ikaros/Build/Source/Modules/VisionModules/MPIFaceDetector/CMakeFiles/MPIFaceDetector.dir
+/home/olof/ikaros/Build/CMakeFiles/ikaros.dir

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<group name="SummedBoxes" description="Creates summed boxes of a matrix">
+
+	<description type="text">
+		This module will take a matrix as input and create an integral image of that matrix. This can also be called Summed Area Table and is described in more detail here: http://computersciencesource.wordpress.com/2010/09/03/computer-vision-the-integral-image/
+		The module then divides the image in boxes and outputs the sum for each box in a vector of the same size as box_count.
+		Parameter box_count has default 5.
+		Currently box_count needs to be set so that horizontal and vertical resolution of input image can be evenly divided by box_count.
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="SummedBoxes"
+			name="SummedBoxes"
+			box_count = "10"
+		/>
+	</example>
+
+	<parameter name="box_count" type="int" default="5" description="how many boxes do you want?" />
+
+	<input name="INPUT" description="The input matrix" />
+
+	<output name="OUTPUT" description="Output vector of size box_count" size_set="INPUT" />
+	<output name="OUTPUT_BOX" description="Output marker-boxes" size="1" />
+
+	<module class="SummedBoxes" />
+
+	<author>
+		<name>Wall-E Group Inc</name>
+		<email>walle@wallegroup.inc</email>
+		<affiliation>Wall-E Group International</affiliation>
+		<homepage>http://www.wallegroup.inc</homepage>
+	</author>
+
+   <files>
+   		<file>SummedBoxes.h</file>
+   		<file>SummedBoxes.cc</file>
+   		<file>SummedBoxes.ikc</file>
+   </files>
+
+</group>
+

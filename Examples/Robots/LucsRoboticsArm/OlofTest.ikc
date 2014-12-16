@@ -1,0 +1,128 @@
+<?xml version = "1.0"?>
+
+<group title = "Robot Arm Example">
+	
+    <description>
+		This is an example file for using the LUCS MAMN10 Robot arm in ikaros.
+    </description>
+    
+    <!-- Servo part -->
+    <!-- This module controls the servos of the arm. All the servos are connected on the same serial bus and each of the servo has a unique ID. ID 1: is the servo is the first servo of the arm. ID 2: is the middle servo and ID 3 is the last servo (end of the arm).
+    This module uses the computer's serial port and the parameter "device" needs to be adjusted to fit the current setup. In linux the port is usally "/dev/ttyUSB0", in OSX somthing similar to "/dev/cu.usbserial-A8006Esq" and in windows COM1. This module set the position of each servo in the angle specifyed by the parameter angle_unit. -->
+    
+    <module
+    	class		 = "Dynamixel"
+		name		 = "Dynamixel"
+        _device   	 = "/dev/cu.usbserial-A8006Esq"
+		device		 = "/dev/ttyUSB0"
+		index_mode 	 = "indirect"
+		servo_id	 = "1 2 3"
+		angle_unit 	 = "degrees"
+	/>
+    
+	<!-- Modules to generate a moving behaviour -->
+	<!-- These modueles are just do demonstate a moving behavioer of the arm. These modules and connections should be removed and replaced by user modules -->
+    <module
+		class		=	"OlofModule"
+		name		=	"GoalPosition1"
+	/>
+
+    <module 
+        class = "OlofSpeedModule"
+        name = "Speed"
+        />
+
+
+	<!--<module
+		class		=	"FunctionGenerator"
+		name		=	"Speed"
+		type		=	"sin"
+		frequency	=	"0.0314"
+		offset      =	"1"
+		amplitude	=	"0"
+		shift		=	"150"
+	/>
+	-->
+	<!-- Order is important -->
+	<connection sourcemodule  = "GoalPosition1" source  = "OUTPUT1" targetmodule	 = "Dynamixel" target  = "GOAL_POSITION" />
+
+	<connection sourcemodule  = "Speed" source  = "OUTPUT1" targetmodule	 = "Dynamixel" target  = "MOVING_SPEED" />
+	<connection sourcemodule  = "Speed" source  = "OUTPUT1" targetmodule	 = "Dynamixel" target  = "MOVING_SPEED" />
+	<connection sourcemodule  = "Speed" source  = "OUTPUT1" targetmodule	 = "Dynamixel" target  = "MOVING_SPEED" />
+	
+    <connection sourcemodule = "Speed" source = "OUTPUT1" targetmodule = "GoalPosition1" target = "INPUT1" />
+	
+        
+	<view name = "Lucs Robotic Arm" object_size = "50" >
+    	<!-- Dynamixel objects -->
+        <object
+            class	 = "Plot"
+            title	 = "Speed Sent to Servo"
+            module	 = "Speed"
+            source 	 = "OUTPUT1"
+            x = "0" 	y = "6"
+            w = "2" 	h = "2"
+            color 	 = "yellow"
+        />
+        <object
+            class	 = "Plot"
+            title	 = "Position Sent 1"
+            module	 = "GoalPosition1"
+            source 	 = "OUTPUT1"
+            x = "0" 	y = "8"
+            w = "2" 	h = "2" 
+            color 	 = "green"
+            max 	 = "360"
+        />
+ 
+        <object
+            class	 = "Plot"
+            title	 = "Actual Positions"
+            module	 = "Dynamixel"
+            source 	 = "FEEDBACK_PRESENT_POSITION"
+            x = "0" 	y = "0"
+            w = "2" 	h = "2" 
+            color 	 = "red, green, blue"
+            select	 = "0,1,2"
+            max = "360"
+            
+        />
+        <object
+            class	 = "Plot"
+            title	 = "Speed"
+            module 	 = "Dynamixel"
+            source 	 = "FEEDBACK_PRESENT_SPEED"
+            x = "2" 	y = "0"
+            w = "2" 	h = "2" 
+            color 	 = "red, green, blue"
+            select	 = "0,1,2"
+        	min = "-1"
+        	max = "1"
+        
+        />
+        
+        <object
+            class = "Plot"
+            title = "Temperature (C)"
+            module  = "Dynamixel"
+            source  = "FEEDBACK_PRESENT_TEMPERATURE"
+            x = "4" y = "0"
+            w = "2" h = "2" 
+            color 	 = "red, green, blue"
+            select	 = "0,1,2"
+            max = "80"
+        />
+        
+        <object 
+        	class = "Image" 
+        	title = "teeest" 
+        	dragarea = "no" 
+        	type = "file" 
+        	file = "Arm.jpg" 
+        	x = "0" y = "2"
+        	w = "4" h  = "4" 
+    	/>
+        	 
+    </view>
+</group>
+ 

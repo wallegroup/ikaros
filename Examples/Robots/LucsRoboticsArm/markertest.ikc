@@ -1,0 +1,55 @@
+<?xml version = "1.0"?>
+
+<group title = "Robot Arm Example">
+	
+    <description>
+		This is an example file for using the LUCS MAMN10 Robot arm in ikaros.
+    </description>
+	<!-- Kinect part -->	
+	<!-- This modules uses the open kinnect library to read depth matrix from the kinect sensor. It can also fetch the kinect camera image and control the onboard motors of the sensor. -->
+	 
+	<module
+		class 	 = "Kinect"
+		name 	 = "KINECT"
+		mode     = "mm"
+     />
+
+	<!-- Artoolkit -->
+	<!-- This module detects Artoolkit markers in a image -->
+		<module
+			class   = "MarkerTracker"
+			name	= "MarkerTracker"
+            description = "The calibration parameters are set to no camera distortion to produce vertices in image coodinates."
+            calibration = "640 480 320 240 1500.0 1500.0 0.0 0.0 0.0 0.0 0.0 0.0 0"
+            sort    = "yes"
+            marker_size = "0 30 5"
+            use_history = "no"
+            threshold = "auto"
+		/>
+
+	<connection sourcemodule = "KINECT" source = "INTENSITY" targetmodule = "MarkerTracker" target = "INPUT" delay="0" />
+
+	
+        
+    <view name="MarkerTracker" object_size="30">
+        <object
+            class   = "Image"
+            title   = "CAMERA"
+            type	= "rgb"
+            module  = "KINECT"
+            source  = "RED+GREEN+BLUE"
+            x="0" y="0"
+            w="8" h="6"
+        />
+        
+        <object
+            class   = "Table"
+            title = "marker count"
+            x = "9" y = "0"
+            w = "5" h = "7"
+            module = "MarkerTracker"
+            source = "MARKERS"
+        />
+    </view>
+</group>
+ 

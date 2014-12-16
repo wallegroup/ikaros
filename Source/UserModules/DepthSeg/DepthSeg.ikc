@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<group name="DepthSeg" description="Filter out the pixels with a depth">
+
+	<description type="text">
+		Filter out the pixels with a depth lesser than max_depthThreshold and depth greater then min_depthTreshold.
+	</description>
+
+	<example description="Depthseg">
+		<module
+			class="DepthSeg"
+			name="DepthSeg"
+		/>
+	</example>
+
+	<parameter name="max_depthThreshold" type="float" default="0.4" description="The max threshold (value=0-1" />
+	<parameter name="min_depthThreshold" type="float" default="0.3" description="The min threshold (value=0-1" />
+
+	<input name="INPUT" description="The output from camera DEPTH" />
+	<output name="OUTPUT" description="The filtered picture" size_set="INPUT"/>
+
+	<module class="DepthSeg"/>
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>DepthSeg.h</file>
+   		<file>DepthSeg.cc</file>
+   		<file>DepthSeg.ikc</file>
+   </files>
+
+</group>
+

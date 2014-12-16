@@ -13,8 +13,8 @@
     <module
     	class		 = "Dynamixel"
 		name		 = "Dynamixel"
-        device   	 = "/dev/cu.usbserial-A8006Esq"
-		_device		 = "/dev/ttyUSB0"
+        _device   	 = "/dev/cu.usbserial-A8006Esq"
+		device		 = "/dev/ttyUSB0"
 		index_mode 	 = "indirect"
 		servo_id	 = "1 2 3"
 		angle_unit 	 = "degrees"
@@ -26,28 +26,28 @@
 		class		=	"FunctionGenerator"
 		name		=	"GoalPosition1"
 		type		=	"sin"
-		frequency	=	"0.0314"
+		frequency	=	"0.25"
 		offset      =	"180"
-		amplitude	=	"60"
+		amplitude	=	"1"
 		shift		=	"0.0"
 	/>
 	<module
 		class		=	"FunctionGenerator"
 		name		=	"GoalPosition2"
-		type		=	"sin"
-		frequency	=	"0.314"
+		type		=	"square"
+		frequency	=	"0.0314"
 		offset      =	"150"
-		amplitude	=	"20"
-		shift		=	"10"
+		amplitude	=	"40"
+		shift		=	"5"
 
 	/>
 	<module
 		class		=	"FunctionGenerator"
 		name		=	"GoalPosition3"
-		type		=	"sin"
-		frequency	=	"0.314"
-		offset      =	"210"
-		amplitude	=	"20"
+		type		=	"square"
+		frequency	=	"0.0314"
+		offset      =	"180"
+		amplitude	=	"40"
 		shift		=	"0.0"
 	/>
 	<module
@@ -91,29 +91,26 @@
 	<!-- This modules tries to find a face in a image -->
 	
 	 <module
-		class	 = "MPIFaceDetector"
-		name 	 = "FaceDetector"
-		period	 = "5"
+		class	 = "GaussianEdgeDetector"
+		name 	 = "GaussianEdgeDetector"
     />
         
-    <connection sourcemodule  = "KINECT" source  = "INTENSITY" targetmodule  = "FaceDetector" target  = "INPUT" />
+    <connection sourcemodule  = "KINECT" source  = "INTENSITY" targetmodule  = "GaussianEdgeDetector" target  = "INPUT" />
 
 	<!-- Artoolkit -->
 	<!-- This module detects Artoolkit markers in a image -->
-	<module
-		class   = "MarkerTracker"
-		name	= "MarkerTracker"
-        description = "The calibration parameters are set to no camera distortion to produce vertices in image coodinates."
-		_calibrationForKinect
-		calibration = "640 480 317.584948 260.888465 522.573778 522.756999 0.161722 -0.285527 0.004218 0.001601  0.00000 0 10"					
-		max_markers	="20"
-		sort    = "no"
-        marker_size = "0 57 60; 1000 9000 25"
-        use_history = "no"
-        threshold = "auto"
-	/>
+		<_module
+			class   = "MarkerTracker"
+			name	= "MarkerTracker"
+            _description = "The calibration parameters are set to no camera distortion to produce vertices in image coodinates."
+            _calibration = "640 480 320 240 1500.0 1500.0 0.0 0.0 0.0 0.0 0.0 0.0 0"
+            _sort    = "yes"
+            _marker_size = "0 999 90; 1000 9999 45"
+            _use_history = "no"
+            _threshold = "0.5"
+		/>
 
-	<connection sourcemodule = "KINECT" source = "INTENSITY" targetmodule = "MarkerTracker" target = "INPUT" delay="0" />
+	<_connection sourcemodule = "KINECT" source = "INTENSITY" targetmodule = "MarkerTracker" target = "INPUT" delay="0" />
 
 	
         
@@ -222,13 +219,14 @@
             class	 = "Circle"
             color	 = "red"
 			size	 = "0.025"
-			module	 = "FaceDetector"
-            source	 = "FACES"
+			module	 = "MarkerDetector"
+            source	 = "MARKERS"
 			x = "6" y = "0"
 			w = "6" h = "5"
 		/>
-            
-		<object
+        
+        <!--    
+		<_object
         	class    = "Cross"
             size     = "0.05"
             module   = "FaceDetector"
@@ -237,7 +235,7 @@
 			w = "6" h = "5"
 			/>
 			
-		<object
+		<_object
         	class    = "Image"
 			title    = "Left Eye"
 			type	 = "gray"
@@ -249,7 +247,7 @@
 			max  = "1"
 		/>
 		
-		<object
+		<_object
 			class    = "Image"
 			title    = "Right Eye"
 			type	 = "gray"
@@ -260,7 +258,7 @@
 			min  = "0"
 			max  = "1"
 		/>
-			
+
 		<!-- KINNECT objects -->
         <object 
         	class 	= "Image"
@@ -273,43 +271,43 @@
         />
 
         <!-- Marker tracker -->
-        <object
-			class   = "Lines"
-			module  = "MarkerTracker"
-			source  = "EDGES"
+        <_object
+				class   = "Lines"
+				module  = "MarkerTracker"
+				source  = "EDGES"
 			x = "6" y = "0"
 			w = "6" h = "5"
-			min = "0"
-			max = "1"
-            color="red"
-            stroke_width="1"
+				min = "0"
+				max = "1"
+                color="red"
+                stroke_width="1"
 			/>
 
-		<object
-			class   = "Cross"
-			module  = "MarkerTracker"
-			source  = "MARKERS"
-			size = "0.03"
-			stroke_width="1"
+			<_object
+				class   = "Cross"
+				module  = "MarkerTracker"
+				source  = "MARKERS"
+                size = "0.03"
+                stroke_width="1"
 			x = "6" y = "0"
 			w = "6" h = "5"
-			min = "0"
-			max = "1"
-		/>
+				min = "0"
+				max = "1"
+			/>
 
         
-		<object
-			class   = "Label"
-			type    = "value"
-			select  = "2"
-			decimals = "0"
-			offset_x = "0.05"
-			offset_y = "0.05"
-			module  = "MarkerTracker"
-			source  = "MARKERS"
+            <_object
+                class   = "Label"
+                type    = "value"
+                select  = "2"
+                decimals = "0"
+                offset_x = "0.05"
+                offset_y = "0.05"
+                module  = "MarkerTracker"
+                source  = "MARKERS"
 			x = "6" y = "0"
 			w = "6" h = "5"
- 		/>
+ 			/>
     </view>
 </group>
  

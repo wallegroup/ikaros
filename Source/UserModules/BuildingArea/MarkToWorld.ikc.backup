@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<group name="MarkToWorld" description="Converts MarkerTracker location to sensor oriented coordinate system">
+
+	<description type="text">
+		We can fix a nicer description later..
+		fov_h och fov_v är kamerans vinkel i radianer (=1.1 för Kinect)
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="MarkToWorld"
+			name="MarkToWorld"
+		/>
+	</example>
+
+	<parameter name="fov_h" type="float" default="1.1" description="Horizontal field of view for the camera" />
+	<parameter name="fov_v" type="float" default="1.1" description="Vertical field of view for the camera" />
+	<parameter name="xRes" type="float" default="640" description="Horizontal resolution of camera" />
+	<parameter name="yRes" type="float" default="480" description="Vertical resolution of camera" />
+
+	<input name="INPUT" description="Input, should be a homogenous matrix from MarkerTracker" />
+
+	<output name="OUTPUT" description="Output in the form (x,y,z) where x is horizontally out and away from the camera, y is horizontal and orthogonal to x and z is vertical" size="3" />
+
+	<module class="MarkToWorld" />
+
+	<author>
+		<name>walle-E team</name>
+		<email>walle@robots.io</email>
+		<affiliation>Lund University Cognitive Science/Lund University Faculty of Engineering (LTH)</affiliation>
+		<homepage>http://walle.robots.io</homepage>
+	</author>
+
+   <files>
+   		<file>MarkToWorld.h</file>
+   		<file>MarkToWorld.cc</file>
+   		<file>MarkToWorld.ikc</file>
+   </files>
+
+</group>
+

@@ -40,24 +40,19 @@ public:
     void 		Init();
     void 		Tick();
 
-    float **    input_table;
-    float **    output_table;
-    
-    float *     input;
-    float *     output;
-    
-    int         input_table_size_x;
-    int         input_table_size_y;
+    void        PrintTable(char *title, float **array, int amount, int elements);
+    void        CheckParameters(void);
 
-    int         output_table_size_x;
-    int         output_table_size_y;
+    float       CalculateMean(void);
+
+    inline float    GetWeightFactor(float distance);
+    int         GetClosestIndex(void);
+
+    float       *input_table;
+    float       *output_table;
     
-    int         input_size;
-    int         output_size;
-    
-    int         type;
-    float **    m;
+    float       *input;
+    float       *output;
 };
 
 #endif
-

@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+
+<group title="WallEAI">
+    
+        <module
+        class        = "Dynamixel"
+        name         = "Dynamixel"
+        _device      = "/dev/tty.usbserial-A4012AK3"
+        device       = "/dev/ttyUSB0"
+        index_mode   = "indirect"
+        servo_id     = "1 2 3"
+        angle_unit   = "degrees"
+        />
+
+        <module
+            class   = "SmoothMovement"
+            name    = "SmoothMovement"
+            debug   = "false"
+            phase   = "0"
+            period  = "1"
+        />
+
+        <module
+            class = "LogicModelModule"
+            name = "Logic"
+            camera_x_offset = "70"
+            camera_y_offset = "0"
+            camera_z_offset = "53"
+        />
+
+        <module
+            class   = "Kinect"
+            name    = "CAMERA"
+        />
+
+        <module
+            class = "DepthSeg"
+            name = "DepthSeg"
+            max_depthThreshold = "0.35"
+            min_depthThreshold = "0.3"
+            />
+
+        <module 
+            class = "ChangeDetector" 
+            name = "ChangeDetector" 
+            />
+
+        <module
+            class = "SummedBoxes"
+            name = "SummedBoxes"
+            />
+
+        <module 
+            class = "DirectionOfChange"
+            name = "DirectionOfChange"
+            />
+           
+        <module
+            class = "FocusSelector3"
+            name = "FocusSelector3"
+            />
+
+        <module
+            class = "MPIFaceDetector"
+            name = "FaceDetector"
+        />
+
+        <module 
+            class = "FaceLocation"
+            name = "FaceLocation"
+        />
+
+        <connection sourcemodule = "CAMERA" source = "DEPTH" targetmodule = "DepthSeg" target = "INPUT" delay="0" />
+        <connection sourcemodule = "DepthSeg" source = "OUTPUT" targetmodule = "ChangeDetector" target = "INPUT" delay="0" />
+        <connection sourcemodule = "ChangeDetector" source = "OUTPUT" targetmodule = "SummedBoxes" target = "INPUT" delay="0" />
+        <connection sourcemodule = "SummedBoxes" source = "OUTPUT" targetmodule = "DirectionOfChange" target = "INPUT" delay="0" />
+        <connection sourcemodule = "SummedBoxes" source = "OUTPUT_BOX" targetmodule = "DirectionOfChange" target = "INPUT_BOX" delay="0" />
+        <connection sourcemodule = "DirectionOfChange" source = "OUTPUT" targetmodule = "FocusSelector3" target = "INPUT_DOC"/>
+
+        
+        <connection sourcemodule = "FocusSelector3" source = "OUTPUT" targetmodule = "Logic" target = "INPUT" />
+        <connection sourcemodule = "Dynamixel" source = "FEEDBACK_PRESENT_POSITION" targetmodule = "SmoothMovement" target = "CURRENT_POSITION"/>
+        <connection sourcemodule = "SmoothMovement" source = "VELOCITY" targetmodule = "Dynamixel" target = "MOVING_SPEED"/>
+        <connection sourcemodule = "SmoothMovement" source = "POSITION_OUT" targetmodule = "Dynamixel" target = "GOAL_POSITION"/>
+        <connection sourcemodule = "Logic" source = "OUTPUT" targetmodule = "SmoothMovement" target = "GOAL_POSITION"/>
+		
+        <connection sourcemodule  = "CAMERA" source = "INTENSITY" targetmodule = "FaceDetector" target = "INPUT" delay="0" />
+        <connection sourcemodule  = "FaceDetector" source = "FACE_POSITION" targetmodule = "FaceLocation" target = "INPUT" delay="0" />
+        <connection sourcemodule  = "FaceLocation" source  = "OUTPUT" targetmodule = "FocusSelector3" target  = "INPUT_FACE" />
+
+
+
+        <view name="Inputs">
+            <object
+                class   ="Image"
+                title   = "Camera"
+                type    = "rgb"
+                module  = "CAMERA"
+                source  = "RED+GREEN+BLUE"
+                x="0" y="0"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+                class   = "Circle"
+                color = "red"
+                size    = "0.025"
+                module  = "FaceDetector"
+                source  = "FACES"
+                x="0" y="0"
+                w="3" h="2"
+            />
+            
+            <object
+                class   = "Cross"
+                size    = "0.05"
+                module  = "FaceDetector"
+                source  = "FACE_POSITION"
+                x="0" y="0"
+                w="3" h="2"
+            />
+
+            <object
+                class   ="Image"
+                title   = "Change detector"
+                type    = "spectrum"
+                module  = "ChangeDetector"
+                source  = "OUTPUT"
+                x="0" y="2"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+                class="Table" 
+                title="DOC"
+                module="DirectionOfChange"
+                source="OUTPUT"
+                x="3"
+                y="0"
+                w="1"
+                h="1"
+                decimals="0" 
+            />
+
+        </view>
+
+</group>
+

@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+
+<group title="WallEAI">
+	
+
+         <module
+        class        = "Dynamixel"
+        name         = "Dynamixel"
+        _device      = "/dev/tty.usbserial-A4012AK3"
+        device       = "/dev/ttyUSB0"
+        index_mode   = "indirect"
+        servo_id     = "1 2 3"
+        angle_unit   = "degrees"
+        />
+
+        <module
+            class   = "SmoothMovement"
+            name    = "SmoothMovement"
+            debug   = "false"
+            phase   = "0"
+            period  = "1"
+        />
+
+        <module
+            class = "LogicModelModule"
+            name = "Logic"
+            camera_x_offset = "0"
+            camera_y_offset = "230"
+            camera_z_offset = "53"
+        />
+
+        <module
+            class   = "Kinect"
+            name    = "CAMERA"
+        />
+
+        <module
+            class = "DepthSeg"
+            name = "DepthSeg"
+            max_depthThreshold = "0.35"
+            min_depthThreshold = "0.3"
+            />
+
+        <module 
+            class = "ChangeDetector" 
+            name = "ChangeDetector" 
+            />
+
+        <module
+            class = "SummedBoxes"
+            name = "SummedBoxes"
+            />
+
+        <module 
+            class = "DirectionOfChange"
+            name = "DirectionOfChange"
+            />
+
+        <module
+            class   = "MarkerTracker"
+            name    = "MarkerTracker"
+            description = "The calibration parameters are set to no camera distortion to produce vertices in image coodinates."
+            calibration = "640 480 317.584948 260.888465 522.573778 522.756999 0.161722 -0.285527 0.004218 0.001601  0.00000 0 10"
+            max_markers ="20"
+            sort    = "no"
+            marker_size = "1000 9000 50; 0 57 60"
+            use_history = "no"
+            threshold = "auto"
+            />
+
+        <module
+            class = "BuildingArea"
+            name = "BuildingArea"
+            boundary_x_closest ="600"
+            boundary_x_furthest ="800"
+            boundary_y_right ="100"
+            boundary_y_left ="-100"
+            boundary_z_top ="500"
+            boundary_z_bottom ="-500"
+        />
+
+        <module
+            class = "FocusSelector2"
+            name = "FocusSelector2"
+            tick_faceThreshold = "15"
+            />
+
+        <module
+            class = "MPIFaceDetector"
+            name = "FaceDetector"
+        />
+
+        <module 
+            class = "FaceLocation"
+            name = "FaceLocation"
+        />
+
+        <module
+            class = "AverageMatrixValue"
+            name = "AverageMatrixValue"
+            />
+
+        <!-- Connections are sorted by processing route. All routes lead to FocusSelector2, then to Dynamixel -->
+        <!-- delay=0 in a series of connections means "modules will essentially operate as a single module." -->
+        <!-- Default delay is 1 -->
+        <!-- Depth camera image is processed to find movement of hand -->
+        <connection sourcemodule = "CAMERA" source = "DEPTH" targetmodule = "DepthSeg" target = "INPUT" delay="0" />
+        <connection sourcemodule = "DepthSeg" source = "OUTPUT" targetmodule = "ChangeDetector" target = "INPUT" delay="0" />
+        <connection sourcemodule = "ChangeDetector" source = "OUTPUT" targetmodule = "SummedBoxes" target = "INPUT" delay="0" />
+        <connection sourcemodule = "SummedBoxes" source = "OUTPUT" targetmodule = "DirectionOfChange" target = "INPUT" delay="0" />
+        <!-- frågan är om delay ska vara 0 till sista här eftersom focusselector handhaver andra moduler -->
+        <connection sourcemodule = "DirectionOfChange" source = "OUTPUT" targetmodule = "FocusSelector2" target = "INPUT_DOC" />
+
+        <!-- Average change is sent to FocusSelector2 -->
+        <connection sourcemodule = "ChangeDetector" source = "OUTPUT" targetmodule = "AverageMatrixValue" target = "INPUT" delay="0" />
+        <connection sourcemodule = "AverageMatrixValue" source = "OUTPUT" targetmodule = "FocusSelector2" target = "INPUT_CHANGE"/>
+
+        <!-- Camera intensity image is used to look for marker cubes -->
+        <connection sourcemodule = "CAMERA" source = "INTENSITY" targetmodule = "MarkerTracker" target = "INPUT" delay="0" />
+        <connection sourcemodule = "MarkerTracker" source = "MARKERS" targetmodule = "BuildingArea" target = "INPUT" delay="0" />
+        <connection sourcemodule = "BuildingArea" source = "OUTPUT" targetmodule = "FocusSelector2" target = "INPUT_MARKERS" />
+        <connection sourcemodule = "BuildingArea" source = "BACoords" targetmodule = "FocusSelector2" target = "INPUT_BA" />
+
+        <!-- Camera intensity image is processed for faces and location is sent to FocusSelector2 -->
+        <connection sourcemodule  = "CAMERA" source = "INTENSITY" targetmodule = "FaceDetector" target = "INPUT" delay="0" />
+        <connection sourcemodule  = "FaceDetector" source = "FACE_POSITION" targetmodule = "FaceLocation" target = "INPUT" delay="0" />
+        <connection sourcemodule  = "FaceLocation" source  = "OUTPUT" targetmodule = "FocusSelector2" target  = "INPUT_FACE" />
+
+        <!-- FocusSelector2 controls when and what to look at and sends these coordinates to Dynamixel through Logic & Smoothmovement -->
+        <connection sourcemodule = "FocusSelector2" source = "OUTPUT" targetmodule = "Logic" target = "INPUT" />
+        <connection sourcemodule = "Dynamixel" source = "FEEDBACK_PRESENT_POSITION" targetmodule = "SmoothMovement" target = "CURRENT_POSITION"/>
+        <connection sourcemodule = "SmoothMovement" source = "VELOCITY" targetmodule = "Dynamixel" target = "MOVING_SPEED"/>
+        <connection sourcemodule = "SmoothMovement" source = "POSITION_OUT" targetmodule = "Dynamixel" target = "GOAL_POSITION"/>
+        <connection sourcemodule = "Logic" source = "OUTPUT" targetmodule = "SmoothMovement" target = "GOAL_POSITION"/>
+
+		<view name="Inputs">
+            <object
+                class   ="Image"
+                title   = "Camera"
+                type    = "rgb"
+                module  = "CAMERA"
+                source  = "RED+GREEN+BLUE"
+                x="0" y="0"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+                class   = "Circle"
+                color = "red"
+                size    = "0.025"
+                module  = "FaceDetector"
+                source  = "FACES"
+                x="0" y="0"
+                w="3" h="2"
+            />
+            
+            <object
+                class   = "Cross"
+                size    = "0.05"
+                module  = "FaceDetector"
+                source  = "FACE_POSITION"
+                x="0" y="0"
+                w="3" h="2"
+            />
+
+            <object
+            class   = "Path"
+            module  = "MarkerTracker"
+            source  = "MARKERS"
+            length_source = "MARKER_COUNT"
+            x="0" y="0"
+            w="3" h="2"
+            min = "0"
+            max = "1"
+            select = "20"
+            count = "4"
+            close = "yes"
+            color="red"
+            stroke_width="7"
+            fill = "rgba(255,0,0,0.45)"
+            line_join="round"
+            />
+
+            <object
+                class   ="Image"
+                title   = "Change detector"
+                type    = "spectrum"
+                module  = "ChangeDetector"
+                source  = "OUTPUT"
+                x="0" y="2"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+                class="Table" 
+                title="AverageMatrixValue"
+                module="AverageMatrixValue"
+                source="OUTPUT"
+                x="3"
+                y="3"
+                w="1"
+                h="1"
+                decimals="5" 
+            />
+            
+            <object
+                class = "Table"
+                module = "BuildingArea"
+                source = "OUTPUT"
+                title = "Marker coordinates and IDs"
+                x = "0"
+                y = "4"
+                w = "4"
+                h = "2"
+            />
+            
+            <object
+                class= "Table"
+                module = "BuildingArea"
+                source = "BACoords"
+                title = "BuildingAreaCoordinates"
+                x = "3"
+                y = "0"
+                w = "3"
+                h = "2"
+            />
+            
+            <object
+            class= "Table"
+            module = "SummedBoxes"
+            source = "OUTPUT"
+            title = "SummedBoxes"
+            x = "6"
+            y = "0"
+            w = "3"
+            h = "2"
+            />
+
+        </view>
+
+</group>
+

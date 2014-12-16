@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<group name="FocusSelectorNoFace" description="minimal example module">
+
+	<description type="text">
+
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="FocusSelectorNoFace"
+			name="FocusSelectorNoFace"
+		/>
+	</example>
+
+
+	<input name="INPUT_DOC" description="DirectionOfChange output" />
+	<input name="INPUT_MARKERS" description="Markers output from BuildingArea" />
+	<input name="INPUT_BA" description="Building area output from BuildingArea" />
+
+	<output name="OUTPUT" description="Cordinates" size="3" />
+	<output name="OUTPUT2" size="4"/>
+
+
+	<module class="FocusSelectorNoFace" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>FocusSelectorNoFace.h</file>
+   		<file>FocusSelectorNoFace.cc</file>
+   		<file>FocusSelectorNoFace.ikc</file>
+   </files>
+
+</group>
+

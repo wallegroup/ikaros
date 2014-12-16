@@ -29,24 +29,11 @@
 void
 LocalApproximator::Init()
 {
-    Bind(type, "type");
-    
-    output_table = GetInputMatrix("OUTPUT_TABLE");
-    input_table = GetInputMatrix("INPUT_TABLE");
+    output_table = GetInputArray("OUTPUT_TABLE");
+    input_table = GetInputArray("InPUT_TABLE");
     
     input = GetInputArray("INPUT");
     output = GetOutputArray("OUTPUT");
-    
-    input_table_size_x = GetInputSizeX("INPUT_TABLE");
-    input_table_size_y = GetInputSizeY("INPUT_TABLE");
-
-    output_table_size_x = GetInputSizeX("OUTPUT_TABLE");
-    output_table_size_y = GetInputSizeY("OUTPUT_TABLE");
-    
-    input_size      = GetInputSizeX("INPUT_TABLE");
-    output_size     = GetOutputSizeX("OUTPUT_TABLE");
-    
-    m = create_matrix(input_table_size_x, output_table_size_y);
 }
 
 
@@ -54,7 +41,62 @@ LocalApproximator::Init()
 void
 LocalApproximator::Tick()
 {
-//    mldivide(input_table, output_table, 0);
+/*
+    if (distance_table[GetClosestIndex()] == 0)
+        class_output[0] = output_table[GetClosestIndex()];
+    else{
+        if (categorical)
+            class_output[0] = 0;
+        else
+            class_output[0] = CalculateMean();
+    }
+*/
+}
+
+
+float
+LocalApproximator::CalculateMean()
+{
+/*
+    float tot = 0, instances = 0;
+    int i;
+
+    for (i = 0; i < k; i++){
+        tot += output_table[i] * GetWeightFactor(distance_table[i]);
+        instances += 1 * GetWeightFactor(distance_table[i]);
+    }
+
+    return tot / instances;
+*/
+}
+
+
+
+int
+LocalApproximator::GetClosestIndex()
+{
+/*    int i, closest_index;
+
+    closest_index = 0;
+
+    for (i = 1; i < k; i++)
+        if (distance_table[i] < distance_table[closest_index])
+            closest_index = i;
+
+    return closest_index;
+*/
+}
+
+
+
+void
+LocalApproximator::CheckParameters()
+{
+/*
+    categorical = GetBoolValue("categorical", true);
+    weighed = GetBoolValue("weighed", false);
+    weight_divisor = GetFloatValue("weight_divisor", 1.0);
+*/
 }
 
 

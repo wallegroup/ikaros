@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+
+<group title="WallEAI">
+	
+
+         <module
+        class        = "Dynamixel"
+        name         = "Dynamixel"
+        _device      = "/dev/tty.usbserial-A4012AK3"
+        device       = "/dev/ttyUSB0"
+        index_mode   = "indirect"
+        servo_id     = "1 2 3"
+        angle_unit   = "degrees"
+        />
+
+        <module
+        class       =   "FunctionGenerator"
+        name        =   "Speed"
+        type        =   "sin"
+        frequency   =   "0.0314"
+        offset      =   "1"
+        amplitude   =   "0.0"
+        shift       =   "150"
+        />
+
+        <module
+            class = "LogicModelModule"
+            name = "Logic"
+            camera_x_offset = "0"
+            camera_y_offset = "240"
+            camera_z_offset = "-190"
+        />
+
+        <module
+            class   = "Kinect"
+            name    = "CAMERA"
+        />
+
+        <module
+            class = "DepthSeg"
+            name = "DepthSeg"
+            />
+
+        <module 
+            class = "ChangeDetector" 
+            name = "ChangeDetector" 
+            />
+
+        <module
+            class = "SummedBoxes"
+            name = "SummedBoxes"
+            />
+
+        <module 
+            class = "DirectionOfChange"
+            name = "DirectionOfChange"
+            />
+
+        <module
+            class   = "MarkerTracker"
+            name    = "MarkerTracker"
+            description = "The calibration parameters are set to no camera distortion to produce vertices in image coodinates."
+            calibration = "640 480 317.584948 260.888465 522.573778 522.756999 0.161722 -0.285527 0.004218 0.001601  0.00000 0 10"
+            max_markers ="20"
+            sort    = "no"
+            marker_size = "1000 9000 25; 0 57 60"
+            use_history = "no"
+            threshold = "auto"
+            />
+
+        <module
+            class = "BuildingArea"
+            name = "BuildingArea"
+            boundary_z_right ="75"
+            boundary_z_left ="-75"
+            boundary_y_top ="500"
+            boundary_y_bottom ="-500"
+            boundary_x_furthest ="500"
+            boundary_x_closest ="350"
+        />
+
+        <module
+            class = "FocusSelectorNoFace"
+            name = "FocusSelectorNoFace"
+            />
+
+        <connection sourcemodule = "CAMERA" source = "DEPTH" targetmodule = "DepthSeg" target = "INPUT" />
+        <connection sourcemodule = "DepthSeg" source = "OUTPUT" targetmodule = "ChangeDetector" target = "INPUT" />
+        <connection sourcemodule = "ChangeDetector" source = "OUTPUT" targetmodule = "SummedBoxes" target = "INPUT" />
+        <connection sourcemodule = "SummedBoxes" source = "OUTPUT" targetmodule = "DirectionOfChange" target = "INPUT" />
+        <connection sourcemodule = "DirectionOfChange" source = "OUTPUT" targetmodule = "FocusSelectorNoFace" target = "INPUT_DOC"/>
+
+
+        <connection sourcemodule = "CAMERA" source = "INTENSITY" targetmodule = "MarkerTracker" target = "INPUT" delay="0" />
+        <connection sourcemodule = "MarkerTracker" source = "MARKERS" targetmodule = "BuildingArea" target = "INPUT" />
+        <connection sourcemodule = "BuildingArea" source = "OUTPUT" targetmodule = "FocusSelectorNoFace" target = "INPUT_MARKERS" />
+        <connection sourcemodule = "BuildingArea" source = "BACoords" targetmodule = "FocusSelectorNoFace" target = "INPUT_BA" />
+
+
+        <connection sourcemodule = "FocusSelectorNoFace" source = "OUTPUT" targetmodule = "Logic" target = "INPUT"/>
+        <connection sourcemodule  = "Logic" source  = "OUTPUT" targetmodule = "Dynamixel" target  = "GOAL_POSITION" />
+        <connection sourcemodule  = "Speed" source  = "OUTPUT" targetmodule = "Dynamixel" target  = "MOVING_SPEED" />
+
+		<view name="Inputs">            
+            <object
+                class   ="Image"
+                title   = "Camera"
+                type    = "rgb"
+                module  = "CAMERA"
+                source  = "RED+GREEN+BLUE"
+                x="0" y="0"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+
+            <object
+            class   = "Path"
+            module  = "MarkerTracker"
+            source  = "MARKERS"
+            length_source = "MARKER_COUNT"
+            x="0" y="0"
+            w="3" h="2"
+            min = "0"
+            max = "1"
+            select = "20"
+            count = "4"
+            close = "yes"
+            color="red"
+            stroke_width="7"
+            fill = "rgba(255,0,0,0.45)"
+            line_join="round"
+            />
+
+            <object
+                class   ="Image"
+                title   = "Change detector"
+                type    = "spectrum"
+                module  = "ChangeDetector"
+                source  = "OUTPUT"
+                x="0" y="2"
+                w="3" h="2"
+                min = "0"
+                max = "1"
+            />
+             <object
+                class="Table" 
+                title="coords"
+                module="FocusSelectorNoFace"
+                source="OUTPUT"
+                x="3"
+                y="2"
+                w="1"
+                h="1"
+                decimals="0" 
+            />
+            <object
+                class="Table" 
+                title="coords"
+                module="FocusSelectorNoFace"
+                source="OUTPUT2"
+                x="3"
+                y="3"
+                w="1"
+                h="1"
+                decimals="0" 
+            />
+
+        </view>
+
+</group>
+

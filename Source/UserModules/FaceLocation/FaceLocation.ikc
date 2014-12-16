@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<group name="FaceLocation" description="Calculates 3D world coordinates from 2D image coordinates">
+
+	<description type="text">
+		This module takes as input the coordinates in a 2D image and converts them to 3D world coordinates (with camera/sensor at origo). Input coordinates are called Z and Y which is the vertical and horizontal coordinates, respectively. The output is in the form of X, Y, Z in accordance with global Ikaros axles (where X is depth, Y is horizontal and Z is vertical).
+	</description>
+
+	<example description="A simple example">
+		<module
+			class="FaceLocation"
+			name="FaceLocation"
+		/>
+	</example>
+
+	<parameter name="fov_v" type="float" default="1.1" description="Vertical field of view of the camera (radians)" />
+	<parameter name="fov_h" type="float" default="1.1" description="Horizontal field of view of the camera (radians)" />
+	<parameter name="xRes" type="int" default="640" description="Horizontal resolution of the camera (pixels)" />
+	<parameter name="yRes" type="int" default="480" description="Vertical resolution of the camera (pixels)" />
+	<parameter name="camDepth" type="float" default="1300" description="Distance from camera to point of interest (mm)" />
+
+	<input name="INPUT" description="z,y coordinates in 2d camera image" />
+
+	<output name="OUTPUT" description="x,y,z coordinates in the world" size="3" />
+
+	<module class="FaceLocation" />
+
+	<author>
+		<name>Wall-E Group Inc.</name>
+		<email>complaints@wallegroup.com</email>
+		<affiliation>Robot Research and World Domination department, Wall-E Group, The Moon</affiliation>
+		<homepage>http://www.wallegroup.com/themoon</homepage>
+	</author>
+
+   <files>
+   		<file>FaceLocation.h</file>
+   		<file>FaceLocation.cc</file>
+   		<file>FaceLocation.ikc</file>
+   </files>
+
+</group>
+

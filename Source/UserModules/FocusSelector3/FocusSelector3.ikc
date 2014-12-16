@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<group name="FocusSelector3" description="Selects focus and outputs focus cordinates">
+
+	<description type="text">
+		Selects focus and outputs focus cordinates
+	</description>
+
+	<example description="FocusSelctor example">
+		<module
+			class="FocusSelector3"
+			name="FocusSelector3"
+		/>
+	</example>
+
+	
+	<input name="INPUT_DOC" description="DirectionOfChange output" />
+	<input name="INPUT_FACE" description="FaceLocation output" />
+
+	<output name="OUTPUT" description="Cordinates" size="3" />
+
+	<module class="FocusSelector3" />
+
+	<author>
+		<name>Olof Knape</name>
+		<email>olofknape@gmail.com</email>
+	</author>
+
+   <files>
+   		<file>FocusSelector3.h</file>
+   		<file>FocusSelector3.cc</file>
+   		<file>FocusSelector3.ikc</file>
+   </files>
+
+</group>
+

@@ -82,6 +82,6 @@ LinearSplines::Tick()
 
 
 
-static InitClass init("LinearSplines", &LinearSplines::Create, "Source/Modules/UtilityModules/LinearSplines/");
+static InitClass init("LinearSplines", &LinearSplines::Create, "Source/UserModules/LinearSplines/");
 
 

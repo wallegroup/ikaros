@@ -1,7 +1,7 @@
 //
 //		Arbiter.h		This file is a part of the IKAROS project
 //
-//    Copyright (C) 2006-2014 Christian Balkenius
+//    Copyright (C) 2006 Christian Balkenius
 ///
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -32,22 +32,16 @@ class Arbiter: public Module
 public:
     static Module * Create(Parameter * p) { return new Arbiter(p); }
 
-    char **     input_name;
-    char **     value_name;
+    float *	input1;
+    float *	input2;
+    float *	value1;
+    float *	value2;
+    float *	output;
+    float *	value;
+    int		size;
 
-    float **    input;
-    float **    value_in;
-
-    float *     output;
-    float *     value_out;
-    
-    int         no_of_inputs;
-    int         size;
-    
-    Arbiter(Parameter * p);
-    virtual	~Arbiter();
-
-    void        SetSizes();
+    Arbiter(Parameter * p) : Module(p) {};
+    virtual	~Arbiter() {};
 
     void		Init();
     void		Tick();
